@@ -1,0 +1,3 @@
+User-User-agent: *
+Disallow: /
+# Sitemap: https://www.midgramme.com/sitemap.xml
