@@ -1,6 +1,6 @@
 <template lang="pug">
   #app.app(:class="{'app--loading': loading}")
-    app-header(:loading="loading")
+    app-header.app__header(:loading="loading")
     .app__body
       dot-grid
       router-view
@@ -45,18 +45,25 @@ html{
 }
 
 .app{
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Plain', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 
-  > header{
-    position: fixed;
-    top:0; left:0;
-    width:100%;
-    z-index:10;
+  a{
+    &, &:link, &:visited{
+      color:inherit;
+      text-decoration: none;
+    }
   }
+}
+
+.app__header{
+  position: fixed;
+  top:0; left:0;
+  width:100%;
+  z-index:10;
 }
 
 .app__body{
@@ -70,7 +77,7 @@ html{
 .app{
   .fadeinplace-enter-active,
   .fadeinplace-leave-active{
-    transition: opacity 500ms;
+    transition: opacity $fadeDuration;
   }
   .fadeinplace-enter,
   .fadeinplace-leave-to{
