@@ -21,7 +21,7 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => { this.loading = false }, 5400)
+    setTimeout(() => { this.loading = false }, 1000)
   }
 }
 </script>
@@ -69,7 +69,7 @@ html{
 .app__body{
   position: relative;
   z-index:1;
-  min-height:100vh;
+  min-height:200vh;
 }
 
 // transitions

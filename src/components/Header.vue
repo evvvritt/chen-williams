@@ -2,7 +2,7 @@
   header
     dot-grid(:rows="2", :overlay="false")
     nav
-      ul
+      ul.nav__primary-nav
         li
           router-link(to="/")
             img(src='../assets/logo.svg')
@@ -27,10 +27,28 @@
           li(v-show="!loading")
             router-link(:to="{hash: 'cart'}").nav__radio-btn
             router-link(:to="{hash: 'cart'}", v-show="!loading").nav__link Cart
+      transition(name="fadeinplace")
+        ul(v-show="!loading")
+          li
+            router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': activeCategories.length === 0}").nav__radio-btn
+            router-link(:to="{name: 'Shop'}").nav__link Everything
+          li
+            a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Home')) > -1}").nav__radio-btn
+            a(@click="filter('Home')").nav__link Home
+          li
+            a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Body')) > -1}").nav__radio-btn
+            a(@click="filter('Body')").nav__link Body
+          li
+            a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('One Off')) > -1}").nav__radio-btn
+            a(@click="filter('One Off')").nav__link One Off
+          li
+            a(@click="filter('Partners')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Partners')) > -1}").nav__radio-btn
+            a(@click="filter('Partners')").nav__link Partners
 </template>
 
 <script>
 import DotGrid from '@/components/DotGrid'
+import _kebabCase from 'lodash/kebabCase'
 export default {
   name: 'Header',
   props: ['loading'],
@@ -39,8 +57,37 @@ export default {
   },
   data () {
     return {
-
+      kebabCase: _kebabCase
     }
+  },
+  computed: {
+    activeCategories () {
+      const cats = this.$route.query.categories
+      if (cats) return cats.split(',') 
+      return []
+    }
+  },
+  methods: {
+    filter (category) {
+      if (!category) return false
+      const cat = _kebabCase(category)
+      let cats = this.$route.query.categories // empty object || string
+      if (!cats || cats.length === 0) return this.$router.replace({query: {categories: cat}})
+      // otherwise add/remove
+      cats = cats.split(',')
+      const index = cats.indexOf(cat)
+      if (index > -1) {
+        cats.splice(index, 1)
+        if (cats.length === 0) return this.$router.replace({query: null})
+      } else {
+        cats.push(cat)
+      }
+      cats = cats.join(',')
+      this.$router.replace({query: {categories: cats}})
+    }
+  },
+  created () {
+    console.log(this.kebabCase)
   }
 }
 </script>
@@ -48,13 +95,18 @@ export default {
 <style lang="scss" scoped>
 @import '../style/variables';
 
+header{
+  background:$white;
+  box-shadow:0 0 8px black;
+}
+
 img{
   width:50%;
   transform:translateX(rem(-6px)) translateY(rem(-6px))
 }
 
 nav{
-  padding:$gutter;
+  padding:$gutter $gutter 0;
   position: relative;
 
   > ul{
@@ -63,6 +115,8 @@ nav{
     text-align: left;
     > li{
       flex:0 0 12.5%;
+      height:0;
+      padding-bottom:12.5%; // 6.25%;
       position: relative;
       
       .app--loading &{
@@ -91,8 +145,9 @@ nav{
 }
 
 .nav__link{
-  display: inline-block;
-  margin-top: 1.25em;
+  position: absolute;
+  top: 1.25em; left:0;
+  width:100%;
   transition:opacity $fadeDuration;
   .app--loading &{
     opacity:0;
@@ -113,7 +168,7 @@ nav{
     transition:none;
   }
   // radio bullet
-  &.router-link-active, 
+  .nav__primary-nav &.router-link-active, 
   &.nav__radio-btn--selected{
     background-image:url(../assets/icons/radio-btn--selected.svg);
   }
