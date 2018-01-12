@@ -9,7 +9,7 @@
         li
           router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': loading}").nav__radio-btn
           router-link(:to="{name: 'Shop'}", v-if="!loading").nav__link Shop
-          span(v-else) Loading
+          span(v-else).nav__link Loading
         li
           router-link(:to="{name: 'Furniture'}").nav__radio-btn
           router-link(:to="{name: 'Furniture'}").nav__link Furniture
@@ -167,7 +167,7 @@ nav{
   top: 1.25em; left:0;
   width:100%;
   transition:opacity $fadeDuration;
-  .app--loading &{
+  .app--loading &:not(span){
     opacity:0;
     visibility:hidden;
   }
@@ -190,7 +190,7 @@ nav{
   &.nav__radio-btn--selected{
     background-image:url(../assets/icons/radio-btn--selected.svg);
   }
-  .app--loading &.router-link-active{
+  .app--loading &.router-link-active:not(.nav__radio-btn--selected){
     background-image:url(../assets/icons/radio-btn.svg);
   }
 }
