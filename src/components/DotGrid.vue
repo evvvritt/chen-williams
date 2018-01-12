@@ -1,5 +1,5 @@
 <template lang="pug">
-  .dot-grid(:data-overlay="overlay")
+  .dot-grid(:data-overlay="overlay", :data-condensed="condensed")
     div(v-for="n in ((rows + 1) * columns)")
 </template>
 
@@ -14,6 +14,10 @@ export default {
     overlay: {
       type: Boolean,
       default: true
+    },
+    condensed: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -53,11 +57,18 @@ export default {
       pointer-events:none;  
     }
   }
+  // condensed
+  &[data-condensed="true"]{
+    div{
+      padding-bottom: 6.5%;
+    }
+  }
 
   div{
     flex:1 0 12.5%;
     padding-bottom:12.5%;
     position: relative;
+    transition:padding-bottom $navCondenseDuration;
     &:after, &:before{
       content:'';
       display: block;

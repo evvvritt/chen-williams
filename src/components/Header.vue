@@ -1,6 +1,6 @@
 <template lang="pug">
-  header
-    dot-grid(:rows="2", :overlay="false")
+  header(:class="{'header--condensed': condensed}")
+    dot-grid(:rows="2", :overlay="false", :condensed="condensed")
     nav
       ul.nav__primary-nav
         li
@@ -49,6 +49,7 @@
 <script>
 import DotGrid from '@/components/DotGrid'
 import _kebabCase from 'lodash/kebabCase'
+import _throttle from 'lodash/throttle'
 export default {
   name: 'Header',
   props: ['loading'],
@@ -57,13 +58,14 @@ export default {
   },
   data () {
     return {
+      condensed: false,
       kebabCase: _kebabCase
     }
   },
   computed: {
     activeCategories () {
       const cats = this.$route.query.categories
-      if (cats) return cats.split(',') 
+      if (cats) return cats.split(',')
       return []
     }
   },
@@ -84,10 +86,16 @@ export default {
       }
       cats = cats.join(',')
       this.$router.replace({query: {categories: cats}})
-    }
+    },
+    onScroll: _throttle(function () {
+      this.condensed = window.pageYOffset > 24
+    }, 100)
   },
-  created () {
-    console.log(this.kebabCase)
+  mounted () {
+    window.addEventListener('scroll', this.onScroll)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.onScroll)
   }
 }
 </script>
@@ -97,7 +105,7 @@ export default {
 
 header{
   background:$white;
-  box-shadow:0 0 8px black;
+  padding-bottom: 1px;
 }
 
 img{
@@ -106,18 +114,28 @@ img{
 }
 
 nav{
-  padding:$gutter $gutter 0;
+  padding:calc(25vh + #{$gutter}) $gutter 0;
   position: relative;
+  margin-top: -25vh;
+  transition:box-shadow $navCondenseDuration;
+  .header--condensed &{
+    box-shadow:0 0 8px black;
+  }
 
   > ul{
     list-style-type: none;
     display: flex;
     text-align: left;
     > li{
+      position: relative;
       flex:0 0 12.5%;
       height:0;
       padding-bottom:12.5%; // 6.25%;
-      position: relative;
+      transition:padding-bottom $navCondenseDuration;
+      
+      .header--condensed &{
+        padding-bottom:6.5%;
+      }
       
       .app--loading &{
         $cycle: 5000ms;
