@@ -10,12 +10,15 @@
           router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': loading}").nav__radio-btn
           router-link(:to="{name: 'Shop'}", v-if="!loading").nav__link Shop
           span(v-else).nav__link Loading
+          .nav__vein
         li.cw-grid__item
           router-link(:to="{name: 'Furniture'}").nav__radio-btn
           router-link(:to="{name: 'Furniture'}").nav__link Furniture
+          .nav__vein
         li.cw-grid__item
           router-link(:to="{name: 'Projects'}").nav__radio-btn
           router-link(:to="{name: 'Projects'}").nav__link Projects
+          .nav__vein
         li.cw-grid__item
           router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__radio-btn
           router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__link Info
@@ -33,13 +36,13 @@
             router-link(:to="{name: 'Shop'}").nav__radio-btn
             router-link(:to="{name: 'Shop'}").nav__link Everything
           li.cw-grid__item
-            a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Home')) > -1}").nav__radio-btn
+            a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('Home')) > -1}").nav__radio-btn
             a(@click="filter('Home')").nav__link Home
           li.cw-grid__item
-            a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Body')) > -1}").nav__radio-btn
+            a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('Body')) > -1}").nav__radio-btn
             a(@click="filter('Body')").nav__link Body
           li.cw-grid__item
-            a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('One Off')) > -1}").nav__radio-btn
+            a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('One Off')) > -1}").nav__radio-btn
             a(@click="filter('One Off')").nav__link One Off
           li.cw-grid__item
             router-link(:to="{name: 'Partners'}").nav__radio-btn
@@ -48,7 +51,7 @@
 
 <script>
 import DotGrid from '@/components/DotGrid'
-import _kebabCase from 'lodash/kebabCase'
+import _kebab from 'lodash/kebabCase'
 import _throttle from 'lodash/throttle'
 export default {
   name: 'Header',
@@ -59,7 +62,7 @@ export default {
   data () {
     return {
       condensed: false,
-      kebabCase: _kebabCase
+      kebab: _kebab
     }
   },
   computed: {
@@ -72,7 +75,7 @@ export default {
   methods: {
     filter (category) {
       if (!category) return false
-      const cat = _kebabCase(category)
+      const cat = _kebab(category)
       let cats = this.$route.query.categories // empty object || string
       if (!cats || cats.length === 0) return this.$router.replace({query: {categories: cat}})
       // otherwise add/remove
@@ -164,20 +167,23 @@ nav{
   top: 1.25em; left:0;
   width:100%;
   transition:opacity $fadeDuration;
+  z-index:1;
   .app--loading &:not(span){
     opacity:0;
     visibility:hidden;
   }
 }
+
 .nav__radio-btn{
   display:block;
-  width:rem(16px);
-  height:rem(16px);
-  background-image:url(../assets/icons/radio-btn.svg);
-  background-size:contain;
   position: absolute;
   left: rem(-8px);
   top: rem(-8px);
+  width:rem(16px);
+  height:rem(16px);
+  z-index:2;
+  background-image:url(../assets/icons/radio-btn.svg);
+  background-size:contain;  
   transition: opacity $fadeDuration;
   .app--loading &{
     transition:none;
@@ -190,6 +196,19 @@ nav{
   }
   .app--loading &.router-link-active:not(.nav__radio-btn--selected){
     background-image:url(../assets/icons/radio-btn.svg);
+  }
+}
+
+.nav__vein{
+  opacity:0;
+  position: absolute;
+  z-index:-1;
+  .nav__primary-nav .router-link-active + &{
+    opacity:1;
+    left:-1px;
+    top:3.5em;
+    border-left:2px solid;
+    height:calc(100% - 3.5em - 16px);
   }
 }
 
