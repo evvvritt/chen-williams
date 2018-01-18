@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Category from '@/components/Category'
+import Object from '@/components/Object'
 import Page from '@/components/Page'
 
 Vue.use(Router)
@@ -15,7 +16,14 @@ export default new Router({
     {
       path: '/shop',
       name: 'Shop',
-      component: Category
+      component: Category,
+      children: [
+        {
+          path: ':slug',
+          name: 'Product',
+          component: Object
+        }
+      ]
     },
     {
       path: '/shop/partners',

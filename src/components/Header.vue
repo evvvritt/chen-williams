@@ -3,45 +3,45 @@
     dot-grid(:rows="2", :overlay="false", :condensed="condensed")
     nav
       ul.nav__primary-nav.cw-grid
-        li.cw-grid__sq
+        li.cw-grid__item
           router-link(to="/")
             img(src='../assets/logo.svg')
-        li.cw-grid__sq
+        li.cw-grid__item
           router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': loading}").nav__radio-btn
           router-link(:to="{name: 'Shop'}", v-if="!loading").nav__link Shop
           span(v-else).nav__link Loading
-        li.cw-grid__sq
+        li.cw-grid__item
           router-link(:to="{name: 'Furniture'}").nav__radio-btn
           router-link(:to="{name: 'Furniture'}").nav__link Furniture
-        li.cw-grid__sq
+        li.cw-grid__item
           router-link(:to="{name: 'Projects'}").nav__radio-btn
           router-link(:to="{name: 'Projects'}").nav__link Projects
-        li.cw-grid__sq
+        li.cw-grid__item
           router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__radio-btn
           router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__link Info
         transition(name="fadeinplace")
-          li.cw-grid__sq(v-show="!loading")
+          li.cw-grid__item(v-show="!loading")
             a(target="_blank", rel="noopener").nav__radio-btn
             a(target="_blank", rel="noopener").nav__link Archive
         transition(name="fadeinplace")
-          li.cw-grid__sq(v-show="!loading")
+          li.cw-grid__item(v-show="!loading")
             router-link(:to="{hash: 'cart'}").nav__radio-btn
             router-link(:to="{hash: 'cart'}", v-show="!loading").nav__link Cart
       transition(name="fadeinplace")
         ul.nav__subnav.cw-grid(v-show="!loading")
-          li.cw-grid__sq
+          li.cw-grid__item
             router-link(:to="{name: 'Shop'}").nav__radio-btn
             router-link(:to="{name: 'Shop'}").nav__link Everything
-          li.cw-grid__sq
+          li.cw-grid__item
             a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Home')) > -1}").nav__radio-btn
             a(@click="filter('Home')").nav__link Home
-          li.cw-grid__sq
+          li.cw-grid__item
             a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Body')) > -1}").nav__radio-btn
             a(@click="filter('Body')").nav__link Body
-          li.cw-grid__sq
+          li.cw-grid__item
             a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('One Off')) > -1}").nav__radio-btn
             a(@click="filter('One Off')").nav__link One Off
-          li.cw-grid__sq
+          li.cw-grid__item
             router-link(:to="{name: 'Partners'}").nav__radio-btn
             router-link(:to="{name: 'Partners'}").nav__link Partners
 </template>
@@ -114,9 +114,9 @@ img{
 }
 
 nav{
-  padding:$gutter $gutter 0;
+  padding:calc(25vh + #{$gutter}) $gutter 0;
   position: relative;
-  // margin-top: -25vh;
+  margin-top: -25vh;
   transition:box-shadow $navCondenseDuration;
   .header--condensed &{
     box-shadow:0 0 8px black;

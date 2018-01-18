@@ -1,21 +1,29 @@
 <template lang="pug">
-  .cw-grid.cw-grid--background(:class="{'cw-grid--overlay': overlay, 'cw-grid--condensed': condensed}")
-    .cw-grid__sq(v-for="n in ((rows + 1) * columns)")
+  .cw-grid.cw-grid--background(:class="classes", :data-grid-scheme="scheme")
+    .cw-grid__item(v-for="n in ((rows + 1) * columns)")
 </template>
 
 <script>
 export default {
   name: 'DotGrid',
   props: {
+    scheme: {
+      type: String,
+      default: null
+    },
     rows: {
       type: Number,
       default: 40
     },
     overlay: {
       type: Boolean,
-      default: true
+      default: false
     },
     condensed: {
+      type: Boolean,
+      default: false
+    },
+    padless: {
       type: Boolean,
       default: false
     }
@@ -25,10 +33,25 @@ export default {
       columns: 0
     }
   },
+  computed: {
+    classes () {
+      return {
+        'cw-grid--overlay': this.overlay, 
+        'cw-grid--condensed': this.condensed,
+        'cw-grid--padless': this.padless
+      }
+    }
+  },
   methods: {
     setColumns () {
       const w = window.innerWidth
-      this.columns = w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 5
+      switch (this.scheme) {
+        case 'category':
+          this.columns = w >= 1900 ? 5 : w > 1440 ? 4 : w > 768 ? 3 : 1
+          break
+        default:
+          this.columns = w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 5
+      }
     },
     onResize () {
       const after = setTimeout(() => {
@@ -54,7 +77,7 @@ export default {
   display: flex;
   flex-wrap:wrap;
   align-items:flex-start;
-  > .cw-grid__sq{
+  > .cw-grid__item{
     flex:0 0 20%;
     padding-bottom:20%;
     position: relative;
@@ -82,7 +105,7 @@ export default {
   // scaling
   @mixin grid-change ($min, $cols) {
     @media (min-width: $min) {
-      & > .cw-grid__sq{
+      & > .cw-grid__item{
         $width: calc(100% / #{$cols});
         flex:0 0 $width;
         padding-bottom: $width;
@@ -92,9 +115,19 @@ export default {
       }
     }
   }
+  // default scheme
   @include grid-change(769px, 9);
   @include grid-change(1441px, 12);
   @include grid-change(1900px, 15);
+  // category scheme
+  &[data-grid-scheme="category"]{
+    > .cw-grid__item{
+      flex:1 0 100%;
+    }
+    @include grid-change(769px, 3);
+    @include grid-change(1441, 4);
+    @include grid-change(1900px, 5);
+  }
 
   &.cw-grid--background{
     position: absolute;
@@ -104,6 +137,11 @@ export default {
     overflow:hidden;
     z-index:-1;
     padding:$gutter;
+    
+    &.cw-grid--padless{
+      padding:0;
+    }
+
     // overlay if pointer-events supported
     &.cw-grid--overlay{
       @supports ((pointer-events:none)) {
@@ -111,6 +149,7 @@ export default {
         pointer-events:none;  
       }
     }
+
     // condensed
     &.cw-grid--condensed{
       div{

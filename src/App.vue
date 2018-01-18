@@ -44,6 +44,11 @@ html{
   background:$white;
 }
 
+h1,h2,h3,h4,h5,h6,small{
+  font-weight: inherit;
+  font-size:inherit;
+}
+
 .app{
   font-family: 'Plain', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -56,6 +61,14 @@ html{
       color:inherit;
       text-decoration: none;
     }
+  }
+
+  img{
+    max-width:100%;
+  }
+
+  .left-align{
+    text-align: left;
   }
 }
 
