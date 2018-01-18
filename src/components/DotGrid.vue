@@ -36,7 +36,7 @@ export default {
   computed: {
     classes () {
       return {
-        'cw-grid--overlay': this.overlay, 
+        'cw-grid--overlay': this.overlay,
         'cw-grid--condensed': this.condensed,
         'cw-grid--padless': this.padless
       }

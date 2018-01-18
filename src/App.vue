@@ -3,7 +3,7 @@
     app-header.app__header(:loading="loading")
     .app__body
       dot-grid
-      router-view
+      router-view(:loading="loading")
 </template>
 
 <script>

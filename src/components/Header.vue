@@ -35,15 +35,19 @@
           li.cw-grid__item
             router-link(:to="{name: 'Shop'}").nav__radio-btn
             router-link(:to="{name: 'Shop'}").nav__link Everything
+            .nav__vein
           li.cw-grid__item
             a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('Home')) > -1}").nav__radio-btn
             a(@click="filter('Home')").nav__link Home
+            .nav__vein
           li.cw-grid__item
             a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('Body')) > -1}").nav__radio-btn
             a(@click="filter('Body')").nav__link Body
+            .nav__vein
           li.cw-grid__item
             a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('One Off')) > -1}").nav__radio-btn
             a(@click="filter('One Off')").nav__link One Off
+            .nav__vein
           li.cw-grid__item
             router-link(:to="{name: 'Partners'}").nav__radio-btn
             router-link(:to="{name: 'Partners'}").nav__link Partners
@@ -107,8 +111,9 @@ export default {
 @import '../style/variables';
 
 header{
-  background:$white;
+  background:rgba($white, .8);
   padding-bottom: 1px;
+  backdrop-filter:blur(10px);
 }
 
 img{
@@ -184,6 +189,7 @@ nav{
   z-index:2;
   background-image:url(../assets/icons/radio-btn.svg);
   background-size:contain;  
+  background-repeat:no-repeat;
   transition: opacity $fadeDuration;
   .app--loading &{
     transition:none;
@@ -203,12 +209,20 @@ nav{
   opacity:0;
   position: absolute;
   z-index:-1;
+  border-width:1px;
   .nav__primary-nav .router-link-active + &{
     opacity:1;
     left:-1px;
     top:3.5em;
-    border-left:2px solid;
+    border-left-style:solid;
     height:calc(100% - 3.5em - 16px);
+  }
+  .nav__subnav &{
+    opacity:1;
+    top: -1px;
+    left:16px;
+    width:calc(100% - 32px);
+    border-top-style: solid;
   }
 }
 
