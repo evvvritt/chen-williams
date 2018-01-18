@@ -2,46 +2,46 @@
   header(:class="{'header--condensed': condensed}")
     dot-grid(:rows="2", :overlay="false", :condensed="condensed")
     nav
-      ul.nav__primary-nav
-        li
+      ul.nav__primary-nav.cw-grid
+        li.cw-grid__sq
           router-link(to="/")
             img(src='../assets/logo.svg')
-        li
+        li.cw-grid__sq
           router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': loading}").nav__radio-btn
           router-link(:to="{name: 'Shop'}", v-if="!loading").nav__link Shop
           span(v-else).nav__link Loading
-        li
+        li.cw-grid__sq
           router-link(:to="{name: 'Furniture'}").nav__radio-btn
           router-link(:to="{name: 'Furniture'}").nav__link Furniture
-        li
+        li.cw-grid__sq
           router-link(:to="{name: 'Projects'}").nav__radio-btn
           router-link(:to="{name: 'Projects'}").nav__link Projects
-        li
+        li.cw-grid__sq
           router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__radio-btn
           router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__link Info
         transition(name="fadeinplace")
-          li(v-show="!loading")
+          li.cw-grid__sq(v-show="!loading")
             a(target="_blank", rel="noopener").nav__radio-btn
             a(target="_blank", rel="noopener").nav__link Archive
         transition(name="fadeinplace")
-          li(v-show="!loading")
+          li.cw-grid__sq(v-show="!loading")
             router-link(:to="{hash: 'cart'}").nav__radio-btn
             router-link(:to="{hash: 'cart'}", v-show="!loading").nav__link Cart
       transition(name="fadeinplace")
-        ul(v-show="!loading")
-          li
+        ul.cw-grid(v-show="!loading")
+          li.cw-grid__sq
             router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': activeCategories.length === 0}").nav__radio-btn
             router-link(:to="{name: 'Shop'}").nav__link Everything
-          li
+          li.cw-grid__sq
             a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Home')) > -1}").nav__radio-btn
             a(@click="filter('Home')").nav__link Home
-          li
+          li.cw-grid__sq
             a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Body')) > -1}").nav__radio-btn
             a(@click="filter('Body')").nav__link Body
-          li
+          li.cw-grid__sq
             a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('One Off')) > -1}").nav__radio-btn
             a(@click="filter('One Off')").nav__link One Off
-          li
+          li.cw-grid__sq
             a(@click="filter('Partners')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Partners')) > -1}").nav__radio-btn
             a(@click="filter('Partners')").nav__link Partners
 </template>
@@ -88,7 +88,7 @@ export default {
       this.$router.replace({query: {categories: cats}})
     },
     onScroll: _throttle(function () {
-      this.condensed = window.pageYOffset > 24
+      this.condensed = window.pageYOffset > 2
     }, 100)
   },
   mounted () {
@@ -114,9 +114,9 @@ img{
 }
 
 nav{
-  padding:calc(25vh + #{$gutter}) $gutter 0;
+  padding:$gutter $gutter 0;
   position: relative;
-  margin-top: -25vh;
+  // margin-top: -25vh;
   transition:box-shadow $navCondenseDuration;
   .header--condensed &{
     box-shadow:0 0 8px black;
@@ -124,13 +124,10 @@ nav{
 
   > ul{
     list-style-type: none;
-    display: flex;
     text-align: left;
     > li{
       position: relative;
-      flex:0 0 12.5%;
       height:0;
-      padding-bottom:12.5%; // 6.25%;
       transition:padding-bottom $navCondenseDuration;
       
       .header--condensed &{
