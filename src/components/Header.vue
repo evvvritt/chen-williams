@@ -28,9 +28,9 @@
             router-link(:to="{hash: 'cart'}").nav__radio-btn
             router-link(:to="{hash: 'cart'}", v-show="!loading").nav__link Cart
       transition(name="fadeinplace")
-        ul.cw-grid(v-show="!loading")
+        ul.nav__subnav.cw-grid(v-show="!loading")
           li.cw-grid__sq
-            router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': activeCategories.length === 0}").nav__radio-btn
+            router-link(:to="{name: 'Shop'}").nav__radio-btn
             router-link(:to="{name: 'Shop'}").nav__link Everything
           li.cw-grid__sq
             a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Home')) > -1}").nav__radio-btn
@@ -42,8 +42,8 @@
             a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('One Off')) > -1}").nav__radio-btn
             a(@click="filter('One Off')").nav__link One Off
           li.cw-grid__sq
-            a(@click="filter('Partners')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebabCase('Partners')) > -1}").nav__radio-btn
-            a(@click="filter('Partners')").nav__link Partners
+            router-link(:to="{name: 'Partners'}").nav__radio-btn
+            router-link(:to="{name: 'Partners'}").nav__link Partners
 </template>
 
 <script>
@@ -183,7 +183,8 @@ nav{
     transition:none;
   }
   // radio bullet
-  .nav__primary-nav &.router-link-active, 
+  .nav__primary-nav &.router-link-active,
+  .nav__subnav &.router-link-exact-active,
   &.nav__radio-btn--selected{
     background-image:url(../assets/icons/radio-btn--selected.svg);
   }

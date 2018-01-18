@@ -18,6 +18,11 @@ export default new Router({
       component: Category
     },
     {
+      path: '/shop/partners',
+      name: 'Partners',
+      component: Category
+    },
+    {
       path: '/furniture',
       name: 'Furniture',
       component: Category
