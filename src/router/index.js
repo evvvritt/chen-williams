@@ -23,6 +23,7 @@ export default new Router({
           name: 'Product',
           component: Object,
           meta: {
+            isOverlay: true,
             closeTo: 'Shop'
           }
         }

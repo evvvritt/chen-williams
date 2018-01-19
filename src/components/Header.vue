@@ -3,15 +3,14 @@
     dot-grid(:rows="2", :overlay="false", :condensed="condensed")
     nav.nav
       ul.nav__primary-nav.cw-grid
-        li.cw-grid__item
-          router-link(to="/")
+        router-link(tag="li", to="/").cw-grid__item
+          a
             img(src='../assets/logo.svg')
         router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
           a
             radio-btn(:checked="loading")
-          a.nav__link 
-            span(v-if="!loading") Shop
-            span(v-else) Loading
+          a.nav__link(v-if="!loading") Shop
+          span.nav__link(v-else) Loading
           .nav__vein
         router-link(tag="li", :to="{name: 'Furniture'}").cw-grid__item
           a <radio-btn />
@@ -84,6 +83,12 @@ export default {
       return []
     }
   },
+  watch: {
+    '$route' (to, from) {
+      this.bindScroll(false)
+      if (this.$route.meta.isOverlay !== true) this.bindScroll()
+    }
+  },
   methods: {
     isActive (filter) {
       if (!filter) return false
@@ -108,13 +113,17 @@ export default {
     },
     onScroll: _throttle(function () {
       this.condensed = window.pageYOffset > 2
-    }, 100)
+    }, 100),
+    bindScroll (bind = true) {
+      if (!bind) return window.removeEventListener('scroll', this.onScroll)
+      return window.addEventListener('scroll', this.onScroll)
+    }
   },
   mounted () {
-    window.addEventListener('scroll', this.onScroll)
+    this.bindScroll()
   },
   destroyed () {
-    window.removeEventListener('scroll', this.onScroll)
+    this.bindScroll(false)
   }
 }
 </script>
@@ -127,8 +136,6 @@ export default {
   padding-bottom: 1px;
   backdrop-filter:blur(10px);
 }
-
-
 
 .nav{
   padding:calc(25vh + #{$gutter}) $gutter 0;
