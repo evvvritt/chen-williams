@@ -1,0 +1,34 @@
+<template lang="pug">
+  .radio-btn(:class="{'radio-btn--checked': checked}")
+</template>
+
+<script>
+export default {
+  name: 'RadioBtn',
+  props: ['checked'],
+  data () {
+    return {
+
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../style/variables';
+
+.radio-btn{
+  cursor: pointer;
+  width:rem(16px);
+  height:rem(16px);
+  background-image:url(../assets/icons/radio-btn.svg);
+  background-size:contain;  
+  background-repeat:no-repeat;
+
+  .app:not(.app--loading) .router-link-exact-active &,
+  .app:not(.app--loading) .nav__primary-nav .router-link-active &,
+  &.radio-btn--checked{
+    background-image:url(../assets/icons/radio-btn--selected.svg);
+  }
+}
+</style>

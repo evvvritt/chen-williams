@@ -2,7 +2,6 @@
   #app.app(:class="{'app--loading': loading}")
     app-header.app__header(:loading="loading")
     .app__body
-      dot-grid
       router-view(:loading="loading")
 </template>
 
@@ -70,6 +69,10 @@ h1,h2,h3,h4,h5,h6,small{
   .left-align{
     text-align: left;
   }
+
+  .is-overlay{
+    top:0; left:0; right:0; bottom:0;
+  }
 }
 
 .app__header{
@@ -80,9 +83,9 @@ h1,h2,h3,h4,h5,h6,small{
 }
 
 .app__body{
-  position: relative;
-  z-index:1;
-  min-height:200vh;
+  // position: relative;
+  // z-index:1;
+  min-height:100vh;
 }
 
 // transitions
@@ -94,6 +97,15 @@ h1,h2,h3,h4,h5,h6,small{
   }
   .fadeinplace-enter,
   .fadeinplace-leave-to{
+    opacity:0;
+  }
+
+  .overlay-enter-active,
+  .overlay-leave-active{
+    transition: opacity 200ms;
+  }
+  .overlay-enter,
+  .overlay-leave-to{
     opacity:0;
   }
 }

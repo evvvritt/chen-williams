@@ -1,9 +1,12 @@
 <template lang="pug">
   .category.left-align
+    transition(name="overlay")
+      router-view
+    background
     transition(name="fadeinplace")
-      div(v-show="!loading")
-        section
-          dot-grid(:overlay="true", scheme="category", :rows="3", :padless="true")
+      main-content
+        .category__items(v-show="!loading")
+          background(:overlay="true", scheme="category", :rows="3", :padless="true")
           item(title="Handle", price="20")
             img(src="../demo/A1_01.jpg")
           item(title="Pen & Holder", price="60")
@@ -23,14 +26,16 @@
 </template>
 
 <script>
-import DotGrid from '@/components/DotGrid'
+import Background from '@/components/DotGrid'
+import MainContent from '@/components/MainBody'
 import Item from '@/components/CategoryItem'
 export default {
   name: 'Category',
   props: ['loading'],
   components: {
+    MainContent,
     Item,
-    DotGrid
+    Background
   },
   data () {
     return {
@@ -44,17 +49,13 @@ export default {
 @import '../style/variables';
 
 .category{
+  position: relative;
   padding:$gutter;
-  > div{
-    padding-top: 20%;
-    @media (min-width:769px) {
-      padding-top: calc(100% / 9 * 2);
-    }
-    > section{
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-    }
+  min-height:100vh;
+  .category__items{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 </style>

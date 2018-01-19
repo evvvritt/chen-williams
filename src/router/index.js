@@ -21,7 +21,10 @@ export default new Router({
         {
           path: ':slug',
           name: 'Product',
-          component: Object
+          component: Object,
+          meta: {
+            closeTo: 'Shop'
+          }
         }
       ]
     },

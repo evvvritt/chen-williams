@@ -1,72 +1,80 @@
 <template lang="pug">
-  header(:class="{'header--condensed': condensed}")
+  header.app-header(:class="{'app-header--condensed': condensed}")
     dot-grid(:rows="2", :overlay="false", :condensed="condensed")
-    nav
+    nav.nav
       ul.nav__primary-nav.cw-grid
         li.cw-grid__item
           router-link(to="/")
             img(src='../assets/logo.svg')
-        li.cw-grid__item
-          router-link(:to="{name: 'Shop'}", :class="{'nav__radio-btn--selected': loading}").nav__radio-btn
-          router-link(:to="{name: 'Shop'}", v-if="!loading").nav__link Shop
-          span(v-else).nav__link Loading
+        router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
+          a
+            radio-btn(:checked="loading")
+          a.nav__link 
+            span(v-if="!loading") Shop
+            span(v-else) Loading
           .nav__vein
-        li.cw-grid__item
-          router-link(:to="{name: 'Furniture'}").nav__radio-btn
-          router-link(:to="{name: 'Furniture'}").nav__link Furniture
+        router-link(tag="li", :to="{name: 'Furniture'}").cw-grid__item
+          a <radio-btn />
+          a.nav__link Furniture
           .nav__vein
-        li.cw-grid__item
-          router-link(:to="{name: 'Projects'}").nav__radio-btn
-          router-link(:to="{name: 'Projects'}").nav__link Projects
+        router-link(tag="li", :to="{name: 'Projects'}").cw-grid__item
+          a <radio-btn />
+          a.nav__link Projects
           .nav__vein
-        li.cw-grid__item
-          router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__radio-btn
-          router-link(:to="{name: 'Page', params: {slug: 'info'}}").nav__link Info
+        router-link(tag="li", :to="{name: 'Page', params: {slug: 'info'}}").cw-grid__item
+          a <radio-btn />
+          a.nav__link Info
         transition(name="fadeinplace")
           li.cw-grid__item(v-show="!loading")
-            a(target="_blank", rel="noopener").nav__radio-btn
+            a(target="_blank", rel="noopener") <radio-btn />
             a(target="_blank", rel="noopener").nav__link Archive
         transition(name="fadeinplace")
-          li.cw-grid__item(v-show="!loading")
-            router-link(:to="{hash: 'cart'}").nav__radio-btn
-            router-link(:to="{hash: 'cart'}", v-show="!loading").nav__link Cart
+          router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
+            a <radio-btn />
+            a(v-show="!loading").nav__link Cart
+      //- shop nav
       transition(name="fadeinplace")
         ul.nav__subnav.cw-grid(v-show="!loading")
-          li.cw-grid__item
-            router-link(:to="{name: 'Shop'}").nav__radio-btn
-            router-link(:to="{name: 'Shop'}").nav__link Everything
+          router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
+            a <radio-btn />
+            a.nav__link Everything
             .nav__vein
           li.cw-grid__item
-            a(@click="filter('Home')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('Home')) > -1}").nav__radio-btn
+            a(@click="filter('Home')")
+              radio-btn(:checked="isActive('Home')")
             a(@click="filter('Home')").nav__link Home
             .nav__vein
           li.cw-grid__item
-            a(@click="filter('Body')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('Body')) > -1}").nav__radio-btn
+            a(@click="filter('Body')")
+              radio-btn(:checked="isActive('Body')")
             a(@click="filter('Body')").nav__link Body
             .nav__vein
           li.cw-grid__item
-            a(@click="filter('One Off')", :class="{'nav__radio-btn--selected': activeCategories.indexOf(kebab('One Off')) > -1}").nav__radio-btn
+            a(@click="filter('One Off')")
+              radio-btn(:checked="isActive('One Off')")
             a(@click="filter('One Off')").nav__link One Off
             .nav__vein
           li.cw-grid__item
-            router-link(:to="{name: 'Partners'}").nav__radio-btn
+            router-link(:to="{name: 'Partners'}")
+              radio-btn
             router-link(:to="{name: 'Partners'}").nav__link Partners
 </template>
 
 <script>
 import DotGrid from '@/components/DotGrid'
+import RadioBtn from '@/components/RadioBtn'
 import _kebab from 'lodash/kebabCase'
 import _throttle from 'lodash/throttle'
 export default {
   name: 'Header',
   props: ['loading'],
   components: {
-    DotGrid
+    DotGrid,
+    RadioBtn
   },
   data () {
     return {
-      condensed: false,
-      kebab: _kebab
+      condensed: false
     }
   },
   computed: {
@@ -77,6 +85,10 @@ export default {
     }
   },
   methods: {
+    isActive (filter) {
+      if (!filter) return false
+      return this.activeCategories.indexOf(_kebab(filter)) > -1
+    },
     filter (category) {
       if (!category) return false
       const cat = _kebab(category)
@@ -107,26 +119,23 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/variables';
 
-header{
+.app-header{
   background:rgba($white, .8);
   padding-bottom: 1px;
   backdrop-filter:blur(10px);
 }
 
-img{
-  width:50%;
-  transform:translateX(rem(-6px)) translateY(rem(-6px))
-}
 
-nav{
+
+.nav{
   padding:calc(25vh + #{$gutter}) $gutter 0;
   position: relative;
   margin-top: -25vh;
   transition:box-shadow $navCondenseDuration;
-  .header--condensed &{
+  .app-header--condensed &{
     box-shadow:0 0 8px black;
   }
 
@@ -137,8 +146,13 @@ nav{
       position: relative;
       height:0;
       transition:padding-bottom $navCondenseDuration;
+
+      img{
+        width:50%;
+        transform:translateX(rem(-6px)) translateY(rem(-6px))
+      }
       
-      .header--condensed &{
+      .app-header--condensed &{
         padding-bottom:6.5%;
       }
       
@@ -146,19 +160,19 @@ nav{
         $cycle: 5000ms;
         $steps: 4;
         $pace: ($cycle/2/$steps);
-        &:nth-child(2) .nav__radio-btn{
+        &:nth-child(2) .radio-btn{
           opacity:0;
           animation:pulse_p $cycle 0s infinite;
         }
-        &:nth-child(3) .nav__radio-btn{
+        &:nth-child(3) .radio-btn{
           opacity:0;
           animation:pulse_p $cycle $pace infinite;
         }
-        &:nth-child(4) .nav__radio-btn{
+        &:nth-child(4) .radio-btn{
           opacity:0;
           animation:pulse_p $cycle $pace*2 infinite;
         }    
-        &:nth-child(5) .nav__radio-btn{
+        &:nth-child(5) .radio-btn{
           opacity:0;
           animation:pulse_p $cycle $pace*3 infinite;
         }    
@@ -168,6 +182,7 @@ nav{
 }
 
 .nav__link{
+  cursor: pointer;
   position: absolute;
   top: 1.25em; left:0;
   width:100%;
@@ -179,17 +194,17 @@ nav{
   }
 }
 
-.nav__radio-btn{
-  display:block;
+.nav .radio-btn{
+  // display:block;
   position: absolute;
   left: rem(-8px);
   top: rem(-8px);
-  width:rem(16px);
-  height:rem(16px);
+  // width:rem(16px);
+  // height:rem(16px);
   z-index:2;
-  background-image:url(../assets/icons/radio-btn.svg);
-  background-size:contain;  
-  background-repeat:no-repeat;
+  // background-image:url(../assets/icons/radio-btn.svg);
+  // background-size:contain;  
+  // background-repeat:no-repeat;
   transition: opacity $fadeDuration;
   .app--loading &{
     transition:none;
@@ -210,7 +225,7 @@ nav{
   position: absolute;
   z-index:-1;
   border-width:1px;
-  .nav__primary-nav .router-link-active + &{
+  .nav__primary-nav .router-link-active &{
     opacity:1;
     left:-1px;
     top:3.5em;
@@ -223,6 +238,9 @@ nav{
     left:16px;
     width:calc(100% - 32px);
     border-top-style: solid;
+  }
+  .app--loading &{
+    opacity:0 !important;
   }
 }
 

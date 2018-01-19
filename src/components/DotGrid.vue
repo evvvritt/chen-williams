@@ -137,6 +137,7 @@ export default {
     overflow:hidden;
     z-index:-1;
     padding:$gutter;
+    pointer-events:none;  
     
     &.cw-grid--padless{
       padding:0;
@@ -146,7 +147,6 @@ export default {
     &.cw-grid--overlay{
       @supports ((pointer-events:none)) {
         z-index:1000;
-        pointer-events:none;  
       }
     }
 
