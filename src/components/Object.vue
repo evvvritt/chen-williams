@@ -2,7 +2,8 @@
   article.object.is-overlay
     .object__body
       background
-      header
+      header.app-header(:class="{'app-header--condensed': condensed}")
+        background(:rows="2", :overlay="false", :condensed="condensed")
         nav.nav
           ul.cw-grid
             li.cw-grid__item
@@ -42,6 +43,8 @@
 import Background from '@/components/DotGrid'
 import MainContent from '@/components/MainBody'
 import RadioBtn from '@/components/RadioBtn'
+import _throttle from 'lodash/throttle'
+import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
 export default {
   name: 'Object',
   components: {
@@ -51,13 +54,25 @@ export default {
   },
   data () {
     return {
-
+      condensed: false
     }
   },
   computed: {
     closeTo () {
       return this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
     }
+  },
+  methods: {
+    onScroll: _throttle(function () {
+      this.condensed = this.$el.scrollTop > 2
+    }, 100)
+  },
+  mounted () {
+    scrollSnapPolyfill()
+    this.$el.addEventListener('scroll', this.onScroll)
+  },
+  destroyed () {
+    this.$el.removeEventListener('scroll', this.onScroll)
   }
 }
 </script>
@@ -79,8 +94,8 @@ export default {
   padding:$gutter;
 }
 
-header{
-  position: absolute;
+.app-header{
+  position: fixed;
   top:0; left:0;
   width:100%;
 }
@@ -98,13 +113,13 @@ header{
 .object__slideshow{
   overflow:auto;
   overflow-y:hidden;
-  // scroll-snap-type: mandatory;
+  scroll-snap-type: proximity;
   > div{
     width:auto;
     white-space:nowrap;
   }
   figure{
-    // scroll-snap-align: start;
+    scroll-snap-align: start;
     display: inline-block;
     width:calc(100%/6 * 5);
   }
