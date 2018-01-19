@@ -49,6 +49,7 @@ h1,h2,h3,h4,h5,h6,small{
 }
 
 .app{
+  font-size:$basefont;
   font-family: 'Plain', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -72,6 +73,10 @@ h1,h2,h3,h4,h5,h6,small{
 
   .is-overlay{
     top:0; left:0; right:0; bottom:0;
+  }
+
+  .text-pad{
+    padding:10px 5px;
   }
 }
 

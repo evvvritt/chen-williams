@@ -54,6 +54,7 @@ export default {
   min-height:100vh;
   .category__items{
     position: relative;
+    z-index:1;
     display: flex;
     flex-wrap: wrap;
   }

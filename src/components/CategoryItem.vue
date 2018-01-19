@@ -3,8 +3,8 @@
     router-link(:to="{name: 'Product', params: {slug: kebab(title)}}")
       section
         header
-          h2(v-html="title")
-          small(v-if="price && !unavailable", v-html="'$' + price")
+          h2.text-pad(v-html="title")
+          small.text-pad(v-if="price && !unavailable", v-html="'$' + price")
         figure
           slot
 </template>
@@ -54,11 +54,9 @@ article{
     display: flex;
     z-index: 2;
     h2{
-      padding:1em;
       flex:0 0 calc(100% * 2/3);
     }
     small{
-      padding:1em 0;
       flex:0 0 calc(100% * 1/3);
     }
   }
