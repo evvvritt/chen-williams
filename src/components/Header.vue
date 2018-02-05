@@ -199,7 +199,7 @@ export default {
   cursor: pointer;
   position: absolute;
   top: 0; left:-0.5em;
-  padding: 1.25em 0.5em 0;
+  padding: 1.15em 0.5em 0;
   transition:opacity $fadeDuration;
   z-index:1;
   .app--loading &:not(span){
