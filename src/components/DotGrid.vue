@@ -116,17 +116,17 @@ export default {
     }
   }
   // default scheme
-  @include grid-change(769px, 9);
-  @include grid-change(1441px, 12);
-  @include grid-change(1900px, 15);
+  @include grid-change($bkpt-grid-9, 9);
+  @include grid-change($bkpt-grid-12, 12);
+  @include grid-change($bkpt-grid-15, 15);
   // category scheme
   &[data-grid-scheme="category"]{
     > .cw-grid__item{
       flex:1 0 100%;
     }
-    @include grid-change(769px, 3);
-    @include grid-change(1441, 4);
-    @include grid-change(1900px, 5);
+    @include grid-change($bkpt-grid-9, 3);
+    @include grid-change($bkpt-grid-12, 4);
+    @include grid-change($bkpt-grid-15, 5);
   }
 
   &.cw-grid--background{
@@ -143,17 +143,28 @@ export default {
       padding:0;
     }
 
-    // overlay if pointer-events supported
+    // set as overlay if can disable pointer
     &.cw-grid--overlay{
       @supports ((pointer-events:none)) {
         z-index:1000;
       }
     }
+  }
 
-    // condensed
-    &.cw-grid--condensed{
-      div{
-        padding-bottom: 6.5%;
+  // condensed
+  &.cw-grid--condensed{
+    .cw-grid__item{
+      @media (min-width:$bkpt-grid-9) {
+        padding-bottom: calc(100%/9 * 3/4); // 1.5
+      }
+      @media (min-width:1100px) {
+        padding-bottom: calc(100%/9 * 1/2);
+      }
+      @media ($bkpt-grid-12) {
+        padding-bottom: calc(100%/12 * 1/2);
+      }
+      @media ($bkpt-grid-15) {
+        padding-bottom: calc(100%/15 * 1/2);
       }
     }
   }

@@ -2,7 +2,7 @@
   header.app-header(:class="{'app-header--condensed': condensed}")
     dot-grid(:rows="2", :overlay="false", :condensed="condensed")
     nav.nav
-      ul.nav__primary-nav.cw-grid
+      ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
         router-link(tag="li", to="/").cw-grid__item
           a
             img(src='../assets/logo.svg')
@@ -33,7 +33,7 @@
             a <radio-btn />
       //- shop nav
       transition(name="fadeinplace")
-        ul.nav__subnav.cw-grid(v-show="!loading")
+        ul.nav__subnav.cw-grid(v-show="!loading", :class="{'cw-grid--condensed': condensed}")
           router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
             a.nav__link Everything
             a <radio-btn />
@@ -164,7 +164,6 @@ export default {
       }
       
       .app-header--condensed &{
-        padding-bottom:5%; // 6.5%;
         img{
           transform:scale(0.66,0.66);
         }
@@ -242,9 +241,9 @@ export default {
   .nav__primary-nav .router-link-active &{
     opacity:1;
     left:-1px;
-    top:3.5em;
+    top:3em;
     border-left-style:solid;
-    height:calc(100% - 3.5em - 16px);
+    height:calc(100% - 3em - 16px);
   }
   .nav__subnav &{
     opacity:1;
