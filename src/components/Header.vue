@@ -143,7 +143,7 @@ export default {
   margin-top: -25vh;
   transition:box-shadow $navCondenseDuration;
   .app-header--condensed &{
-    box-shadow:0 0 8px black;
+    box-shadow: 0 0 50px -20px #000000;
   }
 
   > ul{
@@ -156,11 +156,18 @@ export default {
 
       img{
         width:50%;
-        transform:translateX(rem(-6px)) translateY(rem(-6px))
+        position: absolute;
+        top:rem(-6px); left:rem(-6px);
+        // transform:translateX(rem(-6px)) translateY(rem(-6px));
+        transition: transform $navCondenseDuration;
+        transform-origin:top left;
       }
       
       .app-header--condensed &{
-        padding-bottom:6.5%;
+        padding-bottom:5%; // 6.5%;
+        img{
+          transform:scale(0.66,0.66);
+        }
       }
       
       .app--loading &{

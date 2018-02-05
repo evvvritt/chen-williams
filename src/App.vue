@@ -76,7 +76,7 @@ h1,h2,h3,h4,h5,h6,small{
   }
 
   .text-pad{
-    padding:10px 5px;
+    padding:8px 5px;
   }
 }
 
