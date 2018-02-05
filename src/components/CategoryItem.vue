@@ -62,7 +62,7 @@ article{
   }
 
   figure{
-    $offset: 2%;
+    $offset: 3%;
     width:100% + $offset;
     height:100% + $offset;
     top:-1 * $offset;
