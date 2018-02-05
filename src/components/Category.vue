@@ -4,7 +4,7 @@
       router-view
     background
     transition(name="fadeinplace")
-      main-content
+      .pt-2rows
         .category__items(v-show="!loading")
           background(:overlay="true", scheme="category", :rows="3", :padless="true")
           item(title="Handle", price="20")

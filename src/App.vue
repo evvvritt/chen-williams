@@ -78,6 +78,32 @@ h1,h2,h3,h4,h5,h6,small{
   .text-pad{
     padding:8px 5px;
   }
+
+  .pt-1row{
+    padding-top: 20%;
+    @media (min-width:769px) {
+      padding-top: calc(100% / 9);
+    }
+    @media (min-width:1441px) {
+      padding-top: calc(100% / 12);
+    }
+    @media (min-width:1900px) {
+      padding-top: calc(100% / 15);
+    }
+  }
+
+  .pt-2rows{
+    padding-top:20%; // 1 row on mobile
+    @media (min-width:769px) {
+      padding-top: calc(100% / 9 * 2);
+    }
+    @media (min-width:1441px) {
+      padding-top: calc(100% / 12 * 2);
+    }
+    @media (min-width:1900px) {
+      padding-top: calc(100% / 15 * 2);
+    }
+  }
 }
 
 .app__header{

@@ -2,18 +2,18 @@
   article.object.is-overlay
     .object__body
       background
-      header.app-header(:class="{'app-header--condensed': condensed}")
-        background(:rows="2", :overlay="false", :condensed="condensed")
+      header.app-header
+        //- background(:rows="2", :overlay="false")
         nav.nav
           ul.cw-grid
             li.cw-grid__item
               router-link(to="/")
                 img(src='../assets/logo.svg')
             li.cw-grid__item
+              router-link(:to="closeTo").nav__link Close
               router-link(:to="closeTo")
                 radio-btn
-              router-link(:to="closeTo").nav__link Close
-      main-content
+      .object__main.pt-1row
         .object__slideshow
           div
             figure
@@ -41,38 +41,22 @@
 
 <script>
 import Background from '@/components/DotGrid'
-import MainContent from '@/components/MainBody'
+// import MainContent from '@/components/MainBody'
 import RadioBtn from '@/components/RadioBtn'
-import _throttle from 'lodash/throttle'
 import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
 export default {
   name: 'Object',
   components: {
     Background,
-    MainContent,
     RadioBtn
-  },
-  data () {
-    return {
-      condensed: false
-    }
   },
   computed: {
     closeTo () {
       return this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
     }
   },
-  methods: {
-    onScroll: _throttle(function () {
-      this.condensed = this.$el.scrollTop > 2
-    }, 100)
-  },
   mounted () {
     scrollSnapPolyfill()
-    this.$el.addEventListener('scroll', this.onScroll)
-  },
-  destroyed () {
-    this.$el.removeEventListener('scroll', this.onScroll)
   }
 }
 </script>
@@ -88,26 +72,66 @@ export default {
   overflow-y:auto;
   z-index: $z-overlay;
   background:$white;
+  .app-header{
+    position: absolute;
+    background:transparent;
+  }
 }
 .object__body{
   position: relative;
   padding:$gutter;
+  min-height:100vh;
+}
+
+.object__main{
+  display: flex;
+  flex-wrap: wrap;
+  @media (min-width:769px) {
+    flex-wrap: no-wrap;
+  }
+}
+// column widths
+.object__slideshow{
+  flex:0 0 calc(100%/5 * 6);
+  figure{
+    width:calc(100%/6 * 5);
+  }
+  @media (min-width:769px) {
+    flex:0 0 calc(100%/9 * 5);
+    figure{
+      width:calc(100%/5 * 4);
+    }
+  }
+  @media (min-width:1441px) {
+    flex:0 0 calc(100%/12 * 8);
+    figure{
+      width:calc(100%/8 * 7);
+    }
+  }
+  @media (min-width:1900px) {
+    flex:0 0 calc(100%/15 * 9);
+    figure{
+      width:calc(100%/9 * 8);
+    }
+  }
+}
+.object__details{
+  flex:0 0 100%;
+  @media (min-width:769px) {
+    flex:0 0 calc(100%/9 * 4);
+  }
+  @media (min-width:1441px) {
+    flex:0 0 calc(100%/12 * 4);
+  }
+  @media (min-width:1900px) {
+    flex:0 0 calc(100%/15 * 6);
+  }
 }
 
 .app-header{
   position: fixed;
   top:0; left:0;
   width:100%;
-}
-
-.main-content{
-  display: flex;
-  .object__slideshow{
-    flex:0 0 calc(100%/9 * 6);
-  }
-  .object__details{
-    flex:0 0 calc(100%/9 * 3);
-  }
 }
 
 .object__slideshow{
@@ -121,7 +145,9 @@ export default {
   figure{
     scroll-snap-align: start;
     display: inline-block;
-    width:calc(100%/6 * 5);
+    img{
+      width:100%;
+    }
   }
 }
 </style>
