@@ -27,7 +27,9 @@ export default {
 
   .app:not(.app--loading) .router-link-exact-active &,
   .app:not(.app--loading) .nav__primary-nav .router-link-active &,
-  &.radio-btn--checked{
+  &.radio-btn--checked,
+  .app:not(.app--loading) &:hover,
+  .app:not(.app--loading) .nav__link:hover + a > &{
     background-image:url(../assets/icons/radio-btn--selected.svg);
   }
 }
