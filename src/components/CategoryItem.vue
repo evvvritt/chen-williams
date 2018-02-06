@@ -3,8 +3,8 @@
     router-link(:to="{name: 'Product', params: {slug: kebab(title)}}")
       section
         header
-          h2.text-pad(v-html="title")
-          small.text-pad(v-if="price && !unavailable", v-html="'$' + price")
+          h2.p-text(v-html="title")
+          small.p-text(v-if="price && !unavailable", v-html="'$' + price")
         figure
           slot
 </template>

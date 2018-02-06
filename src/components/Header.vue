@@ -20,7 +20,7 @@
           a.nav__link Projects
           a <radio-btn />
           .nav__vein
-        router-link(tag="li", :to="{name: 'Page', params: {slug: 'info'}}").cw-grid__item
+        router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
           a.nav__link Info
           a <radio-btn />
         transition(name="fadeinplace")
@@ -85,8 +85,9 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.bindScroll(false)
-      if (this.$route.meta.isOverlay !== true) this.bindScroll()
+      this.bindScroll(false) // unbind
+      const isOverlay = to.hash === '#info' || to.hash === '#cart' || this.$route.meta.isOverlay
+      this.$nextTick(() => this.bindScroll(!isOverlay)) // bind if not overlay
     }
   },
   methods: {
@@ -132,7 +133,6 @@ export default {
 @import '../style/variables';
 
 .app-header{
-  background:rgba($white, .8);
   padding-bottom: 1px;
   backdrop-filter:blur(10px);
 }

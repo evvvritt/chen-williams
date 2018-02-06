@@ -1,18 +1,8 @@
 <template lang="pug">
-  article.object.is-overlay
+  article.object.overlay
     .object__body
       background
-      header.app-header
-        //- background(:rows="2", :overlay="false")
-        nav.nav
-          ul.cw-grid
-            li.cw-grid__item
-              router-link(to="/")
-                img(src='../assets/logo.svg')
-            li.cw-grid__item
-              router-link(:to="closeTo").nav__link Close
-              router-link(:to="closeTo")
-                radio-btn
+      overlay-header(@close="close")
       .object__main.pt-1row
         .object__slideshow
           div
@@ -22,7 +12,7 @@
               img(src="../demo/CK-GEM_Drum_P03.jpg")
             figure
               img(src="../demo/CK-GEM_Pen_P01.jpg")
-        .object__details.text-pad
+        .object__details.p-text
           | Name
           br
           | Design Year
@@ -41,18 +31,20 @@
 
 <script>
 import Background from '@/components/DotGrid'
-// import MainContent from '@/components/MainBody'
+import OverlayHeader from '@/components/OverlayHeader'
 import RadioBtn from '@/components/RadioBtn'
 import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
 export default {
   name: 'Object',
   components: {
     Background,
+    OverlayHeader,
     RadioBtn
   },
-  computed: {
-    closeTo () {
-      return this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
+  methods: {
+    close () {
+      const rt = this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
+      this.$router.push(rt)
     }
   },
   mounted () {

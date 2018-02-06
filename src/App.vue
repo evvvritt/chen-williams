@@ -1,22 +1,38 @@
 <template lang="pug">
   #app.app(:class="{'app--loading': loading}")
-    app-header.app__header(:loading="loading")
-    .app__body
-      router-view(:loading="loading")
+    .app__body(:class="{'app__body--blurred': blurBody}")
+      app-header#app-header.fixed.top-0.left-0.w-100.z-nav(:loading="loading")
+      .app__body__main
+        router-view(:loading="loading")
+    transition(name="overlay")
+      info-page(v-show="showInfo")
 </template>
 
 <script>
 import AppHeader from '@/components/Header'
 import DotGrid from '@/components/DotGrid'
+import InfoPage from '@/components/Info'
 export default {
   name: 'app',
   components: {
     AppHeader,
-    DotGrid
+    DotGrid,
+    InfoPage
   },
   data () {
     return {
       loading: true
+    }
+  },
+  computed: {
+    showInfo () {
+      return this.$route.hash === '#info' && !this.loading
+    },
+    showCart () {
+      return this.$route.hash === '#cart' && !this.loading
+    },
+    blurBody () {
+      return this.showInfo || this.showCart
     }
   },
   mounted () {
@@ -27,6 +43,7 @@ export default {
 
 <style lang="scss">
 @import './style/variables';
+@import './style/atomic';
 
 *{
   &, &:after, &:before{
@@ -66,54 +83,22 @@ h1,h2,h3,h4,h5,h6,small{
   img{
     max-width:100%;
   }
-
-  .left-align{
-    text-align: left;
-  }
-
-  .is-overlay{
-    top:0; left:0; right:0; bottom:0;
-  }
-
-  .text-pad{
-    padding:8px 5px;
-  }
-
-  .pt-1row{
-    padding-top: 20%;
-    @media (min-width:769px) {
-      padding-top: calc(100% / 9);
-    }
-    @media (min-width:1441px) {
-      padding-top: calc(100% / 12);
-    }
-    @media (min-width:1900px) {
-      padding-top: calc(100% / 15);
-    }
-  }
-
-  .pt-2rows{
-    padding-top:20%; // 1 row on mobile
-    @media (min-width:769px) {
-      padding-top: calc(100% / 9 * 2);
-    }
-    @media (min-width:1441px) {
-      padding-top: calc(100% / 12 * 2);
-    }
-    @media (min-width:1900px) {
-      padding-top: calc(100% / 15 * 2);
-    }
-  }
-}
-
-.app__header{
-  position: fixed;
-  top:0; left:0;
-  width:100%;
-  z-index:10;
 }
 
 .app__body{
+  @supports not (backdrop-filter:blur(10px)) {
+    transition: filter $fadeDuration/2;
+    &.app__body--blurred{
+      filter:blur(10px);
+    }  
+  }
+}
+
+#app-header{
+  background:rgba($white, .8);
+}
+
+.app__body__main{
   // position: relative;
   // z-index:1;
   min-height:100vh;

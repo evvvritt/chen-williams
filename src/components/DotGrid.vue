@@ -149,6 +149,11 @@ export default {
         z-index:1000;
       }
     }
+
+    // hide on body blur because of Chrome bug
+    .app__body--blurred &{
+      display:none;
+    }
   }
 
   // condensed

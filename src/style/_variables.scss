@@ -14,10 +14,27 @@ $gutter: 2rem;
 
 $black: black;
 $white: white;
+$ltgray: #ccc;
 
 $z-overlay: 50;
 
 $fadeDuration: 800ms;
 $navCondenseDuration: 500ms;
+
+@mixin grid9 {
+  @media (min-width:$bkpt-grid-9){
+    @content;
+  }
+}
+@mixin grid12 {
+  @media (min-width:$bkpt-grid-12){
+    @content;
+  }
+}
+@mixin grid15 {
+  @media (min-width:$bkpt-grid-15){
+    @content;
+  }
+}
 
 @import 'helpers';
