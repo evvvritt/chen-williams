@@ -1,6 +1,6 @@
 <template lang="pug">
-  article.fixed.overlay.z-overlay.p2
-    overlay-header.absolute.top-0.left-0.w-100
+  article.fixed.overlay.z-overlay.p2.bg-gray.backdrop-blur
+    overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})")
     section.pt-2rows.sm-flex.justify-between.left-align
       div.item-fill
         div Chen Chen & Kai Williams...
@@ -18,10 +18,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../style/variables';
-article{
-  background:rgba($ltgray, .2);
-  @supports (backdrop-filter:blur(10px)){
-    backdrop-filter:blur(10px);
-  }
-}
 </style>

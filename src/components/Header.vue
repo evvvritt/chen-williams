@@ -134,7 +134,6 @@ export default {
 
 .app-header{
   padding-bottom: 1px;
-  backdrop-filter:blur(10px);
 }
 
 .nav{

@@ -26,8 +26,20 @@
   width:100%;
 }
 
+.min-h-100{
+  min-height: 100vh;
+}
+
 .bg-white{
   background:$white;
+}
+.bg-gray{
+  background:rgba($ltgray, .2);
+}
+.backdrop-blur{
+  @supports (backdrop-filter:blur(10px)){
+    backdrop-filter:blur(10px);
+  }
 }
 
 .left-align{

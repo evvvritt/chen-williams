@@ -1,12 +1,12 @@
 <template lang="pug">
   #app.app(:class="{'app--loading': loading}")
     .app__body(:class="{'app__body--blurred': blurBody}")
-      app-header#app-header.fixed.top-0.left-0.w-100.z-nav(:loading="loading")
+      app-header#app-header.fixed.top-0.left-0.w-100.z-nav.backdrop-blur(:loading="loading")
       .app__body__main
         router-view(:loading="loading")
-    transition(name="overlay")
-      info(v-show="showInfo")
-    transition(name="overlay")
+    transition(name="slideup")
+      info(v-if="showInfo")
+    transition(name="slideup")
       cart(v-show="showCart")
 </template>
 
@@ -100,6 +100,7 @@ h1,h2,h3,h4,h5,h6,small{
 
 #app-header{
   background:rgba($white, .8);
+  
 }
 
 .app__body__main{
@@ -127,6 +128,15 @@ h1,h2,h3,h4,h5,h6,small{
   .overlay-enter,
   .overlay-leave-to{
     opacity:0;
+  }
+
+  .slideup-enter-active,
+  .slideup-leave-active{
+    transition: transform 500ms;
+  }
+  .slideup-enter,
+  .slideup-leave-to{
+    transform:translateY(100%);
   }
 }
 </style>
