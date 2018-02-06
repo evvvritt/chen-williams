@@ -34,7 +34,7 @@
   background:$white;
 }
 .bg-gray{
-  background:rgba($ltgray, .2);
+  background:rgba($ltgray, .5);
 }
 .backdrop-blur{
   @supports (backdrop-filter:blur(10px)){

@@ -1,11 +1,14 @@
 <template lang="pug">
-  .radio-btn(:class="{'radio-btn--checked': checked}")
+  .radio-btn(:class="{'radio-btn--checked': checked}", :style="'background-color:' + fill")
 </template>
 
 <script>
 export default {
   name: 'RadioBtn',
-  props: ['checked'],
+  props: {
+    checked: { type: Boolean, default: false },
+    fill: { type: String, default: 'transparent' }
+  },
   data () {
     return {
 
@@ -24,6 +27,8 @@ export default {
   background-image:url(../assets/icons/radio-btn.svg);
   background-size:contain;  
   background-repeat:no-repeat;
+  overflow:hidden;
+  border-radius:100px;
 
   .app:not(.app--loading) .router-link-exact-active &,
   .app:not(.app--loading) .nav__primary-nav .router-link-active &,

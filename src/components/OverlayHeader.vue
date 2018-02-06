@@ -8,7 +8,7 @@
         li.cw-grid__item
           a(@click="$emit('close')").nav__link Close
           a(@click="$emit('close')")
-            radio-btn
+            radio-btn(fill="white")
 </template>
 
 <script>
