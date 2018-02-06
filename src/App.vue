@@ -5,19 +5,23 @@
       .app__body__main
         router-view(:loading="loading")
     transition(name="overlay")
-      info-page(v-show="showInfo")
+      info(v-show="showInfo")
+    transition(name="overlay")
+      cart(v-show="showCart")
 </template>
 
 <script>
 import AppHeader from '@/components/Header'
 import DotGrid from '@/components/DotGrid'
-import InfoPage from '@/components/Info'
+import Info from '@/components/Info'
+import Cart from '@/components/Cart'
 export default {
   name: 'app',
   components: {
     AppHeader,
     DotGrid,
-    InfoPage
+    Info,
+    Cart
   },
   data () {
     return {

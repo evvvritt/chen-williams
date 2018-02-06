@@ -1,8 +1,8 @@
 <template lang="pug">
   article.fixed.overlay.z-overlay.p2
     overlay-header.absolute.top-0.left-0.w-100
-    .pt-2rows.sm-flex.justify-between.left-align
-      section.item-fill
+    section.pt-2rows.sm-flex.justify-between.left-align
+      div.item-fill
         div Chen Chen & Kai Williams...
       aside.item-fill
         div GENERAL INQUIRIES<br>info@chen-williams.com
@@ -12,12 +12,7 @@
 import OverlayHeader from '@/components/OverlayHeader'
 export default {
   name: 'Info',
-  components: { OverlayHeader },
-  data () {
-    return {
-
-    }
-  }
+  components: { OverlayHeader }
 }
 </script>
 
