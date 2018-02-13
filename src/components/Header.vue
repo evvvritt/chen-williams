@@ -2,67 +2,70 @@
   header.app-header(:class="{'app-header--condensed': condensed}")
     dot-grid(:rows="2", :overlay="false", :condensed="condensed")
     nav.nav
-      ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
-        router-link(tag="li", to="/").cw-grid__item
-          a
-            img(src='../assets/logo.svg')
-        router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
-          a
-            span.nav__link(v-if="!loading") Shop
-            span.nav__link.nav__link--load-lbl(v-else) Loading
-            radio-btn(:checked="loading")
-          .nav__vein
-        router-link(tag="li", :to="{name: 'Furniture'}").cw-grid__item
-          a
-            span.nav__link Furniture
-            <radio-btn />
-          .nav__vein
-        router-link(tag="li", :to="{name: 'Projects'}").cw-grid__item
-          a
-            span.nav__link Projects
-            <radio-btn />
-          .nav__vein
-        router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
-          a
-            span.nav__link Info
-            <radio-btn />
-        transition(name="fadeinplace")
-          li.cw-grid__item(v-show="!loading")
-            a(target="_blank", rel="noopener")
-              span.nav__link Archive
-              <radio-btn />
-        transition(name="fadeinplace")
-          router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
-            a(v-show="!loading")
-              span.nav__link Cart
-              <radio-btn />
-      //- shop nav
-      transition(name="fadeinplace")
-        ul.nav__subnav.cw-grid(v-show="!loading", :class="{'cw-grid--condensed': condensed}")
-          router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
+      //- loading
+      template(v-if="loading")
+        ul.nav__primary-nav.cw-grid
+          router-link(tag="li", to="/").cw-grid__item
             a
-              span.nav__link Everything
-              <radio-btn />
-            .nav__vein
-          li.cw-grid__item
-            a(@click="filter('Home')")
-              span.nav__link Home
-              radio-btn(:checked="isActive('Home')")
-            .nav__vein
-          li.cw-grid__item
-            a(@click="filter('Body')")
-              span.nav__link Body
-              radio-btn(:checked="isActive('Body')")
-            .nav__vein
-          li.cw-grid__item
-            a(@click="filter('One Off')")
-              span.nav__link One Off
-              radio-btn(:checked="isActive('One Off')")
-            .nav__vein
-          li.cw-grid__item
-            router-link(:to="{name: 'Partners'}")
-              span.nav__link Partners
+              img(src='../assets/logo.svg')
+          li
+            span.nav__link Loading
+            radio-btn(:checked="true")
+          li <radio-btn/>
+          li <radio-btn/>
+          li <radio-btn/>
+      //- loaded
+      template(v-else)
+        ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
+          router-link(tag="li", to="/").cw-grid__item
+            a
+              img(src='../assets/logo.svg')
+          router-link(v-for="item in nav", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
+            a
+              span.nav__link Title
               radio-btn
+            .nav__vein
+          router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
+            a
+              span.nav__link Info
+              radio-btn
+          transition(name="fadeinplace")
+            li.cw-grid__item(v-show="!loading")
+              a(target="_blank", rel="noopener")
+                span.nav__link Archive
+                radio-btn
+          transition(name="fadeinplace")
+            router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
+              a(v-show="!loading")
+                span.nav__link Cart
+                radio-btn
+        //- shop nav
+        transition(name="fadeinplace")
+          ul.nav__subnav.cw-grid(v-show="!loading", :class="{'cw-grid--condensed': condensed}")
+            router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
+              a
+                span.nav__link Everything
+                radio-btn
+              .nav__vein
+            li.cw-grid__item
+              a(@click="filter('Home')")
+                span.nav__link Home
+                radio-btn(:checked="isActive('Home')")
+              .nav__vein
+            li.cw-grid__item
+              a(@click="filter('Body')")
+                span.nav__link Body
+                radio-btn(:checked="isActive('Body')")
+              .nav__vein
+            li.cw-grid__item
+              a(@click="filter('One Off')")
+                span.nav__link One Off
+                radio-btn(:checked="isActive('One Off')")
+              .nav__vein
+            li.cw-grid__item
+              router-link(:to="{name: 'Partners'}")
+                span.nav__link Partners
+                radio-btn
 </template>
 
 <script>
@@ -83,6 +86,9 @@ export default {
     }
   },
   computed: {
+    nav () {
+      return this.$store.state.site.nav
+    },
     activeCategories () {
       const cats = this.$route.query.categories
       if (cats) return cats.split(',')
@@ -206,10 +212,10 @@ export default {
   padding: 1.15em 0.5em 0;
   transition:opacity $fadeDuration;
   z-index:1;
-  .app--loading &:not(.nav__link--load-lbl){
-    opacity:0;
-    visibility:hidden;
-  }
+  // .app--loading &:not(.nav__link--load-lbl){
+    // opacity:0;
+    // visibility:hidden;
+  // }
 }
 
 .nav .radio-btn{
