@@ -17,23 +17,28 @@
       //- loaded
       template(v-else)
         ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
+          //- logo
           router-link(tag="li", to="/").cw-grid__item
             a
               img(src='../assets/logo.svg')
+          //- categories loop
           router-link(v-for="item in nav", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
             a
-              span.nav__link Title
+              span.nav__link {{item.primary.category_link.data.title | text}}
               radio-btn
             .nav__vein
+          //- info
           router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
             a
               span.nav__link Info
               radio-btn
+          //- archive
           transition(name="fadeinplace")
             li.cw-grid__item(v-show="!loading")
               a(target="_blank", rel="noopener")
                 span.nav__link Archive
                 radio-btn
+          //- cart
           transition(name="fadeinplace")
             router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
               a(v-show="!loading")

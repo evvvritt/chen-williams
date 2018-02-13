@@ -26,9 +26,12 @@ export default new Vuex.Store({
   actions: {
     getSite ({ commit, state }) {
       Prismic.getApi(state.prismicUrl).then(function (api) {
-        return api.getSingle('site')
+        return api.query(
+          Prismic.Predicates.at('document.type', 'site'),
+          { fetchLinks: ['category.title'] }
+        )
       }).then((resp) => {
-        commit('setSite', resp.data)
+        commit('setSite', resp.results[0].data)
       }, (err) => {
         console.error('Error: Get Site failed', err)
       })
