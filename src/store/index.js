@@ -37,7 +37,7 @@ export default new Vuex.Store({
         return api.query(
           Prismic.Predicates.at('document.type', 'object'),
           // Prismic.Predicates.at('my.object.category', id),
-          { pageSize: 100, fetch: ['object.title', 'object.thumbnail']},
+          { pageSize: 100, fetch: ['object.title', 'object.thumbnail'] }
         )
       }).then((resp) => {
         commit('loaded')
