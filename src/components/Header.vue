@@ -7,55 +7,61 @@
           a
             img(src='../assets/logo.svg')
         router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
-          a.nav__link(v-if="!loading") Shop
-          span.nav__link(v-else) Loading
           a
+            span.nav__link(v-if="!loading") Shop
+            span.nav__link.nav__link--load-lbl(v-else) Loading
             radio-btn(:checked="loading")
           .nav__vein
         router-link(tag="li", :to="{name: 'Furniture'}").cw-grid__item
-          a.nav__link Furniture
-          a <radio-btn />
+          a
+            span.nav__link Furniture
+            <radio-btn />
           .nav__vein
         router-link(tag="li", :to="{name: 'Projects'}").cw-grid__item
-          a.nav__link Projects
-          a <radio-btn />
+          a
+            span.nav__link Projects
+            <radio-btn />
           .nav__vein
         router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
-          a.nav__link Info
-          a <radio-btn />
+          a
+            span.nav__link Info
+            <radio-btn />
         transition(name="fadeinplace")
           li.cw-grid__item(v-show="!loading")
-            a(target="_blank", rel="noopener").nav__link Archive
-            a(target="_blank", rel="noopener") <radio-btn />
+            a(target="_blank", rel="noopener")
+              span.nav__link Archive
+              <radio-btn />
         transition(name="fadeinplace")
           router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
-            a(v-show="!loading").nav__link Cart
-            a <radio-btn />
+            a(v-show="!loading")
+              span.nav__link Cart
+              <radio-btn />
       //- shop nav
       transition(name="fadeinplace")
         ul.nav__subnav.cw-grid(v-show="!loading", :class="{'cw-grid--condensed': condensed}")
           router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
-            a.nav__link Everything
-            a <radio-btn />
+            a
+              span.nav__link Everything
+              <radio-btn />
             .nav__vein
           li.cw-grid__item
-            a(@click="filter('Home')").nav__link Home
             a(@click="filter('Home')")
+              span.nav__link Home
               radio-btn(:checked="isActive('Home')")
             .nav__vein
           li.cw-grid__item
-            a(@click="filter('Body')").nav__link Body
             a(@click="filter('Body')")
+              span.nav__link Body
               radio-btn(:checked="isActive('Body')")
             .nav__vein
           li.cw-grid__item
-            a(@click="filter('One Off')").nav__link One Off
             a(@click="filter('One Off')")
+              span.nav__link One Off
               radio-btn(:checked="isActive('One Off')")
             .nav__vein
           li.cw-grid__item
-            router-link(:to="{name: 'Partners'}").nav__link Partners
             router-link(:to="{name: 'Partners'}")
+              span.nav__link Partners
               radio-btn
 </template>
 
@@ -200,7 +206,7 @@ export default {
   padding: 1.15em 0.5em 0;
   transition:opacity $fadeDuration;
   z-index:1;
-  .app--loading &:not(span){
+  .app--loading &:not(.nav__link--load-lbl){
     opacity:0;
     visibility:hidden;
   }
