@@ -7,8 +7,7 @@
       .pt-2rows
         .category__items(v-show="!loading")
           background(:overlay="true", scheme="category", :rows="3", :padless="true")
-          item(v-for="object in category", :key="object.id" :title="object.data.title[0].text")
-            img(:src="object.data.thumbnail.url")
+          item(v-for="object in category", :key="object.id", :object="object")
           //- item(title="Pen & Holder", price="60")
             img(src="../demo/CK-GEM_Pen_P02.jpg")
             item(title="Copper Box", price="120")
@@ -57,8 +56,8 @@ export default {
   methods: {
     getCategory () {
       if (!this.site) return false
-      const cat = _find(this.site.nav, (item) => { return item.link.uid === this.catSlug })
-      if (cat) return this.$store.dispatch('getCategory', cat.link.id)
+      const cat = _find(this.site.nav, (item) => { return item.primary.category_link.uid === this.catSlug })
+      if (cat) return this.$store.dispatch('getCategory', cat.primary.category_link.id)
     }
   },
   created () {

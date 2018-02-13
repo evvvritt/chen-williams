@@ -1,24 +1,20 @@
 <template lang="pug">
-  article(:class="{'article--transparent': unavailable}")
-    router-link(:to="{name: 'Product', params: {slug: kebab(title)}}")
+  //-article(:class="{'article--transparent': unavailable}")
+  article
+    router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
       section
         header
-          h2.p-text(v-html="title")
-          small.p-text(v-if="price && !unavailable", v-html="'$' + price")
+          h2.p-text {{object.data.title | text}}
+          //- small.p-text(v-if="price && !unavailable", v-html="'$' + price")
+          small.p-text $0
         figure
-          slot
+          img(:src="object.data.thumbnail.url")
 </template>
 
 <script>
-import _kebab from 'lodash/kebabCase'
 export default {
   name: 'CategoryItem',
-  props: ['title', 'price', 'fit', 'unavailable'],
-  data () {
-    return {
-      kebab: _kebab
-    }
-  }
+  props: ['object']
 }
 </script>
 

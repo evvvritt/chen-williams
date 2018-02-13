@@ -40,16 +40,23 @@ export default {
     }
   },
   watch: {
-    site (site) {
-      if (site.nav && this.$route.name === 'Home') {
-        this.$router.push({name: 'Category', params: {category: site.nav[0].link.uid}})
-      }
+    site () {
+      this.redirect()
+    },
+    '$route' (to, from) {
+      if (to.name === 'Home') return this.redirect()
     }
   },
   methods: {
     ...mapActions([
       'getSite'
-    ])
+    ]),
+    redirect () {
+      if (this.site.nav && this.$route.name === 'Home') {
+        const slug = this.site.nav[0].primary.category_link.uid
+        this.$router.replace({name: 'Category', params: {catSlug: slug}})
+      }
+    }
   },
   created () {
     this.getSite()

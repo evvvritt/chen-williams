@@ -16,6 +16,7 @@
   "dependencies": {
     "css-scroll-snap-polyfill": "^0.1.2",
     "lodash": "^4.17.4",
+    "prismic-dom": "^2.0.6",
     "prismic-javascript": "^1.5.0-beta.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

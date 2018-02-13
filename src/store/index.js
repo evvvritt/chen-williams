@@ -9,7 +9,8 @@ export default new Vuex.Store({
     prismicUrl: process.env.PRISMIC,
     loading: true,
     site: null,
-    category: null
+    category: null,
+    object: null
   },
   mutations: {
     setSite (state, payload) {
