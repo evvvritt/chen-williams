@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     prismicUrl: process.env.PRISMIC,
+    loading: true,
     site: null,
     category: null
   },
@@ -16,25 +17,33 @@ export default new Vuex.Store({
     },
     setCategory (state, payload) {
       state.category = payload
+    },
+    loaded (state) {
+      state.loading = false
     }
   },
   actions: {
-    getSite (context) {
-      Prismic.getApi(context.state.prismicUrl).then(function (api) {
+    getSite ({ commit, state }) {
+      Prismic.getApi(state.prismicUrl).then(function (api) {
         return api.getSingle('site')
       }).then((resp) => {
-        context.commit('setSite', resp.data)
+        commit('setSite', resp.data)
       }, (err) => {
-        console.log('Error: Get Site failed', err)
+        console.error('Error: Get Site failed', err)
       })
     },
-    getCategory (context) {
-      Prismic.getApi(context.state.prismicUrl).then(function (api) {
-        return api.getSingle('site')
+    getCategory ({ commit, state }, id) {
+      Prismic.getApi(state.prismicUrl).then(function (api) {
+        return api.query(
+          Prismic.Predicates.at('document.type', 'object'),
+          // Prismic.Predicates.at('my.object.category', id),
+          { pageSize: 100, fetch: ['object.title', 'object.thumbnail']},
+        )
       }).then((resp) => {
-        context.commit('setSite', resp.data)
+        commit('loaded')
+        commit('setCategory', resp.results)
       }, (err) => {
-        console.log('Error: Get Site failed', err)
+        console.error('Error: Get Category failed', err)
       })
     }
   }

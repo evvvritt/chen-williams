@@ -11,12 +11,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/shop'
+      name: 'Home'
     },
     {
-      path: '/shop',
-      name: 'Shop',
+      path: '/:catSlug',
+      name: 'Category',
       component: Category,
+      props: true,
       children: [
         {
           path: ':slug',

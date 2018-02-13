@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import AppHeader from '@/components/Header'
 import DotGrid from '@/components/DotGrid'
 import Info from '@/components/Info'
@@ -24,12 +24,11 @@ export default {
     Info,
     Cart
   },
-  data () {
-    return {
-      loading: true
-    }
-  },
   computed: {
+    ...mapState([
+      'site',
+      'loading'
+    ]),
     showInfo () {
       return this.$route.hash === '#info' && !this.loading
     },
@@ -40,6 +39,13 @@ export default {
       return this.showInfo || this.showCart
     }
   },
+  watch: {
+    site (site) {
+      if (site.nav && this.$route.name === 'Home') {
+        this.$router.push({name: 'Category', params: {category: site.nav[0].link.uid}})
+      }
+    }
+  },
   methods: {
     ...mapActions([
       'getSite'
@@ -47,9 +53,6 @@ export default {
   },
   created () {
     this.getSite()
-  },
-  mounted () {
-    setTimeout(() => { this.loading = false }, 2500)
   }
 }
 </script>

@@ -26,21 +26,43 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Background from '@/components/DotGrid'
 import MainContent from '@/components/MainBody'
 import Item from '@/components/CategoryItem'
+import _find from 'lodash/find'
 export default {
   name: 'Category',
-  props: ['loading'],
+  props: ['catSlug'],
   components: {
     MainContent,
     Item,
     Background
   },
-  data () {
-    return {
-
+  computed: {
+    ...mapState([
+      'loading',
+      'category',
+      'site'
+    ])
+  },
+  watch: {
+    site () {
+      this.getCategory()
+    },
+    catSlug () {
+      this.getCategory()
     }
+  },
+  methods: {
+    getCategory () {
+      if (!this.site) return false
+      const cat = _find(this.site.nav, (item) => { return item.link.uid === this.catSlug })
+      if (cat) return this.$store.dispatch('getCategory', cat.link.id)
+    }
+  },
+  created () {
+    this.getCategory()
   }
 }
 </script>
