@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import AppHeader from '@/components/Header'
 import DotGrid from '@/components/DotGrid'
 import Info from '@/components/Info'
@@ -38,6 +39,14 @@ export default {
     blurBody () {
       return this.showInfo || this.showCart
     }
+  },
+  methods: {
+    ...mapActions([
+      'getSite'
+    ])
+  },
+  created () {
+    this.getSite()
   },
   mounted () {
     setTimeout(() => { this.loading = false }, 2500)
