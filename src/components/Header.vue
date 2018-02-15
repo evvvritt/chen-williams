@@ -22,7 +22,7 @@
             a
               img(src='../assets/logo.svg')
           //- categories loop
-          router-link(v-for="item in nav", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
+          router-link(v-for="(item, index) in nav", :key="index", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
             a
               span.nav__link {{item.primary.category_link.data.title | text}}
               radio-btn
@@ -44,39 +44,31 @@
               a(v-show="!loading")
                 span.nav__link Cart
                 radio-btn
-        //- shop nav
-        transition(name="fadeinplace")
-          ul.nav__subnav.cw-grid(v-show="!loading", :class="{'cw-grid--condensed': condensed}")
-            router-link(tag="li", :to="{name: 'Shop'}").cw-grid__item
-              a
-                span.nav__link Everything
-                radio-btn
-              .nav__vein
-            li.cw-grid__item
-              a(@click="filter('Home')")
-                span.nav__link Home
-                radio-btn(:checked="isActive('Home')")
-              .nav__vein
-            li.cw-grid__item
-              a(@click="filter('Body')")
-                span.nav__link Body
-                radio-btn(:checked="isActive('Body')")
-              .nav__vein
-            li.cw-grid__item
-              a(@click="filter('One Off')")
-                span.nav__link One Off
-                radio-btn(:checked="isActive('One Off')")
-              .nav__vein
-            li.cw-grid__item
+        //- sub navs
+        ul.nav__subnav.cw-grid(v-for="(item, index) in nav", :key="index", v-show="isCategory(item.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
+          router-link(tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
+            a
+              span.nav__link Everything
+              radio-btn
+            .nav__vein
+          //- loop 
+          li.cw-grid__item(v-for="(subitem, index) in item.items")
+            //- tags
+            template(v-if="subitem.link.type === 'tag'")
+              a(@click="filter(subitem.link.uid)")
+                span.nav__link {{subitem.link.data.label | text}}
+                radio-btn(:checked="activeFilter(subitem.link.uid)")
+            //- partners
+            template(v-if="subitem.link.type === 'partners'")
               router-link(:to="{name: 'Partners'}")
-                span.nav__link Partners
+                span.nav__link {{subitem.link.data.title | text}}
                 radio-btn
+            .nav__vein(v-if="index < item.items.length - 1")
 </template>
 
 <script>
 import DotGrid from '@/components/DotGrid'
 import RadioBtn from '@/components/RadioBtn'
-import _kebab from 'lodash/kebabCase'
 import _throttle from 'lodash/throttle'
 export default {
   name: 'Header',
@@ -108,26 +100,32 @@ export default {
     }
   },
   methods: {
-    isActive (filter) {
+    isCategory (catUID) {
+      return this.$route.params.catSlug === catUID
+    },
+    activeFilter (filter) {
       if (!filter) return false
-      return this.activeCategories.indexOf(_kebab(filter)) > -1
+      return this.activeCategories.indexOf(filter) > -1
     },
     filter (category) {
       if (!category) return false
-      const cat = _kebab(category)
-      let cats = this.$route.query.categories // empty object || string
-      if (!cats || cats.length === 0) return this.$router.replace({query: {categories: cat}})
+      const cat = category
+      let cats = this.$route.query.filter // empty object || string
+      // if none already: add 1
+      if (!cats || cats.length === 0) return this.$router.replace({query: {filter: cat}})
       // otherwise add/remove
       cats = cats.split(',')
       const index = cats.indexOf(cat)
       if (index > -1) {
+        // remove
         cats.splice(index, 1)
         if (cats.length === 0) return this.$router.replace({query: null})
       } else {
+        // add
         cats.push(cat)
       }
       cats = cats.join(',')
-      this.$router.replace({query: {categories: cats}})
+      this.$router.replace({query: {filter: cats}})
     },
     onScroll: _throttle(function () {
       this.condensed = window.pageYOffset > 2
@@ -162,9 +160,12 @@ export default {
     box-shadow: 0 0 50px -20px #000000;
   }
 
-  > ul{
+  ul{
     list-style-type: none;
     text-align: left;
+  }
+
+  > ul{
     > li{
       position: relative;
       height:0;

@@ -29,7 +29,7 @@ export default new Router({
       ]
     },
     {
-      path: '/partners',
+      path: '/:catSlug/partners',
       name: 'Partners',
       component: Category
     }
