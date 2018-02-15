@@ -1,6 +1,6 @@
 <template lang="pug">
   //-article(:class="{'article--transparent': unavailable}")
-  article
+  article(v-show="visible")
     router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
       section
         header
@@ -14,7 +14,20 @@
 <script>
 export default {
   name: 'CategoryItem',
-  props: ['object']
+  props: ['object'],
+  computed: {
+    tags () {
+      return this.object.data.tags.map((item) => { return item.tag.uid })
+    },
+    visible () {
+      if (!this.$route.query.filter) return true // no filters
+      if (!this.tags || this.tags.length < 1) return false // filters, but no tags
+      const filters = this.$route.query.filter.split(',')
+      return this.tags.some(function (tag) { // quits on first match
+        return filters.indexOf(tag) >= 0
+      })
+    }
+  }
 }
 </script>
 

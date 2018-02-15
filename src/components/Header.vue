@@ -86,9 +86,9 @@ export default {
     nav () {
       return this.$store.state.site.nav
     },
-    activeCategories () {
-      const cats = this.$route.query.categories
-      if (cats) return cats.split(',')
+    activeFilters () {
+      const filters = this.$route.query.filter
+      if (filters) return filters.split(',')
       return []
     }
   },
@@ -105,7 +105,7 @@ export default {
     },
     activeFilter (filter) {
       if (!filter) return false
-      return this.activeCategories.indexOf(filter) > -1
+      return this.activeFilters.indexOf(filter) > -1
     },
     filter (category) {
       if (!category) return false
