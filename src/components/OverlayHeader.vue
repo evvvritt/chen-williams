@@ -6,8 +6,8 @@
           router-link(to="/")
             img(src='../assets/logo.svg')
         li.cw-grid__item
-          a(@click="$emit('close')").nav__link Close
           a(@click="$emit('close')")
+            .nav__link Close
             radio-btn(fill="white")
 </template>
 

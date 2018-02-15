@@ -13,20 +13,11 @@
             figure
               img(src="../demo/CK-GEM_Pen_P01.jpg")
         .object__details.p-text
-          | Name
-          br
-          | Design Year
-          br
-          | Dimensions
-          br
-          br
-          | Description
-          br
-          br
-          | Material
-          br
-          br
-          | Price
+          h1 {{object.data.title | text}}
+          h6 {{object.data.year}}
+          h6 {{object.data.dimensions | text}}
+          div.mt1(v-html="richtext(object.data.description)")
+          h6.mt1 Price
 </template>
 
 <script>
@@ -36,16 +27,33 @@ import RadioBtn from '@/components/RadioBtn'
 import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
 export default {
   name: 'Object',
+  props: ['slug'],
   components: {
     Background,
     OverlayHeader,
     RadioBtn
   },
+  data () {
+    return {
+      richtext: this.$options.filters.richtext
+    }
+  },
+  computed: {
+    object () {
+      return this.$store.state.object
+    }
+  },
   methods: {
     close () {
-      const rt = this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
-      this.$router.push(rt)
+      const route = this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
+      this.$router.push(route)
+    },
+    getObject () {
+      if (this.slug) this.$store.dispatch('getObject', this.slug)
     }
+  },
+  created () {
+    this.getObject()
   },
   mounted () {
     scrollSnapPolyfill()

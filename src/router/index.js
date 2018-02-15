@@ -22,6 +22,7 @@ export default new Router({
           path: ':slug',
           name: 'CategoryObject',
           component: Object,
+          props: true,
           meta: {
             isOverlay: true
           }

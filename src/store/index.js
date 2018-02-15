@@ -9,8 +9,9 @@ export default new Vuex.Store({
     prismicUrl: process.env.PRISMIC,
     loading: true,
     site: {},
-    category: {id: null, results: []},
-    object: null
+    category: { id: null, results: [] },
+    object: { uid: null },
+    info: null
   },
   mutations: {
     setSite (state, payload) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     setCategory (state, payload) {
       state.category = payload
+    },
+    setObject (state, payload) {
+      state.object = payload
     },
     loaded (state) {
       state.loading = false
@@ -51,6 +55,28 @@ export default new Vuex.Store({
           commit('setCategory', { ...state.category, id: id, results: resp.results })
         }, (err) => {
           console.error('Error: Get Category failed', err)
+        })
+      }
+    },
+    getObject ({ commit, state }, uid) {
+      if (uid !== state.object.uid) {
+        Prismic.getApi(state.prismicUrl).then(function (api) {
+          return api.getByUID('object', uid)
+        }).then((doc) => {
+          commit('setObject', doc)
+        }, (err) => {
+          console.error('Error: Get Object failed', err)
+        })
+      }
+    },
+    getInfo ({ commit, state }) {
+      if (!state.info) {
+        Prismic.getApi(state.prismicUrl).then(function (api) {
+          return api.getSingle('info')
+        }).then((doc) => {
+          commit('setObject', doc)
+        }, (err) => {
+          console.error('Error: Get Object failed', err)
         })
       }
     }
