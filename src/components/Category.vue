@@ -3,9 +3,9 @@
     transition(name="overlay")
       router-view
     background
-    transition(name="fadeinplace")
-      .pt-2rows
-        .category__items(v-show="!loading")
+    transition(name="quickfade")
+      .pt-2rows(v-show="!querying")
+        .category__items
           background(:overlay="true", scheme="category", :rows="3", :padless="true")
           item(v-for="object in category.results", :key="object.id", :object="object")
           //- item(title="Pen & Holder", price="60")
@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'loading',
+      'querying',
       'category',
       'site'
     ])

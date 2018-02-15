@@ -33,13 +33,13 @@
               span.nav__link Info
               radio-btn
           //- archive
-          transition(name="fadeinplace")
+          transition(name="fade")
             li.cw-grid__item(v-show="!loading")
               a(target="_blank", rel="noopener")
                 span.nav__link Archive
                 radio-btn
           //- cart
-          transition(name="fadeinplace")
+          transition(name="fade")
             router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
               a(v-show="!loading")
                 span.nav__link Cart

@@ -131,12 +131,20 @@ h1,h2,h3,h4,h5,h6,small{
 // transitions
 
 .app{
-  .fadeinplace-enter-active,
-  .fadeinplace-leave-active{
+  .fade-enter-active,
+  .fade-leave-active{
     transition: opacity $fadeDuration;
   }
-  .fadeinplace-enter,
-  .fadeinplace-leave-to{
+  .fade-enter,
+  .fade-leave-to{
+    opacity:0;
+  }
+  .quickfade-enter-active,
+  .quickfade-leave-active{
+    transition: opacity $fadeDuration/2;
+  }
+  .quickfade-enter,
+  .quickfade-leave-to{
     opacity:0;
   }
 

@@ -8,12 +8,19 @@ export default new Vuex.Store({
   state: {
     prismicUrl: process.env.PRISMIC,
     loading: true,
+    querying: false,
     site: {},
     category: { id: null, results: [] },
     object: { uid: null },
     info: null
   },
   mutations: {
+    loading (state, payload) {
+      state.loading = payload
+    },
+    querying (state, payload) {
+      state.querying = payload
+    },
     setSite (state, payload) {
       state.site = payload
     },
@@ -25,9 +32,6 @@ export default new Vuex.Store({
     },
     setInfo (state, payload) {
       state.info = payload
-    },
-    loaded (state) {
-      state.loading = false
     }
   },
   actions: {
@@ -38,7 +42,7 @@ export default new Vuex.Store({
           { fetchLinks: ['category.title', 'tag.label', 'partners.title'] }
         )
       }).then((resp) => {
-        commit('loaded')
+        commit('loading', false)
         commit('setSite', resp.results[0].data)
       }, (err) => {
         console.error('Error: Get Site failed', err)
@@ -46,6 +50,7 @@ export default new Vuex.Store({
     },
     getCategory ({ commit, state }, id) {
       if (id !== state.category.id) {
+        commit('querying', true)
         Prismic.getApi(state.prismicUrl).then(function (api) {
           return api.query(
             [
@@ -55,8 +60,10 @@ export default new Vuex.Store({
             { pageSize: 100, fetch: ['object.title', 'object.thumbnail', 'object.tags'] }
           )
         }).then((resp) => {
+          commit('querying', false)
           commit('setCategory', { ...state.category, id: id, results: resp.results })
         }, (err) => {
+          commit('querying', false)
           console.error('Error: Get Category failed', err)
         })
       }
