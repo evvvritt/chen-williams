@@ -23,6 +23,9 @@ export default new Vuex.Store({
     setObject (state, payload) {
       state.object = payload
     },
+    setInfo (state, payload) {
+      state.info = payload
+    },
     loaded (state) {
       state.loading = false
     }
@@ -74,7 +77,7 @@ export default new Vuex.Store({
         Prismic.getApi(state.prismicUrl).then(function (api) {
           return api.getSingle('info')
         }).then((doc) => {
-          commit('setObject', doc)
+          commit('setInfo', doc.data)
         }, (err) => {
           console.error('Error: Get Object failed', err)
         })
