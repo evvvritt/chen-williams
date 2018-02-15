@@ -1,5 +1,5 @@
 <template lang="pug">
-  .cw-grid.cw-grid--background(:class="classes", :data-grid-scheme="scheme")
+  .cw-grid.cw-grid--background(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
     .cw-grid__item(v-for="n in ((rows + 1) * columns)")
 </template>
 
@@ -26,6 +26,10 @@ export default {
     padless: {
       type: Boolean,
       default: false
+    },
+    color: {
+      type: String,
+      default: 'black'
     }
   },
   data () {
@@ -99,6 +103,13 @@ export default {
     }
     &:nth-last-child(-n+5){
       // padding-bottom:0;
+    }
+  }
+
+  // colors
+  &[data-dot-color="gray"] > .cw-grid__item{
+    &:after, &:before{
+      background:#8e8e8e;
     }
   }
   

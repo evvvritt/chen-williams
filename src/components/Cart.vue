@@ -1,6 +1,6 @@
 <template lang="pug">
   aside.cart.fixed.overlay.z-overlay.p2.bg-gray.backdrop-blur
-    background
+    background(color="gray")
     overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})")
     section.pt-2rows
 </template>
@@ -13,13 +13,3 @@ export default {
   components: { Background, OverlayHeader }
 }
 </script>
-
-<style lang="scss">
-.cart{
-  .cw-grid__item{
-    &:after, &:before{
-      background:#8e8e8e;
-    }
-  }
-}
-</style>

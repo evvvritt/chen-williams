@@ -3,7 +3,7 @@
     .object__body
       background
       overlay-header(@close="close")
-      .object__main.pt-1row
+      .object__main.pt-1row(v-if="object")
         .object__slideshow
           div
             figure
