@@ -70,6 +70,7 @@ export default new Vuex.Store({
     },
     getObject ({ commit, state }, uid) {
       if (uid !== state.object.uid) {
+        commit('setObject', {}) // reset
         Prismic.getApi(state.prismicUrl).then(function (api) {
           return api.getByUID('object', uid)
         }).then((doc) => {
