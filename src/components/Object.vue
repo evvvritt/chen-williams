@@ -2,7 +2,7 @@
   article.object.overlay
     .object__body
       background
-      overlay-header(@close="close")
+      overlay-header.object__header(@close="close")
       .object__main.pt-1row(v-if="object.data")
         carousel.object__slideshow
         .object__details.p-text
@@ -106,7 +106,7 @@ export default {
   }
 }
 
-.app-header{
+.object__header{
   position: fixed;
   top:0; left:0;
   width:100%;
