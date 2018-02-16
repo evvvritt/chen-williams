@@ -21,6 +21,12 @@ $z-overlay: 50;
 $fadeDuration: 800ms;
 $navCondenseDuration: 500ms;
 
+@mixin mobile {
+  @media (max-width:$bkpt-grid-9 - 1) {
+    @content;
+  }
+}
+
 @mixin grid9 {
   @media (min-width:$bkpt-grid-9){
     @content;

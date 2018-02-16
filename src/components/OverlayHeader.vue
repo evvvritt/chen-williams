@@ -3,19 +3,20 @@
     nav.nav
       ul.cw-grid
         li.cw-grid__item
-          router-link(to="/")
-            img(src='../assets/logo.svg')
+          nav-logo
         li.cw-grid__item
           a(@click="$emit('close')")
-            .nav__link Close
+            nav-link Close
             radio-btn(fill="white")
 </template>
 
 <script>
 import RadioBtn from '@/components/RadioBtn'
+import NavLogo from '@/components/Header/NavLogo'
+import NavLink from '@/components/Header/NavLink'
 export default {
   name: 'OverlayHeader',
-  components: { RadioBtn }
+  components: { RadioBtn, NavLogo, NavLink }
 }
 </script>
 

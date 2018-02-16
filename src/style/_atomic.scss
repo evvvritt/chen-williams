@@ -1,3 +1,17 @@
+.hidden{
+  display: none;
+}
+.mb-hidden{
+  @include mobile{
+    display: none !important;
+  }
+}
+.tblt-hidden{
+  @include grid9 {
+    display:none !important;
+  }
+}
+
 .fixed{
   position: fixed;
 }
@@ -85,7 +99,7 @@
 }
 
 .pt-2rows{
-  padding-top:20%; // 1 row on mobile
+  padding-top:25%; // 1 row on mobile
   @include grid9 {
     padding-top: calc(100% / 9 * 2);
   }
@@ -120,4 +134,8 @@
 
 .list-style-none{
   list-style-type: none;
+}
+
+.pointer{
+  cursor:pointer;
 }

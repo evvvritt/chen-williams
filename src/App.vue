@@ -12,7 +12,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import AppHeader from '@/components/Header'
+import AppHeader from '@/components/Header/Index'
 import DotGrid from '@/components/DotGrid'
 import Info from '@/components/Info'
 import Cart from '@/components/Cart'
@@ -116,11 +116,6 @@ h1,h2,h3,h4,h5,h6,small{
       filter:blur(10px);
     }  
   }
-}
-
-#app-header{
-  background:rgba($white, .8);
-  
 }
 
 .app__body__main{

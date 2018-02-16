@@ -82,8 +82,8 @@ export default {
   flex-wrap:wrap;
   align-items:flex-start;
   > .cw-grid__item{
-    flex:0 0 20%;
-    padding-bottom:20%;
+    flex:0 0 25%;
+    padding-bottom:25%;
     position: relative;
     transition:padding-bottom $navCondenseDuration;
     &:after, &:before{
@@ -99,7 +99,9 @@ export default {
       left:auto;
     }
     &:first-child:before{
-      display:none;
+      @include grid9 {
+        display:none;  
+      }
     }
     &:nth-last-child(-n+5){
       // padding-bottom:0;

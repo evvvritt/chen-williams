@@ -1,15 +1,21 @@
 <template lang="pug">
-  header.app-header(:class="{'app-header--condensed': condensed}")
-    dot-grid(:rows="2", :overlay="false", :condensed="condensed")
-    nav.nav
+  header.app-header(:class="{'app-header--condensed': condensed, 'bg-white': !mobileCollapsed}")
+    dot-grid.app-header__dot-grid(:rows="dotGridRows", :overlay="false", :condensed="condensed")
+    logo.tblt-hidden
+    nav.nav.relative(:class="{'nav--collapsed': mobileCollapsed}")
+      //- mobile
+      .cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
+        .cw-grid__item
+          nav-link(v-html="mobileCollapsed ? 'Menu' : 'Close'")
+          radio-btn(:checked="false")
       //- loading
       template(v-if="loading")
         ul.nav__primary-nav.cw-grid
-          router-link(tag="li", to="/").cw-grid__item
-            a
-              img(src='../assets/logo.svg')
+          li.cw-grid__item.mb-hidden
+            router-link(to="/")
+              logo(:condensed="condensed")
           li
-            span.nav__link Loading
+            nav-link Loading
             radio-btn(:checked="true")
           li <radio-btn/>
           li <radio-btn/>
@@ -18,68 +24,69 @@
       template(v-else)
         ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
           //- logo
-          router-link(tag="li", to="/").cw-grid__item
-            a
-              img(src='../assets/logo.svg')
+          li.cw-grid__item.mb-hidden
+            logo(:condensed="condensed")
           //- categories loop
           router-link(v-for="(item, index) in nav", :key="index", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
             a
-              span.nav__link {{item.primary.category_link.data.title | text}}
+              nav-link {{item.primary.category_link.data.title | text}}
               radio-btn
-            .nav__vein
+            nav-vein
           //- info
           router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
             a
-              span.nav__link Info
+              nav-link Info
               radio-btn
           //- archive
           transition(name="fade")
             li.cw-grid__item(v-show="!loading")
               a(target="_blank", rel="noopener")
-                span.nav__link Archive
+                nav-link Archive
                 radio-btn
           //- cart
           transition(name="fade")
             router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
               a(v-show="!loading")
-                span.nav__link Cart
+                nav-link Cart
                 radio-btn
         //- sub navs
         ul.nav__subnav.cw-grid(v-for="(item, index) in nav", :key="index", v-show="isCategory(item.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
           router-link(tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
             a
-              span.nav__link Everything
+              nav-link Everything
               radio-btn
-            .nav__vein
+            nav-vein
           //- loop 
-          li.cw-grid__item(v-for="(subitem, index) in item.items")
+          li.cw-grid__item(v-for="(subitem, index) in item.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
             //- tags
             template(v-if="subitem.link.type === 'tag'")
               a(@click="filter(subitem.link.uid)")
-                span.nav__link {{subitem.link.data.label | text}}
+                nav-link {{subitem.link.data.label | text}}
                 radio-btn(:checked="activeFilter(subitem.link.uid)")
             //- partners
             template(v-if="subitem.link.type === 'partners'")
               router-link(:to="{name: 'Partners'}")
-                span.nav__link {{subitem.link.data.title | text}}
+                nav-link {{subitem.link.data.title | text}}
                 radio-btn
-            .nav__vein(v-if="index < item.items.length - 1")
+            nav-vein(v-if="index < item.items.length - 1")
 </template>
 
 <script>
 import DotGrid from '@/components/DotGrid'
 import RadioBtn from '@/components/RadioBtn'
+import Logo from './NavLogo'
+import NavLink from './NavLink'
+import NavVein from './NavVein'
 import _throttle from 'lodash/throttle'
 export default {
   name: 'Header',
   props: ['loading'],
-  components: {
-    DotGrid,
-    RadioBtn
-  },
+  components: { DotGrid, RadioBtn, Logo, NavLink, NavVein },
   data () {
     return {
-      condensed: false
+      condensed: false,
+      mobileCollapsed: true,
+      dotGridRows: window.innerWidth < 768 ? 8 : 2
     }
   },
   computed: {
@@ -97,6 +104,8 @@ export default {
       this.bindScroll(false) // unbind
       const isOverlay = to.hash === '#info' || to.hash === '#cart' || this.$route.meta.isOverlay
       this.$nextTick(() => this.bindScroll(!isOverlay)) // bind if not overlay
+      // collapse on mobile ?
+      if (to.path !== from.path) this.mobileCollapsed = true
     }
   },
   methods: {
@@ -145,7 +154,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/variables';
+@import '../../style/variables';
+
+#app-header{
+  background:rgba($white, .8);
+}
 
 .app-header{
   padding-bottom: 1px;
@@ -153,7 +166,6 @@ export default {
 
 .nav{
   padding:calc(25vh + #{$gutter}) $gutter 0;
-  position: relative;
   margin-top: -25vh;
   transition:box-shadow $navCondenseDuration;
   .app-header--condensed &{
@@ -170,21 +182,6 @@ export default {
       position: relative;
       height:0;
       transition:padding-bottom $navCondenseDuration;
-
-      img{
-        width:50%;
-        position: absolute;
-        top:rem(-6px); left:rem(-6px);
-        // transform:translateX(rem(-6px)) translateY(rem(-6px));
-        transition: transform $navCondenseDuration;
-        transform-origin:top left;
-      }
-      
-      .app-header--condensed &{
-        img{
-          transform:scale(0.66,0.66);
-        }
-      }
       
       .app--loading &{
         $cycle: 5000ms;
@@ -192,49 +189,30 @@ export default {
         $pace: ($cycle/2/$steps);
         &:nth-child(2) .radio-btn{
           opacity:0;
-          animation:pulse_p $cycle 0s infinite;
+          animation:pulse $cycle 0s infinite;
         }
         &:nth-child(3) .radio-btn{
           opacity:0;
-          animation:pulse_p $cycle $pace infinite;
+          animation:pulse $cycle $pace infinite;
         }
         &:nth-child(4) .radio-btn{
           opacity:0;
-          animation:pulse_p $cycle $pace*2 infinite;
+          animation:pulse $cycle $pace*2 infinite;
         }    
         &:nth-child(5) .radio-btn{
           opacity:0;
-          animation:pulse_p $cycle $pace*3 infinite;
+          animation:pulse $cycle $pace*3 infinite;
         }    
       }
     }
   }
 }
 
-.nav__link{
-  cursor: pointer;
-  position: absolute;
-  top: 0; left:-0.5em;
-  padding: 1.15em 0.5em 0;
-  transition:opacity $fadeDuration;
-  z-index:1;
-  // .app--loading &:not(.nav__link--load-lbl){
-    // opacity:0;
-    // visibility:hidden;
-  // }
-}
-
 .nav .radio-btn{
-  // display:block;
   position: absolute;
   left: rem(-8px);
   top: rem(-8px);
-  // width:rem(16px);
-  // height:rem(16px);
   z-index:2;
-  // background-image:url(../assets/icons/radio-btn.svg);
-  // background-size:contain;  
-  // background-repeat:no-repeat;
   transition: opacity $fadeDuration;
   .app--loading &{
     transition:none;
@@ -243,38 +221,14 @@ export default {
   .nav__primary-nav &.router-link-active,
   .nav__subnav &.router-link-exact-active,
   &.nav__radio-btn--selected{
-    background-image:url(../assets/icons/radio-btn--selected.svg);
+    background-image:url(../../assets/icons/radio-btn--selected.svg);
   }
   .app--loading &.router-link-active:not(.nav__radio-btn--selected){
-    background-image:url(../assets/icons/radio-btn.svg);
+    background-image:url(../../assets/icons/radio-btn.svg);
   }
 }
 
-.nav__vein{
-  opacity:0;
-  position: absolute;
-  z-index:-1;
-  border-width:1px;
-  .nav__primary-nav .router-link-active &{
-    opacity:1;
-    left:-1px;
-    top:3em;
-    border-left-style:solid;
-    height:calc(100% - 3em - 16px);
-  }
-  .nav__subnav &{
-    opacity:1;
-    top: -1px;
-    left:16px;
-    width:calc(100% - 32px);
-    border-top-style: solid;
-  }
-  .app--loading &{
-    opacity:0 !important;
-  }
-}
-
-@keyframes pulse_p{
+@keyframes pulse{
   0%{
     opacity:0;
   }
@@ -286,6 +240,57 @@ export default {
   }
   60%{
     opacity:0;
+  }
+}
+
+@include mobile {
+  #app-header{
+    max-height:100vh;
+    overflow-y:auto;
+    &.bg-white{ background:$white; }
+  }
+  .app-header__dot-grid{
+    align-items:flex-start;
+    align-content:flex-start;
+  }
+  
+  .nav{
+    display:flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+    min-height:125vh;
+    // overflow-y:auto;
+    &.nav--collapsed{
+      min-height:0;
+      height:calc(25vh + (100vw - 4rem)/4 + 2rem);
+      overflow:hidden;
+    }
+    > *{
+      flex:0 0 25%;
+    }
+    ul.cw-grid{
+      flex-direction:column;
+      align-items: stretch;
+      .cw-grid__item{
+        padding-bottom: 100%;
+        transition:none;
+      }
+    }
+    // active at top of column
+    // .nav__subnav .mb-active-filter,
+    .nav__subnav .router-link-exact-active, // so partners jumps to top
+    .nav__primary-nav .router-link-active{
+      order:-1;
+    }
+  }
+
+  .nav--collapsed{
+    li.cw-grid__item{
+      display:none;
+      &.router-link-active{
+        display: block;
+      }
+    }
   }
 }
 </style>
