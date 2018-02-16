@@ -3,15 +3,8 @@
     .object__body
       background
       overlay-header(@close="close")
-      .object__main.pt-1row(v-if="object")
-        .object__slideshow
-          div
-            figure
-              img(src="../demo/CK-GEM_Pill_AB02.jpg")
-            figure
-              img(src="../demo/CK-GEM_Drum_P03.jpg")
-            figure
-              img(src="../demo/CK-GEM_Pen_P01.jpg")
+      .object__main.pt-1row(v-if="object.data")
+        carousel.object__slideshow
         .object__details.p-text
           h1 {{object.data.title | text}}
           h6 {{object.data.year}}
@@ -23,15 +16,15 @@
 <script>
 import Background from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
-import RadioBtn from '@/components/RadioBtn'
-import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
+import Carousel from '@/components/Carousel'
+// import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
 export default {
   name: 'Object',
   props: ['slug'],
   components: {
     Background,
     OverlayHeader,
-    RadioBtn
+    Carousel
   },
   data () {
     return {
@@ -54,9 +47,6 @@ export default {
   },
   created () {
     this.getObject()
-  },
-  mounted () {
-    scrollSnapPolyfill()
   }
 }
 </script>
@@ -93,38 +83,26 @@ export default {
 // column widths
 .object__slideshow{
   flex:0 0 calc(100%/5 * 6);
-  figure{
-    width:calc(100%/6 * 5);
+  @include grid9 {
+    flex:0 0 calc(100%/9 * 7);
   }
-  @media (min-width:769px) {
-    flex:0 0 calc(100%/9 * 5);
-    figure{
-      width:calc(100%/5 * 4);
-    }
+  @include grid12 {
+    flex:0 0 calc(100%/12 * 7);
   }
-  @media (min-width:1441px) {
-    flex:0 0 calc(100%/12 * 8);
-    figure{
-      width:calc(100%/8 * 7);
-    }
-  }
-  @media (min-width:1900px) {
-    flex:0 0 calc(100%/15 * 9);
-    figure{
-      width:calc(100%/9 * 8);
-    }
+  @include grid15 {
+    flex:0 0 calc(100%/15 * 7);
   }
 }
 .object__details{
   flex:0 0 100%;
   @media (min-width:769px) {
-    flex:0 0 calc(100%/9 * 4);
+    flex:0 0 calc(100%/9 * 2);
   }
-  @media (min-width:1441px) {
-    flex:0 0 calc(100%/12 * 4);
+  @include grid12 {
+    flex:0 0 calc(100%/12 * 3);
   }
-  @media (min-width:1900px) {
-    flex:0 0 calc(100%/15 * 6);
+  @include grid15 {
+    flex:0 0 calc(100%/15 * 3);
   }
 }
 

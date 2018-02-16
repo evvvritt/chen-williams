@@ -64,6 +64,7 @@ export default {
 }
 </script>
 
+<style src="../node_modules/flickity/dist/flickity.css"></style>
 <style lang="scss">
 @import './style/variables';
 @import './style/atomic';
