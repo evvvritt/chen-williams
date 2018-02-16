@@ -83,8 +83,12 @@ export default {
 // column widths
 .object__slideshow{
   flex:0 0 calc(100%/5 * 6);
+  height:0;
+  padding-bottom:100%;
   @include grid9 {
     flex:0 0 calc(100%/9 * 7);
+    height:auto;
+    padding-bottom:0;
   }
   @include grid12 {
     flex:0 0 calc(100%/12 * 7);
