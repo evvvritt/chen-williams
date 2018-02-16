@@ -1,20 +1,32 @@
 <template lang="pug">
   .carousel(:class="{'carousel--invisible': !flkty}")
-    figure
-      img.block(src="../demo/CK-GEM_Hook1_02.jpg")
-    figure
-      img.block(src="../demo/CK-GEM_Drum_P03.jpg")
-    figure
-      img.block(src="../demo/CK-GEM_Pen_P01.jpg")
+    figure(v-for="(src, index) in images")
+      img.block(v-if="index < 2", :src="src")
+      img.block(v-else, :data-flickity-lazyload="src")
 </template>
 
 <script>
+import Vue from 'vue'
 import Flickity from 'flickity-imagesloaded'
 export default {
   name: 'Carousel',
+  props: ['slides'],
   data () {
     return {
-      flkty: null
+      flkty: null,
+      imgLength: window.innerWidth - 40,
+      afterResize: null
+    }
+  },
+  computed: {
+    images () {
+      // re fetches images when imgLength changes
+      if (!this.slides) return []
+      const lengthIsHeight = window.innerWidth > 768
+      return this.slides.map((item) => {
+        const src = item.primary.image.url
+        if (src) return Vue.thumbSrc(src, this.imgLength, lengthIsHeight)
+      })
     }
   },
   methods: {
@@ -40,10 +52,31 @@ export default {
           })
         }, delay)
       }
+    },
+    setImgLength () {
+      const winW = window.innerWidth
+      let length = this.imgLength
+      if (winW > 768) length = winW / 9 * 4
+      if (winW > 1440) length = winW / 12 * 4
+      if (winW > 1900) length = winW / 15 * 4
+      this.imgLength = parseInt(length)
+    },
+    onResize () {
+      clearTimeout(this.afterResize)
+      this.afterResize = setTimeout(() => {
+        this.setImgLength()
+      }, 500)
     }
+  },
+  created () {
+    this.setImgLength()
+    window.addEventListener('resize', this.onResize)
   },
   mounted () {
     this.init()
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>

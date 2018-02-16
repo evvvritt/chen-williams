@@ -4,7 +4,7 @@
       background
       overlay-header.object__header(@close="close")
       .object__main.pt-1row(v-if="object.data")
-        carousel.object__slideshow
+        carousel.object__slideshow(:slides="object.data.slideshow")
         .object__details.p-text
           h1 {{object.data.title | text}}
           h6 {{object.data.year}}
