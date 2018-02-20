@@ -5,6 +5,6 @@ module.exports = {
   CLOUDINARY: '"https://res.cloudinary.com/dkh08saaw"',
   SHOPIFY: {
     DOMAIN: '"cckwus.myshopify.com"',
-    TOKEN: '"af0796cd5defebe56ab99683f55f93e1"' 
+    TOKEN: '"591b9eec4e9e45b65ee282187072a1dd"' 
   }
 }

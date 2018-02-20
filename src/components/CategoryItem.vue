@@ -1,6 +1,5 @@
 <template lang="pug">
-  //-article(:class="{'article--transparent': unavailable}")
-  article(v-show="visible")
+  article(v-show="visible", :class="{'article--transparent': !available}")
     router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
       section
         header.flex.z2
@@ -28,12 +27,18 @@ export default {
         return filters.indexOf(tag) >= 0
       })
     },
-    price () {
+    sku () {
       if (!this.object) return false
       const id = this.object.data.shopify_product_id
       const product = _find(this.$store.state.products, id)
-      const hasPrice = product && product.variants && product.variants.length > 0
-      return hasPrice ? product.variants[0].price : false
+      const hasVariants = product && product.variants && product.variants.length > 0
+      return hasVariants ? product.variants[0] : false
+    },
+    price () {
+      return this.sku ? this.sku.price : false
+    },
+    available () {
+      return this.sku ? this.sku.available : true
     }
   }
 }

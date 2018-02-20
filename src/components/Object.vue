@@ -10,14 +10,14 @@
           h6 {{object.data.year}}
           h6 {{object.data.dimensions | text}}
           div.mt1(v-html="richtext(object.data.description)")
-          h6.mt1 Price
+          h6.mt1(v-if="price") ${{price | price}}
 </template>
 
 <script>
 import Background from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
 import Carousel from '@/components/Carousel'
-// import scrollSnapPolyfill from 'css-scroll-snap-polyfill'
+import _find from 'lodash/find'
 export default {
   name: 'Object',
   props: ['slug'],
@@ -34,6 +34,13 @@ export default {
   computed: {
     object () {
       return this.$store.state.object
+    },
+    price () {
+      if (!this.object) return false
+      const id = this.object.data.shopify_product_id
+      const product = _find(this.$store.state.products, id)
+      const hasPrice = product && product.variants && product.variants.length > 0
+      return hasPrice ? product.variants[0].price : false
     }
   },
   methods: {
