@@ -49,7 +49,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getSite'
+      'getSite',
+      'getProducts'
     ]),
     redirect () {
       if (this.site.nav && this.$route.name === 'Home') {
@@ -60,6 +61,7 @@ export default {
   },
   created () {
     this.getSite()
+    this.getProducts()
   }
 }
 </script>

@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Prismic from 'prismic-javascript'
+import Shopify from 'shopify-buy'
+const shop = Shopify.buildClient({
+  domain: process.env.SHOPIFY.DOMAIN,
+  storefrontAccessToken: process.env.SHOPIFY.TOKEN
+})
 
 Vue.use(Vuex)
 
@@ -12,7 +17,8 @@ export default new Vuex.Store({
     site: {},
     category: { id: null, results: [] },
     object: { uid: null },
-    info: null
+    info: null,
+    products: null
   },
   mutations: {
     loading (state, payload) {
@@ -32,6 +38,9 @@ export default new Vuex.Store({
     },
     setInfo (state, payload) {
       state.info = payload
+    },
+    setProducts (state, payload) {
+      state.products = payload
     }
   },
   actions: {
@@ -46,6 +55,16 @@ export default new Vuex.Store({
         commit('setSite', resp.results[0].data)
       }, (err) => {
         console.error('Error: Get Site failed', err)
+      })
+    },
+    getProducts ({ commit, state }) {
+      shop.product.fetchAll().then((results) => {
+        const products = results.map((item) => {
+          let id = atob(item.id).split('/')
+          id = id[id.length - 1]
+          return { ...item, _id: id }
+        })
+        commit('setProducts', products)
       })
     },
     getCategory ({ commit, state }, id) {
