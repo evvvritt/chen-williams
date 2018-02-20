@@ -1,16 +1,6 @@
 .hidden{
   display: none;
 }
-.mb-hidden{
-  @include mobile{
-    display: none !important;
-  }
-}
-.tblt-hidden{
-  @include grid9 {
-    display:none !important;
-  }
-}
 
 .fixed{
   position: fixed;
@@ -69,6 +59,9 @@
 .mt1{
   margin-top: 1em;
 }
+.mb1{
+  margin-bottom:1em;
+}
 .p2{
   padding:2rem 2rem;
 }
@@ -86,7 +79,7 @@
 }
 
 .pt-1row{
-  padding-top: 20%;
+  padding-top: 25%;
   @include grid9 {
     padding-top: calc(100% / 9);
   }
@@ -119,6 +112,9 @@
     display:flex;
   }
 }
+.flex-rows{
+  flex-direction:rows;
+}
 .justify-center{
   justify-content:center;
 }
@@ -138,4 +134,20 @@
 
 .pointer{
   cursor:pointer;
+}
+
+// media query based
+
+@include mobile {
+  .mb-hidden{
+    display: none !important;
+  }
+  .mb-block{
+    display:block;
+  }
+}
+@include grid9{
+  .tblt-hidden{
+    display:none !important;
+  }
 }
