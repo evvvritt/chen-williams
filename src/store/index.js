@@ -76,7 +76,7 @@ export default new Vuex.Store({
               Prismic.Predicates.at('document.type', 'object'),
               Prismic.Predicates.at('my.object.category', id)
             ],
-            { pageSize: 100, fetch: ['object.title', 'object.thumbnail', 'object.tags'] }
+            { pageSize: 100, fetch: ['object.title', 'object.thumbnail', 'object.tags', 'object.shopify_product_id'] }
           )
         }).then((resp) => {
           commit('querying', false)

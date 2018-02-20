@@ -3,15 +3,16 @@
   article(v-show="visible")
     router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
       section
-        header
+        header.flex.z2
           h2.p-text {{object.data.title | text}}
           //- small.p-text(v-if="price && !unavailable", v-html="'$' + price")
-          small.p-text $0
+          small.p-text(v-if="price") ${{price | price}}
         figure
           img(:src="object.data.thumbnail.url")
 </template>
 
 <script>
+import _find from 'lodash/find'
 export default {
   name: 'CategoryItem',
   props: ['object'],
@@ -26,6 +27,13 @@ export default {
       return this.tags.some(function (tag) { // quits on first match
         return filters.indexOf(tag) >= 0
       })
+    },
+    price () {
+      if (!this.object) return false
+      const id = this.object.data.shopify_product_id
+      const product = _find(this.$store.state.products, id)
+      const hasPrice = product && product.variants && product.variants.length > 0
+      return hasPrice ? product.variants[0].price : false
     }
   }
 }
@@ -60,8 +68,6 @@ article{
   }
 
   header{
-    display: flex;
-    z-index: 2;
     h2{
       flex:0 0 calc(100% * 2/3);
     }

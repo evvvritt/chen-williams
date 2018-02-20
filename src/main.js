@@ -50,6 +50,10 @@ Vue.filter('richtext', function (key) {
   return html
 })
 
+Vue.filter('price', function (str) {
+  return str.replace('.00', '')
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
