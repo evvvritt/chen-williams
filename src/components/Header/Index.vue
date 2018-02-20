@@ -4,7 +4,7 @@
     logo.tblt-hidden
     nav.nav.relative(:class="{'nav--collapsed': mobileCollapsed}")
       //- mobile
-      .cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
+      ul.cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item
           nav-link(v-html="mobileCollapsed ? 'Menu' : 'Close'")
           radio-btn(:checked="false")
@@ -50,14 +50,14 @@
                 nav-link Cart
                 radio-btn
         //- sub navs
-        ul.nav__subnav.cw-grid(v-for="(item, index) in nav", :key="index", v-show="isCategory(item.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
-          router-link(tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
+        ul.nav__subnav.cw-grid(v-for="(subnav, index) in nav", :key="index", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
+          router-link(tag="li", :to="{name: 'Category', params: {catSlug: subnav.primary.category_link.uid}}").cw-grid__item
             a
               nav-link Everything
               radio-btn
             nav-vein
           //- loop 
-          li.cw-grid__item(v-for="(subitem, index) in item.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
+          li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
             //- tags
             template(v-if="subitem.link.type === 'tag'")
               a(@click="filter(subitem.link.uid)")
@@ -68,7 +68,7 @@
               router-link(:to="{name: 'Partners'}")
                 nav-link {{subitem.link.data.title | text}}
                 radio-btn
-            nav-vein(v-if="index < item.items.length - 1")
+            nav-vein(v-if="index < subnav.items.length - 1")
 </template>
 
 <script>
