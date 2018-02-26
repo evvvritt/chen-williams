@@ -12,6 +12,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     prismicUrl: process.env.PRISMIC,
+    checkout: { lineItems: [] },
     loading: true,
     querying: false,
     site: {},
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     setInfo (state, payload) {
       state.info = payload
     },
+    setCheckout (state, payload) {
+      state.checkout = payload
+    },
     setProducts (state, payload) {
       state.products = payload
     }
@@ -55,6 +59,19 @@ export default new Vuex.Store({
         commit('setSite', resp.results[0].data)
       }, (err) => {
         console.error('Error: Get Site failed', err)
+      })
+    },
+    createCheckout ({ commit, state }) {
+      const savedId = window.localStorage.getItem('checkoutId')
+      if (savedId) {
+        return shop.checkout.fetch(savedId).then((checkout) => {
+          commit('setCheckout', checkout)
+        })
+      }
+      // else, create new
+      return shop.checkout.create().then((checkout) => {
+        window.localStorage.setItem('checkoutId', checkout.id) // save id for future retrieving
+        commit('setCheckout', checkout)
       })
     },
     getProducts ({ commit, state }) {
@@ -109,6 +126,13 @@ export default new Vuex.Store({
           console.error('Error: Get Object failed', err)
         })
       }
+    },
+    addToCart ({ commit, state }, variantId, qty = 1) {
+      if (!state.checkout.id) return false
+      const lineItemsToAdd = [{ variantId: variantId, quantity: qty }]
+      shop.checkout.addLineItems(state.checkout.id, lineItemsToAdd).then((checkout) => {
+        commit('setCheckout', checkout)
+      })
     }
   }
 })

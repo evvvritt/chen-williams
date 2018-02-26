@@ -5,27 +5,30 @@
       overlay-header.object__header(@close="close")
       .object__main.pt-1row(v-if="object.data")
         carousel.object__slideshow(:slides="object.data.slideshow")
-        .object__details.p-text
-          h1 {{object.data.title | text}}
-          h6 {{object.data.year}}
-          h6 {{object.data.dimensions | text}}
-          div.mt1(v-html="richtext(object.data.description)")
-          h6.mt1(v-if="price") ${{price | price}}
+        .object__details.relative
+          section.p-text.relative.z2.mb-w-75
+            h1 {{object.data.title | text}}
+            h6 {{object.data.year}}
+            h6 {{object.data.dimensions | text}}
+            div.mt1(v-html="richtext(object.data.description)")
+            h6.mt1(v-if="price") ${{price | price}}
+          .object__buy-btn.absolute.z1.w-100(@click="addToCart")
+            .relative.p-text
+              nav-link Add to Cart
+              radio-btn
 </template>
 
 <script>
 import Background from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
 import Carousel from '@/components/Carousel'
+import NavLink from '@/components/Header/NavLink'
+import RadioBtn from '@/components/RadioBtn'
 import _find from 'lodash/find'
 export default {
   name: 'Object',
   props: ['slug'],
-  components: {
-    Background,
-    OverlayHeader,
-    Carousel
-  },
+  components: { Background, OverlayHeader, Carousel, NavLink, RadioBtn },
   data () {
     return {
       richtext: this.$options.filters.richtext
@@ -35,12 +38,17 @@ export default {
     object () {
       return this.$store.state.object
     },
-    price () {
+    variant () {
       if (!this.object) return false
       const id = this.object.data.shopify_product_id
       const product = _find(this.$store.state.products, id)
-      const hasPrice = product && product.variants && product.variants.length > 0
-      return hasPrice ? product.variants[0].price : false
+      if (!product) return false
+      const hasVariants = product.variants && product.variants.length > 0
+      return hasVariants ? product.variants[0] : false
+    },
+    price () {
+      if (!this.variant) return false
+      return this.variant.price
     }
   },
   methods: {
@@ -50,6 +58,9 @@ export default {
     },
     getObject () {
       if (this.slug) this.$store.dispatch('getObject', this.slug)
+    },
+    addToCart () {
+      if (this.variant) return this.$store.dispatch('addToCart', this.variant.id)
     }
   },
   created () {
@@ -137,6 +148,32 @@ export default {
     img{
       width:100%;
     }
+  }
+}
+
+.object__buy-btn{
+  position: absolute;
+  top:0;
+  left:75%;
+  max-width:25%;
+  .radio-btn{
+    position: absolute;
+    top:rem(-8px);
+    left:rem(-8px);
+  }
+  .nav__link{
+    position:static;
+    padding:0;
+    left:auto;
+  }
+  @include grid9 {
+    max-width:none;
+    top:0;
+    padding-top:calc(100% / 2 * 3);
+    left:0;
+  }
+  @include grid12 {
+    padding-top:calc(100% / 3 * 3);
   }
 }
 </style>

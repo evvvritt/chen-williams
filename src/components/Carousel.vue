@@ -126,12 +126,12 @@ figure{
   }
 }
 @include grid12{
-  img{
+  figure img{
     height:calc((100vw - 4rem)/12 * 4);
   }
 }
 @include grid15{
-  img{
+  figure img{
     height:calc((100vw - 4rem)/15 * 4);
   }
 }

@@ -28,11 +28,13 @@
 .left-0{
   left:0;
 }
+.bottom-0{
+  bottom:0;
+}
 
 .w-100{
   width:100%;
 }
-
 .min-h-100{
   min-height: 100vh;
 }
@@ -147,6 +149,9 @@
   }
   .mb-block{
     display:block;
+  }
+  .mb-w-75{
+    width:75%;
   }
 }
 @include grid9{
