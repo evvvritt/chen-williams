@@ -59,7 +59,11 @@ export default {
       if (this.slug) this.$store.dispatch('getObject', this.slug)
     },
     addToCart () {
-      if (this.variant) return this.$store.dispatch('addToCart', this.variant.id)
+      if (this.variant) {
+        this.$store.dispatch('addToCart', this.variant.id).then(() => {
+          this.$router.push({hash: '#cart'})
+        })
+      }
     }
   },
   created () {

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .radio-btn(:class="{'radio-btn--checked': checked}", :style="'background-color:' + fill")
+  .radio-btn(:class="{'radio-btn--checked': checked}", :style="'background-color:' + fill", @click="$emit('click')")
 </template>
 
 <script>

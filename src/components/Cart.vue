@@ -3,27 +3,31 @@
   aside.cart.fixed.overlay.z-overlay.p2.bg-gray.backdrop-blur
     background(color="gray")
     overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})")
-    section.pt-1row.left-align(v-if="cart")
-      header.flex.items-end
-        .cell
-        .cell.cell-2.p-text Items
-        .cell.p-text Quantity
-        .cell.p-text Price
-      ul
-        li.flex(v-for="item in cart.lineItems")
-          div.cell.bg-cover(:style="'background-image:url(' + src(item.variant) + ')'")
-          div.cell.cell-2.p-text 
-            div {{item.title}}
-            div(v-html="details(item.variant)")
-          div.cell.p-text {{item.quantity}}
-          div.cell.p-text {{item.variant.price | price}}
-      footer.flex.justify-end
-        .cell
-        .cell.p-text {{cart.subtotalPrice | price}} total
-        .cell.relative
-          a(v-if="cart.webUrl", :href="cart.webUrl")
-            .radio-btn-label.p-text Checkout
-            radio-btn
+    section.pt-1row.left-align
+      template(v-if="cart && cart.lineItems.length > 0")
+        header.flex.items-end
+          .cell
+          .cell.cell-2.p-text Items
+          .cell.p-text Quantity
+          .cell.p-text Price
+        ul
+          li.flex(v-for="item in cart.lineItems")
+            div.cell.bg-cover.relative(:style="'background-image:url(' + src(item.variant) + ')'")
+              radio-btn(title="Remove", @click="remove(item.id)")
+            div.cell.cell-2.p-text 
+              div {{item.title}}
+              div(v-html="details(item.variant)")
+            div.cell.p-text {{item.quantity}}
+            div.cell.p-text {{item.variant.price | price}}
+        footer.flex.justify-end
+          .cell
+          .cell.p-text {{cart.subtotalPrice | price}} total
+          .cell.relative
+            a(v-if="cart.webUrl", :href="cart.webUrl")
+              .radio-btn-label.p-text Checkout
+              radio-btn
+      template(v-else)
+        .p-text Your cart is empty.
 </template>
 
 <script>
@@ -50,6 +54,9 @@ export default {
         const length = window.innerWidth / 9 * window.devicePixelRatio
         return Vue.shopClient.image.helpers.imageForSize(variant.image, {maxWidth: length, maxHeight: length})
       }
+    },
+    remove (id) {
+      if (id) this.$store.dispatch('removeCartItems', [id])
     }
   }
 }

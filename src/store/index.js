@@ -135,6 +135,12 @@ export default new Vuex.Store({
       shop.checkout.addLineItems(state.checkout.id, lineItemsToAdd).then((checkout) => {
         commit('setCheckout', checkout)
       })
+    },
+    removeCartItems ({ commit, state }, lineItemIds) {
+      if (!lineItemIds) return false // Remove an item from the checkout
+      shop.checkout.removeLineItems(state.checkout.id, lineItemIds).then((checkout) => {
+        commit('setCheckout', checkout)
+      })
     }
   }
 })
