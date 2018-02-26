@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Prismic from 'prismic-javascript'
 import Shopify from 'shopify-buy'
-const shop = Shopify.buildClient({
+
+Vue.use(Vuex)
+
+Vue.shopClient = Shopify.buildClient({
   domain: process.env.SHOPIFY.DOMAIN,
   storefrontAccessToken: process.env.SHOPIFY.TOKEN
 })
-
-Vue.use(Vuex)
+const shop = Vue.shopClient
 
 export default new Vuex.Store({
   state: {

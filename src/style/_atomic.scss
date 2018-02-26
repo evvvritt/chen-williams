@@ -48,6 +48,9 @@
 .bg-gray{
   background:rgba($ltgray, .5);
 }
+.bg-cover{
+  background-size:cover;
+}
 .backdrop-blur{
   @supports (backdrop-filter:blur(10px)){
     backdrop-filter:blur(10px);
@@ -129,8 +132,14 @@
 .justify-between{
   justify-content: space-between;
 }
+.justify-end{
+  justify-content: flex-end;
+}
 .items-center{
   align-items:center;
+}
+.items-end{
+  align-items:flex-end;
 }
 .item-fill{
   flex:1 0 auto;
@@ -147,6 +156,8 @@
 .fades{
   transition: opacity 500ms;
 }
+
+
 
 // media query based
 

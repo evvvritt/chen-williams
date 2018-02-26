@@ -1,5 +1,5 @@
 <template lang="pug">
-  span.nav__link.absolute.pointer.top-0
+  span.nav__link.radio-btn-label.absolute.pointer.top-0
     slot
 </template>
 

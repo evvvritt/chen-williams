@@ -5,7 +5,7 @@
         header.flex.z2
           h2.p-text {{object.data.title | text}}
           //- small.p-text(v-if="price && !unavailable", v-html="'$' + price")
-          small.p-text(v-if="price") ${{price | price}}
+          small.p-text(v-if="price") {{price | price}}
         figure
           img(:src="object.data.thumbnail.url")
 </template>

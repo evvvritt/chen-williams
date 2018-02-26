@@ -209,9 +209,6 @@ export default {
 }
 
 .nav .radio-btn{
-  position: absolute;
-  left: rem(-8px);
-  top: rem(-8px);
   z-index:2;
   transition: opacity $fadeDuration;
   .app--loading &{

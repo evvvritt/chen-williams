@@ -21,6 +21,9 @@ export default {
 @import '../style/variables';
 
 .radio-btn{
+  position: absolute;
+  top:rem(-8px);
+  left:rem(-8px);
   cursor: pointer;
   width:rem(16px);
   height:rem(16px);
@@ -34,8 +37,14 @@ export default {
   .app:not(.app--loading) .nav__primary-nav .router-link-active &,
   &.radio-btn--checked,
   .no-touchevents .app:not(.app--loading) &:hover,
-  .no-touchevents .app:not(.app--loading) .nav__link:hover + &{
+  .no-touchevents .app:not(.app--loading) .radio-btn-label:hover + &{
     background-image:url(../assets/icons/radio-btn--selected.svg);
   }
 }
+</style>
+
+<style lang="css">
+  .radio-btn-label{
+    cursor:pointer;
+  }
 </style>

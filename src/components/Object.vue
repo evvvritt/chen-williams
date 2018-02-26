@@ -11,10 +11,10 @@
             h6 {{object.data.year}}
             h6 {{object.data.dimensions | text}}
             div.mt1(v-html="richtext(object.data.description)")
-            h6.mt1(v-if="price") ${{price | price}}
+            h6.mt1(v-if="price") {{price | price}}
           .object__buy-btn.absolute.z1.w-100(@click="addToCart")
-            .relative.p-text
-              nav-link Add to Cart
+            .relative
+              .radio-btn-label.p-text Add to Cart
               radio-btn
 </template>
 
@@ -22,13 +22,12 @@
 import Background from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
 import Carousel from '@/components/Carousel'
-import NavLink from '@/components/Header/NavLink'
 import RadioBtn from '@/components/RadioBtn'
 import _find from 'lodash/find'
 export default {
   name: 'Object',
   props: ['slug'],
-  components: { Background, OverlayHeader, Carousel, NavLink, RadioBtn },
+  components: { Background, OverlayHeader, Carousel, RadioBtn },
   data () {
     return {
       richtext: this.$options.filters.richtext
@@ -156,16 +155,6 @@ export default {
   top:0;
   left:75%;
   max-width:25%;
-  .radio-btn{
-    position: absolute;
-    top:rem(-8px);
-    left:rem(-8px);
-  }
-  .nav__link{
-    position:static;
-    padding:0;
-    left:auto;
-  }
   @include grid9 {
     max-width:none;
     top:0;
