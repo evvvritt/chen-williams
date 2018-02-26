@@ -3,25 +3,24 @@
     transition(name="overlay")
       router-view
     background
-    transition(name="quickfade")
-      .pt-2rows(v-show="!querying")
-        .category__items
-          background(:overlay="true", scheme="category", :rows="3", :padless="true")
-          item(v-for="object in category.results", :key="object.id", :object="object")
-          //- item(title="Pen & Holder", price="60")
-            img(src="../demo/CK-GEM_Pen_P02.jpg")
-            item(title="Copper Box", price="120")
-              img(src="../demo/D1_01.jpg")
-            item(title="Cherry Box", price="20", unavailable="true")
-              img(src="../demo/CK-GEM_Drum_P03.jpg")
-            item(title="Mirror", price="20")
-              img(src="../demo/CK-GEM_Pen_P01.jpg")
-            item(title="Pen", price="20")
-              img(src="../demo/B2_01.jpg")
-            item(title="Pils", price="20")
-              img(src="../demo/CK-GEM_Pill_AB02.jpg")
-            item(title="Keys", price="20")
-              img(src="../demo/CK-GEM_Hook1_02.jpg")
+    .pt-2rows.fades(:class="{'opacity-0': querying}")
+      .category__items
+        background(:overlay="true", scheme="category", :rows="3", :padless="true")
+        item(v-for="object in category.results", :key="object.id", :object="object")
+        //- item(title="Pen & Holder", price="60")
+          img(src="../demo/CK-GEM_Pen_P02.jpg")
+          item(title="Copper Box", price="120")
+            img(src="../demo/D1_01.jpg")
+          item(title="Cherry Box", price="20", unavailable="true")
+            img(src="../demo/CK-GEM_Drum_P03.jpg")
+          item(title="Mirror", price="20")
+            img(src="../demo/CK-GEM_Pen_P01.jpg")
+          item(title="Pen", price="20")
+            img(src="../demo/B2_01.jpg")
+          item(title="Pils", price="20")
+            img(src="../demo/CK-GEM_Pill_AB02.jpg")
+          item(title="Keys", price="20")
+            img(src="../demo/CK-GEM_Hook1_02.jpg")
 </template>
 
 <script>
