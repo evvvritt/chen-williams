@@ -13,6 +13,11 @@ export default new Router({
       name: 'Home'
     },
     {
+      path: '/:catSlug/partners',
+      name: 'Partners',
+      component: Category
+    },
+    {
       path: '/:catSlug',
       name: 'Category',
       component: Category,
@@ -28,11 +33,6 @@ export default new Router({
           }
         }
       ]
-    },
-    {
-      path: '/:catSlug/partners',
-      name: 'Partners',
-      component: Category
     }
   ]
 })

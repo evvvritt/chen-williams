@@ -21,7 +21,8 @@ export default new Vuex.Store({
     category: { id: null, results: [] },
     object: { uid: null },
     info: null,
-    products: null
+    products: null,
+    partners: null
   },
   mutations: {
     loading (state, payload) {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     },
     setProducts (state, payload) {
       state.products = payload
+    },
+    setPartners (state, payload) {
+      state.partners = payload
     }
   },
   actions: {
@@ -84,6 +88,8 @@ export default new Vuex.Store({
           return { ...item, _id: id }
         })
         commit('setProducts', products)
+      }, (err) => {
+        console.error('Error: Get Products failed', err)
       })
     },
     getCategory ({ commit, state }, id) {
@@ -125,9 +131,19 @@ export default new Vuex.Store({
         }).then((doc) => {
           commit('setInfo', doc.data)
         }, (err) => {
-          console.error('Error: Get Object failed', err)
+          console.error('Error: Get Info failed', err)
         })
       }
+    },
+    getPartners ({ commit, state }) {
+      if (state.partners) return false
+      Prismic.getApi(state.prismicUrl).then(function (api) {
+        return api.getSingle('partners')
+      }).then((doc) => {
+        commit('setPartners', doc.data)
+      }, (err) => {
+        console.error('Error: Get Partners failed', err)
+      })
     },
     addToCart ({ commit, state }, variantId, qty = 1) {
       if (!state.checkout.id) return false

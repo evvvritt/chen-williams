@@ -4,39 +4,24 @@
       router-view
     background
     .pt-2rows.fades(:class="{'opacity-0': querying}")
-      .category__items
-        background(:overlay="true", scheme="category", :rows="3", :padless="true")
-        item(v-for="object in category.results", :key="object.id", :object="object")
-        //- item(title="Pen & Holder", price="60")
-          img(src="../demo/CK-GEM_Pen_P02.jpg")
-          item(title="Copper Box", price="120")
-            img(src="../demo/D1_01.jpg")
-          item(title="Cherry Box", price="20", unavailable="true")
-            img(src="../demo/CK-GEM_Drum_P03.jpg")
-          item(title="Mirror", price="20")
-            img(src="../demo/CK-GEM_Pen_P01.jpg")
-          item(title="Pen", price="20")
-            img(src="../demo/B2_01.jpg")
-          item(title="Pils", price="20")
-            img(src="../demo/CK-GEM_Pill_AB02.jpg")
-          item(title="Keys", price="20")
-            img(src="../demo/CK-GEM_Hook1_02.jpg")
+      template(v-if="$route.name === 'Partners'")
+        partners
+      template(v-else)
+        .category__items
+          background(:overlay="true", scheme="category", :rows="3", :padless="true")
+          item(v-for="object in category.results", :key="object.id", :object="object")
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import Background from '@/components/DotGrid'
-import MainContent from '@/components/MainBody'
 import Item from '@/components/CategoryItem'
+import Partners from '@/components/Partners'
 import _find from 'lodash/find'
 export default {
   name: 'Category',
   props: ['catSlug'],
-  components: {
-    MainContent,
-    Item,
-    Background
-  },
+  components: { Item, Background, Partners },
   computed: {
     ...mapState([
       'querying',

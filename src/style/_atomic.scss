@@ -15,6 +15,12 @@
   position: relative;
 }
 
+.z0{
+  z-index:0;
+}
+.z1{
+  z-index:1;
+}
 .z2{
   z-index:2;
 }
@@ -73,20 +79,23 @@
 .mb1{
   margin-bottom:1em;
 }
+.p1{
+  padding:rem(8px);
+}
 .p2{
-  padding:2rem 2rem;
+  padding:rem(24px) rem(24px);
 }
 .px2{
-  padding-left:2rem;
-  padding-right:2rem;
+  padding-left:rem(24px);
+  padding-right:rem(24px);
 }
 .py2{
-  padding-top:2rem;
-  padding-bottom:2rem;
+  padding-top:rem(24px);
+  padding-bottom:rem(24px);
 }
 
 .p-text{
-  padding:8px 5px;
+  padding:rem(8px) rem(5px);
 }
 
 .pt-1row{
@@ -118,13 +127,11 @@
 .flex{
   display:flex;
 }
-.sm-flex{
-  @include grid9{
-    display:flex;
-  }
-}
 .flex-rows{
   flex-direction:rows;
+}
+.flex-wrap{
+  flex-wrap:wrap;
 }
 .justify-center{
   justify-content:center;

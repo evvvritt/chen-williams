@@ -11,6 +11,14 @@ Vue.config.IMG = {
   url: process.env.CLOUDINARY,
   sizes: [320, 480, 640, 1024, 1280, 1536, 1750, 2048, 2389]
 }
+Vue.config.bkpts = {
+  mobile: 768
+}
+
+Vue.is = (name) => {
+  if (name === 'mobile') return window.innerWidth < Vue.config.bkpts.mobile
+  return false
+}
 
 // Cloudinary thumb fetching
 Vue.thumbSrc = (src, length, useHeight = false, format = 'jpg') => {

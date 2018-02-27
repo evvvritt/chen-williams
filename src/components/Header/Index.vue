@@ -156,7 +156,7 @@ export default {
 <style lang="scss">
 @import '../../style/variables';
 
-#app-header{
+#app-header.app-header--condensed{
   background:rgba($white, .8);
 }
 
