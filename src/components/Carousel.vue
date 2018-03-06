@@ -42,6 +42,7 @@ export default {
           })
           // static click: next / prev
           this.flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
+            if (event.target && event.target.tagName === 'VIDEO') return false
             if (event.x < this.slider.offsetWidth * 0.5) return this.previous()
             return this.next(true)
           })
