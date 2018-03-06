@@ -22,9 +22,13 @@ export default {
   name: 'Category',
   props: ['catSlug'],
   components: { Item, Background, Partners },
+  data () {
+    return {
+      querying: false
+    }
+  },
   computed: {
     ...mapState([
-      'querying',
       'category',
       'site'
     ])
@@ -41,7 +45,11 @@ export default {
     getCategory () {
       if (!this.site) return false
       const cat = _find(this.site.nav, (navItem) => { return navItem.primary.category_link.uid === this.catSlug })
-      if (cat) return this.$store.dispatch('getCategory', cat.primary.category_link.id)
+      if (!cat) return false
+      this.querying = true
+      this.$store.dispatch('getCategory', cat.primary.category_link.id).then(() => {
+        this.querying = false
+      })
     }
   },
   created () {

@@ -16,7 +16,6 @@ export default new Vuex.Store({
     prismicUrl: process.env.PRISMIC,
     checkout: { lineItems: [] },
     loading: true,
-    querying: false,
     site: {},
     category: { id: null, results: [] },
     object: { uid: null },
@@ -27,9 +26,6 @@ export default new Vuex.Store({
   mutations: {
     loading (state, payload) {
       state.loading = payload
-    },
-    querying (state, payload) {
-      state.querying = payload
     },
     setSite (state, payload) {
       state.site = payload
@@ -94,7 +90,6 @@ export default new Vuex.Store({
     },
     getCategory ({ commit, state }, id) {
       if (id !== state.category.id) {
-        commit('querying', true)
         Prismic.getApi(state.prismicUrl).then(function (api) {
           return api.query(
             [
@@ -104,10 +99,8 @@ export default new Vuex.Store({
             { pageSize: 100, fetch: ['object.title', 'object.thumbnail', 'object.tags', 'object.shopify_product_id'] }
           )
         }).then((resp) => {
-          commit('querying', false)
           commit('setCategory', { ...state.category, id: id, results: resp.results })
         }, (err) => {
-          commit('querying', false)
           console.error('Error: Get Category failed', err)
         })
       }
