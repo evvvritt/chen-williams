@@ -1,9 +1,9 @@
 <template lang="pug">
-  header.app-header
+  header.app-header.z1
     nav.nav
       ul.cw-grid
         li.cw-grid__item.mb-hidden
-          nav-logo
+          nav-logo(:condensed="true")
         li.cw-grid__item
           a(@click="$emit('close')")
             nav-link Close

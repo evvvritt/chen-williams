@@ -3,7 +3,7 @@
     .object__body
       background
       overlay-header.object__header(@close="close")
-      .object__main.pt-1row(v-if="object.data")
+      .object__main(v-if="object.data")
         carousel.object__slideshow(:slides="object.data.slideshow")
         .object__details.relative
           section.p-text.relative.z2.mb-w-75

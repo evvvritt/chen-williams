@@ -2,7 +2,7 @@
   header.app-header(:class="{'app-header--condensed': condensed, 'bg-white': !mobileCollapsed}")
     dot-grid.app-header__dot-grid(:rows="dotGridRows", :overlay="false", :condensed="condensed")
     logo.tblt-hidden
-    nav.nav.relative(:class="{'nav--collapsed': mobileCollapsed}")
+    nav#nav.nav.relative(:class="{'nav--collapsed': mobileCollapsed}")
       //- mobile
       ul.cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item
@@ -251,7 +251,7 @@ export default {
     align-content:flex-start;
   }
   
-  .nav{
+  #nav{
     display:flex;
     align-items:flex-start;
     justify-content: flex-start;
