@@ -1,32 +1,27 @@
 <template lang="pug">
   .carousel(:class="{'carousel--invisible': !flkty}")
-    figure(v-for="(src, index) in images")
-      img.block(v-if="index < 2", :src="src")
-      img.block(v-else, :data-flickity-lazyload="src")
+    figure(v-for="(slide, index) in slides")
+      template(v-if="slide.slice_type === 'image'")
+        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)")
+        img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)")
+      template(v-if="slide.slice_type === 'video'")
+        carousel-video(:src="slide.primary[videoSize].url")
 </template>
 
 <script>
 import Vue from 'vue'
 import Flickity from 'flickity-imagesloaded'
+import CarouselVideo from '@/components/Carousel__Video'
 export default {
   name: 'Carousel',
   props: ['slides'],
+  components: { CarouselVideo },
   data () {
     return {
       flkty: null,
       imgLength: window.innerWidth - 40,
+      videoSize: window.innerWidth > 1024 ? 'video_720' : 'video_480',
       afterResize: null
-    }
-  },
-  computed: {
-    images () {
-      // re fetches images when imgLength changes
-      if (!this.slides) return []
-      const lengthIsHeight = window.innerWidth > 768
-      return this.slides.map((item) => {
-        const src = item.primary.image.url
-        if (src) return Vue.thumbSrc(src, this.imgLength, lengthIsHeight)
-      })
     }
   },
   methods: {
@@ -52,6 +47,11 @@ export default {
           })
         }, delay)
       }
+    },
+    thumb (src) {
+      if (!src) return false
+      const lengthIsHeight = window.innerWidth > 768
+      return Vue.thumbSrc(src, this.imgLength, lengthIsHeight)
     },
     setImgLength () {
       const winW = window.innerWidth
@@ -101,6 +101,9 @@ figure{
     width:100%;
     max-width:none;
   }
+  video{
+    width:100%;
+  }
   // opacity
   opacity:.4;
   transition: opacity 500ms;
@@ -121,18 +124,18 @@ figure{
     width:auto;
     img{
       width:auto;
-      height:calc((100vw - 4rem)/9 * 4);
+      height:calc((100vw - #{$gutter} * 2)/9 * 4);
     }
   }
 }
 @include grid12{
   figure img{
-    height:calc((100vw - 4rem)/12 * 4);
+    height:calc((100vw - #{$gutter} * 2)/12 * 4);
   }
 }
 @include grid15{
   figure img{
-    height:calc((100vw - 4rem)/15 * 4);
+    height:calc((100vw - #{$gutter} * 2)/15 * 4);
   }
 }
 </style>
