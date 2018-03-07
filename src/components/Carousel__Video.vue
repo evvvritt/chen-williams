@@ -1,34 +1,16 @@
 <template lang="pug">
-div.relative.pointer(@click.stop="play = !play")
-  span.absolute.bottom-0.left-0.p1.z1(v-show="!play")
-  video(:src="src", @ended="play = false")
+div.relative
+  span.absolute.bottom-0.left-0.p1.z1.pointer-events-none(v-show="!isPlaying")
+  video.pointer(:src="src", :poster="poster", @playing="isPlaying = true", @pause="isPlaying = false", @ended="isPlaying = false", playsinline)
 </template>
 
 <script>
 export default {
   name: 'CarouselVideo',
-  props: ['src'],
+  props: ['src', 'poster'],
   data () {
     return {
-      play: false
-    }
-  },
-  watch: {
-    play (play) {
-      const video = this.$el.querySelector('video')
-      if (!video) {
-        this.play = false
-      } else if (play && video.paused) {
-        video.play()
-      } else {
-        video.pause()
-      }
-    }
-  },
-  methods: {
-    pause () {
-      // for calling from parent
-      this.play = false
+      isPlaying: false
     }
   }
 }
@@ -75,7 +57,7 @@ span{
   }
 }
 
-@include grid12 {
+@include grid15 {
   div{
     max-width:calc((100vw - #{$gutter} * 2)/15 * 6);
   }

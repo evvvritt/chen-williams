@@ -1,5 +1,7 @@
 <template lang="pug">
-  .radio-btn(:class="{'radio-btn--checked': checked}", :style="'background-color:' + fill", @click="$emit('click')")
+  .radio-btn.flex.items-center.justify-center(:class="classes", :style="'background-color:' + fill", @click="$emit('click')")
+    span.block
+      slot
 </template>
 
 <script>
@@ -7,11 +9,17 @@ export default {
   name: 'RadioBtn',
   props: {
     checked: { type: Boolean, default: false },
-    fill: { type: String, default: 'transparent' }
+    fill: { type: String, default: 'transparent' },
+    right: { type: Boolean, default: false },
+    type: { type: String, default: '' }
   },
-  data () {
-    return {
-
+  computed: {
+    classes () {
+      return {
+        'radio-btn--checked': this.checked,
+        'radio-btn--right': this.right,
+        'radio-btn--close': this.type === 'close'
+      }
     }
   }
 }
@@ -23,7 +31,7 @@ export default {
 .radio-btn{
   position: absolute;
   top:rem(-8px);
-  left:rem(-8px);
+  left:rem(-8px);  
   cursor: pointer;
   width:rem(16px);
   height:rem(16px);
@@ -33,12 +41,25 @@ export default {
   overflow:hidden;
   border-radius:100px;
 
+  &.radio-btn--right{
+    left:auto;
+    right:rem(-8px);
+  }
+
+  &.radio-btn--close{
+    background-image:url(../assets/icons/radio-btn--close.svg) !important;
+  }
+
   .app:not(.app--loading) .router-link-exact-active &,
   .app:not(.app--loading) .nav__primary-nav .router-link-active &,
   &.radio-btn--checked,
   .no-touchevents .app:not(.app--loading) &:hover,
   .no-touchevents .app:not(.app--loading) .radio-btn-label:hover + &{
     background-image:url(../assets/icons/radio-btn--selected.svg);
+  }
+
+  span{
+    font-size:70%;
   }
 }
 </style>

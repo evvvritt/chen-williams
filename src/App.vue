@@ -3,7 +3,7 @@
     .app__body(:class="{'app__body--blurred': blurBody}")
       app-header#app-header.fixed.top-0.left-0.w-100.z-nav.backdrop-blur(:loading="loading")
       .app__body__main
-        router-view(:loading="loading")
+        router-view
     transition(name="slideup")
       info(v-if="showInfo")
     transition(name="slideup")

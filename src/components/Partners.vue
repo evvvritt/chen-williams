@@ -1,5 +1,5 @@
 <template lang="pug">
-  section(v-if="partners").mb-block.flex.flex-wrap
+  section(v-if="partners").mbl-block.flex.flex-wrap
     article.bg-gray.relative.pointer(v-for="partner in partners.body")
       a.radio-btn-label.overlay.absolute(v-for="partner in partners.body", :href="partner.primary.link.url", target="_blank", rel="noopener")
         header.z2.absolute.top-0.left-0

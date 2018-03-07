@@ -3,19 +3,20 @@
     .object__body
       background
       overlay-header.object__header(@close="close")
-      .object__main(v-if="object.data")
+      .object__main.mb-pt-1row(v-if="object.data")
         carousel.object__slideshow(:slides="object.data.slideshow")
-        .object__details.relative
-          section.p-text.relative.z2.mb-w-75
-            h1 {{object.data.title | text}}
-            h6 {{object.data.year}}
-            h6 {{object.data.dimensions | text}}
-            div.mt1(v-html="richtext(object.data.description)")
-            h6.mt1(v-if="price") {{price | price}}
-          .object__buy-btn.absolute.z1.w-100(@click="addToCart")
+        .object__details
+          section
+            .p-text
+              h1 {{object.data.title | text}}
+              h6 {{object.data.year}}
+              h6 {{object.data.dimensions | text}}
+              div.mt1(v-html="richtext(object.data.description)")
+              h6.mt1(v-if="price") {{price | price}}
+          aside(@click="addToCart")
             .relative
               .radio-btn-label.p-text Add to Cart
-              radio-btn
+              radio-btn(fill="white")
 </template>
 
 <script>
@@ -101,33 +102,61 @@ export default {
     flex-wrap: no-wrap;
   }
 }
-// column widths
+
 .object__slideshow{
-  flex:0 0 calc(100%/5 * 6);
+  flex:0 0 cols(6,5);
   height:0;
   padding-bottom:100%;
   @include grid9 {
-    flex:0 0 calc(100%/9 * 7);
+    flex:0 0 cols(7,9);
     height:auto;
     padding-bottom:0;
   }
   @include grid12 {
-    flex:0 0 calc(100%/12 * 7);
+    flex:0 0 cols(7,12);
   }
   @include grid15 {
-    flex:0 0 calc(100%/15 * 7);
+    flex:0 0 cols(7,15);
   }
 }
+
 .object__details{
   flex:0 0 100%;
-  @media (min-width:769px) {
-    flex:0 0 calc(100%/9 * 2);
+  @media grid9 {
+    flex:0 0 cols(2,9);
   }
   @include grid12 {
-    flex:0 0 calc(100%/12 * 3);
+    flex:0 0 cols(3,12);
   }
   @include grid15 {
-    flex:0 0 calc(100%/15 * 3);
+    flex:0 0 cols(3,15);
+  }
+
+  // content
+  @include mobile {
+    section{
+      width:75%;
+      float:left;
+    }
+    aside{
+      width:25%;
+      float:left;
+    }
+  }
+  
+  @include grid9 {
+    flex:0 0 cols(2,9);
+    // flex columns
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    section{
+      flex:0 0 cols(3,4);
+      overflow-y:auto;
+    }
+    aside{
+      flex:0 0 cols(1,4);
+    }
   }
 }
 
@@ -151,22 +180,6 @@ export default {
     img{
       width:100%;
     }
-  }
-}
-
-.object__buy-btn{
-  position: absolute;
-  top:0;
-  left:75%;
-  max-width:25%;
-  @include grid9 {
-    max-width:none;
-    top:0;
-    padding-top:calc(100% / 2 * 3);
-    left:0;
-  }
-  @include grid12 {
-    padding-top:calc(100% / 3 * 3);
   }
 }
 </style>

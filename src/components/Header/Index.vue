@@ -1,9 +1,15 @@
 <template lang="pug">
   header.app-header(:class="{'app-header--condensed': condensed, 'bg-white': !mobileCollapsed}")
     dot-grid.app-header__dot-grid(:rows="dotGridRows", :overlay="false", :condensed="condensed")
+    //- mobile logo
     logo.tblt-hidden
+    //- mobile cart counter
+    router-link(:to="{hash: 'cart'}", v-show="cartCount > 0").tblt-hidden.absolute.right-0.top-0.p2.z1
+      .relative
+        radio-btn(fill="white", :right="true") {{cartCount}}
+    //- nav
     nav#nav.nav.relative(:class="{'nav--collapsed': mobileCollapsed}")
-      //- mobile
+      //- mobile menu btn
       ul.cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item
           nav-link(v-html="mobileCollapsed ? 'Menu' : 'Close'")
@@ -11,20 +17,20 @@
       //- loading
       template(v-if="loading")
         ul.nav__primary-nav.cw-grid
-          li.cw-grid__item.mb-hidden
+          li.cw-grid__item.mbl-hidden
             router-link(to="/")
               logo(:condensed="condensed")
-          li
+          li.cw-grid__item.mbl-hidden
             nav-link Loading
             radio-btn(:checked="true")
-          li <radio-btn/>
-          li <radio-btn/>
-          li <radio-btn/>
+          li.cw-grid__item.mbl-hidden <radio-btn/>
+          li.cw-grid__item.mbl-hidden <radio-btn/>
+          li.cw-grid__item.mbl-hidden <radio-btn/>
       //- loaded
       template(v-else)
         ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
           //- logo
-          li.cw-grid__item.mb-hidden
+          li.cw-grid__item.mbl-hidden
             logo(:condensed="condensed")
           //- categories loop
           router-link(v-for="(item, index) in nav", :key="index", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
@@ -50,19 +56,20 @@
                 nav-link Cart
                 radio-btn
         //- sub navs
-        ul.nav__subnav.cw-grid(v-for="(subnav, index) in nav", :key="index", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
+        ul.nav__subnav.cw-grid(v-for="(subnav, navIndex) in nav", :key="navIndex", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
           router-link(tag="li", :to="{name: 'Category', params: {catSlug: subnav.primary.category_link.uid}}").cw-grid__item
             a
               nav-link Everything
               radio-btn
             nav-vein
-          //- loop 
+          //- loop through filters
           li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
-            //- tags
+            //- filters (tags)
             template(v-if="subitem.link.type === 'tag'")
               a(@click="filter(subitem.link.uid)")
                 nav-link {{subitem.link.data.label | text}}
                 radio-btn(:checked="activeFilter(subitem.link.uid)")
+              nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
             //- partners
             template(v-if="subitem.link.type === 'partners'")
               router-link(:to="{name: 'Partners'}")
@@ -80,7 +87,6 @@ import NavVein from './NavVein'
 import _throttle from 'lodash/throttle'
 export default {
   name: 'Header',
-  props: ['loading'],
   components: { DotGrid, RadioBtn, Logo, NavLink, NavVein },
   data () {
     return {
@@ -90,8 +96,14 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$store.state.loading
+    },
     nav () {
       return this.$store.state.site.nav
+    },
+    cartCount () {
+      return this.$store.getters.cartCount
     },
     activeFilters () {
       const filters = this.$route.query.filter
@@ -274,7 +286,7 @@ export default {
       }
     }
     // active at top of column
-    // .nav__subnav .mb-active-filter,
+    // .nav__subnav .mbl-active-filter,
     .nav__subnav .router-link-exact-active, // so partners jumps to top
     .nav__primary-nav .router-link-active{
       order:-1;

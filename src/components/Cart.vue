@@ -13,7 +13,7 @@
         ul
           li.flex(v-for="item in cart.lineItems")
             div.cell.bg-cover.relative(:style="'background-image:url(' + src(item.variant) + ')'")
-              radio-btn(title="Remove", @click="remove(item.id)")
+              radio-btn(title="Remove Item", @click="remove(item.id)", fill="white", type="close")
             div.cell.cell-2.p-text 
               div {{item.title}}
               div(v-html="details(item.variant)")
@@ -26,6 +26,7 @@
             a(v-if="cart.webUrl", :href="cart.webUrl")
               .radio-btn-label.p-text Checkout
               radio-btn
+      //- empty cart
       template(v-else)
         .p-text Your cart is empty.
 </template>
@@ -51,7 +52,10 @@ export default {
     },
     src (variant) {
       if (variant.image && Vue.shopClient) {
-        const length = window.innerWidth / 9 * window.devicePixelRatio
+        const ratio = window.devicePixelRatio || 1
+        const winW = window.innerWidth
+        let length = Vue.is('mobile') ? winW / 4 * ratio : winW / 9 * ratio
+        length = parseInt(length)
         return Vue.shopClient.image.helpers.imageForSize(variant.image, {maxWidth: length, maxHeight: length})
       }
     },
@@ -65,7 +69,7 @@ export default {
 <style lang="scss" scoped>
 @import '../style/variables';
 .cell{
-  flex:1 0 auto;
+  flex:0 0 25%;
   &:first-child{ padding-bottom:25%; } // sets height
 }
 @include grid9{
@@ -81,5 +85,16 @@ export default {
       flex:0 0 calc(100% / 6 * 2);
     }
   }  
+}
+
+@include grid12{
+  section{
+    width:calc(100% / 12 * 6);
+  }
+}
+@include grid15{
+  section{
+    width:calc(100% / 15 * 6);
+  }
 }
 </style>

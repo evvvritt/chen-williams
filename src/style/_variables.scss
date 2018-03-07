@@ -27,6 +27,11 @@ $navCondenseDuration: 500ms;
   }
 }
 
+@function cols($count, $total) {
+  // @return calc((100vw - #{$gutter} * 2) / #{$total} * #{$count});
+  @return calc(100% / #{$total} * #{$count});
+}
+
 @mixin grid9 {
   @media (min-width:$bkpt-grid-9){
     @content;

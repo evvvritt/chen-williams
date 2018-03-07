@@ -23,6 +23,11 @@ export default new Vuex.Store({
     products: null,
     partners: null
   },
+  getters: {
+    cartCount: state => {
+      return state.checkout.lineItems.length
+    }
+  },
   mutations: {
     loading (state, payload) {
       state.loading = payload
@@ -72,7 +77,8 @@ export default new Vuex.Store({
       }
       // else, create new
       return shop.checkout.create().then((checkout) => {
-        window.localStorage.setItem('checkoutId', checkout.id) // save id for future retrieving
+        // save id for future retrieving
+        window.localStorage.setItem('checkoutId', checkout.id)
         commit('setCheckout', checkout)
       })
     },

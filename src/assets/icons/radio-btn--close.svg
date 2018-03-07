@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>radio-btn--close</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="radio-btn--close">
+            <circle id="Oval" stroke="#000000" cx="8" cy="8" r="7.5"></circle>
+            <g id="x" transform="translate(4.000000, 4.000000)" fill-rule="nonzero" fill="#000000">
+                <rect id="Rectangle-path" transform="translate(4.000000, 4.000000) rotate(45.000000) translate(-4.000000, -4.000000) " x="3.52633788" y="-0.738287892" width="1" height="9.47657578"></rect>
+                <rect id="Rectangle-path" transform="translate(4.000000, 4.000000) rotate(45.000000) translate(-4.000000, -4.000000) " x="-0.738287892" y="3.52633788" width="9.47657578" height="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

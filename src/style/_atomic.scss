@@ -37,6 +37,9 @@
 .left-0{
   left:0;
 }
+.right-0{
+  right:0;
+}
 .bottom-0{
   bottom:0;
 }
@@ -159,6 +162,9 @@
 .pointer{
   cursor:pointer;
 }
+.pointer-events-none{
+  pointer-events:none;
+}
 
 .fades{
   transition: opacity 500ms;
@@ -169,14 +175,17 @@
 // media query based
 
 @include mobile {
-  .mb-hidden{
+  .mbl-hidden{
     display: none !important;
   }
-  .mb-block{
+  .mbl-block{
     display:block;
   }
-  .mb-w-75{
+  .mbl-w-75{
     width:75%;
+  }
+  .mbl-pt-1row{
+    padding-top: 25%;
   }
 }
 @include grid9{
