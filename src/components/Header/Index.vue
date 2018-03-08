@@ -1,6 +1,6 @@
 <template lang="pug">
-  header.app-header(:class="{'app-header--condensed': condensed, 'bg-white': !mobileCollapsed}")
-    dot-grid.app-header__dot-grid(:rows="dotGridRows", :overlay="false", :condensed="condensed")
+  header.app-header.left-align(:class="{'app-header--condensed': condensed, 'mbl-bg-white app-header--mobile-collapsed': !mobileCollapsed}")
+    //- dot-grid.app-header__dot-grid(:rows="9", :overlay="false", :condensed="condensed")
     //- mobile logo
     logo.tblt-hidden
     //- mobile cart counter
@@ -8,12 +8,13 @@
       .relative
         radio-btn(fill="white", :right="true") {{cartCount}}
     //- nav
-    nav#nav.nav.relative(:class="{'nav--collapsed': mobileCollapsed}")
+    nav#nav.nav.relative.overflow-hidden(:class="{'nav--mbl-collapsed': mobileCollapsed}")
+      dot-grid.tblt-hidden.z1(:rows="9", :overlay="false")
       //- mobile menu btn
       ul.cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item
           nav-link(v-html="mobileCollapsed ? 'Menu' : 'Close'")
-          radio-btn(:checked="false")
+          radio-btn(:checked="false", fill="white")
       //- loading
       template(v-if="loading")
         ul.nav__primary-nav.cw-grid
@@ -28,7 +29,8 @@
           li.cw-grid__item.mbl-hidden <radio-btn/>
       //- loaded
       template(v-else)
-        ul.nav__primary-nav.cw-grid(:class="{'cw-grid--condensed': condensed}")
+        ul.nav__primary-nav.cw-grid.relative.z1(:class="{'cw-grid--condensed': condensed}")
+          dot-grid.mbl-hidden(:rows="1", :overlay="false", :padless="true")
           //- logo
           li.cw-grid__item.mbl-hidden
             logo(:condensed="condensed")
@@ -56,26 +58,34 @@
                 nav-link Cart
                 radio-btn
         //- sub navs
-        ul.nav__subnav.cw-grid(v-for="(subnav, navIndex) in nav", :key="navIndex", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
-          router-link(tag="li", :to="{name: 'Category', params: {catSlug: subnav.primary.category_link.uid}}").cw-grid__item
-            a
-              nav-link Everything
-              radio-btn
-            nav-vein
-          //- loop through filters
-          li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
-            //- filters (tags)
-            template(v-if="subitem.link.type === 'tag'")
-              a(@click="filter(subitem.link.uid)")
-                nav-link {{subitem.link.data.label | text}}
-                radio-btn(:checked="activeFilter(subitem.link.uid)")
-              nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
-            //- partners
-            template(v-if="subitem.link.type === 'partners'")
-              router-link(:to="{name: 'Partners'}")
-                nav-link {{subitem.link.data.title | text}}
+        .nav__subnavs.relative.z1
+          dot-grid.mbl-hidden(:rows="1", :overlay="false", :padless="true")
+          ul.nav__subnav.cw-grid(v-for="(subnav, navIndex) in nav", :key="navIndex", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
+            router-link(tag="li", :to="{name: 'Category', params: {catSlug: subnav.primary.category_link.uid}}").cw-grid__item
+              a
+                nav-link Everything
                 radio-btn
-            nav-vein(v-if="index < subnav.items.length - 1")
+              nav-vein
+            //- loop through filters
+            li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
+              //- filters (tags)
+              template(v-if="subitem.link.type === 'tag'")
+                a(@click="filter(subitem.link.uid)")
+                  nav-link {{subitem.link.data.label | text}}
+                  radio-btn(:checked="activeFilter(subitem.link.uid)")
+                nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
+              //- partners
+              template(v-if="subitem.link.type === 'partners'")
+                router-link(:to="{name: 'Partners'}")
+                  nav-link {{subitem.link.data.title | text}}
+                  radio-btn
+              nav-vein(v-if="index < subnav.items.length - 1")
+        //- background
+        #nav__bg.absolute.overlay.top-0
+          #nav__bg__fill.absolute.overlay
+          .absolute.left-0.bottom-0.w-100.px2.mbl-hidden
+            .relative
+              dot-grid(:rows="1", :overlay="false", :padless="true", :keepFirstDot="true")
 </template>
 
 <script>
@@ -91,8 +101,8 @@ export default {
   data () {
     return {
       condensed: false,
-      mobileCollapsed: true,
-      dotGridRows: window.innerWidth < 768 ? 8 : 2
+      mobileCollapsed: true
+      // dotGridRows: window.innerWidth < 768 ? 8 : 2
     }
   },
   computed: {
@@ -168,25 +178,16 @@ export default {
 <style lang="scss">
 @import '../../style/variables';
 
-#app-header.app-header--condensed{
-  background:rgba($white, .8);
-}
-
-.app-header{
+#app-header{
   padding-bottom: 1px;
 }
 
 .nav{
-  padding:calc(25vh + #{$gutter}) $gutter 0;
-  margin-top: -25vh;
+  padding:$gutter $gutter 0; // calc(25vh + #{$gutter}) $gutter 0;
   transition:box-shadow $navCondenseDuration;
-  .app-header--condensed &{
-    box-shadow: 0 0 50px -20px #000000;
-  }
 
   ul{
     list-style-type: none;
-    text-align: left;
   }
 
   > ul{
@@ -195,6 +196,7 @@ export default {
       height:0;
       transition:padding-bottom $navCondenseDuration;
       
+      // loading animation
       .app--loading &{
         $cycle: 5000ms;
         $steps: 4;
@@ -226,14 +228,95 @@ export default {
   .app--loading &{
     transition:none;
   }
-  // radio bullet
-  .nav__primary-nav &.router-link-active,
-  .nav__subnav &.router-link-exact-active,
-  &.nav__radio-btn--selected{
-    background-image:url(../../assets/icons/radio-btn--selected.svg);
+}
+
+#nav__bg{
+  z-index:-2;
+  transition:all $navCondenseDuration;
+  opacity:0;
+  .app-header--condensed & {
+    // transform:translateY(calc(-1 * (100% - #{$gutter}) / 2));
+    opacity:1;
   }
-  .app--loading &.router-link-active:not(.nav__radio-btn--selected){
-    background-image:url(../../assets/icons/radio-btn.svg);
+}
+#nav__bg__fill{
+  width:110%;
+  left:-5%;
+  box-shadow: 0 0 50px -20px #000000;
+  background:rgba($white, .8);
+}
+
+@include mobile {
+  #app-header{
+    max-height:100vh;
+    overflow-y:auto;
+  }
+  // .app-header__dot-grid{
+    // align-items:flex-start;
+    // align-content:flex-start;
+  // }
+  
+  #nav{
+    display:flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+    min-height:100vh;
+    padding-bottom:$gutter;
+    // 4 cols
+    > *{
+      flex:0 0 25%;
+    }
+    ul.cw-grid{
+      flex-direction:column;
+      align-items: stretch;
+      .cw-grid__item{
+        padding-bottom: 100%;
+        transition:none;
+      }
+    }
+    // closed state
+    &.nav--mbl-collapsed{
+      min-height:0;
+      height:calc((100vw - 4rem)/4 + 2rem - 1px);
+      .nav__subnavs .nav__vein{
+        display:none;
+      }
+    }
+    // active items jump to top of column
+    .nav__subnav .router-link-exact-active, // so partners jumps to top
+    .nav__primary-nav .router-link-active{
+      order:-1;
+    }
+  }
+
+  .nav--mbl-collapsed{
+    li.cw-grid__item{
+      display:none;
+      &.router-link-active{
+        display: block;
+      }
+    }
+  }
+}
+
+@include grid9{
+  .nav__subnavs{
+    transition:transform $navCondenseDuration;
+    .app-header--condensed &{
+      transform: translateY(-50%);
+    }
+  }
+  #nav__bg{
+    .app-header--condensed &{
+      transform:translateY(calc(-1 * (100% - #{$gutter}) / 2));
+    }
+  }
+  .nav__primary-nav .nav__vein{
+    transition:transform $navCondenseDuration;
+    transform-origin:top left;
+    .app-header--condensed & {
+      transform:scale(1,.18);
+    }
   }
 }
 
@@ -249,57 +332,6 @@ export default {
   }
   60%{
     opacity:0;
-  }
-}
-
-@include mobile {
-  #app-header{
-    max-height:100vh;
-    overflow-y:auto;
-    &.bg-white{ background:$white; }
-  }
-  .app-header__dot-grid{
-    align-items:flex-start;
-    align-content:flex-start;
-  }
-  
-  #nav{
-    display:flex;
-    align-items:flex-start;
-    justify-content: flex-start;
-    min-height:125vh;
-    // overflow-y:auto;
-    &.nav--collapsed{
-      min-height:0;
-      height:calc(25vh + (100vw - 4rem)/4 + 2rem);
-      overflow:hidden;
-    }
-    > *{
-      flex:0 0 25%;
-    }
-    ul.cw-grid{
-      flex-direction:column;
-      align-items: stretch;
-      .cw-grid__item{
-        padding-bottom: 100%;
-        transition:none;
-      }
-    }
-    // active at top of column
-    // .nav__subnav .mbl-active-filter,
-    .nav__subnav .router-link-exact-active, // so partners jumps to top
-    .nav__primary-nav .router-link-active{
-      order:-1;
-    }
-  }
-
-  .nav--collapsed{
-    li.cw-grid__item{
-      display:none;
-      &.router-link-active{
-        display: block;
-      }
-    }
   }
 }
 </style>

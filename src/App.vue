@@ -13,17 +13,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import AppHeader from '@/components/Header/Index'
-import DotGrid from '@/components/DotGrid'
 import Info from '@/components/Info'
 import Cart from '@/components/Cart'
 export default {
   name: 'app',
-  components: {
-    AppHeader,
-    DotGrid,
-    Info,
-    Cart
-  },
+  components: { AppHeader, Info, Cart },
   computed: {
     ...mapState([
       'site',

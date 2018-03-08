@@ -1,5 +1,5 @@
 <template lang="pug">
-  .category.left-align
+  .category.left-align.overflow-hidden
     transition(name="overlay")
       router-view
     background
@@ -70,6 +70,7 @@ export default {
     z-index:1;
     display: flex;
     flex-wrap: wrap;
+    padding-bottom:50vh;
   }
 }
 </style>

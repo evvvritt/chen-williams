@@ -1,36 +1,19 @@
 <template lang="pug">
   .cw-grid.cw-grid--background(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
-    .cw-grid__item(v-for="n in ((rows + 1) * columns)")
+    .cw-grid__item(v-for="n in ((rows) * columns)")
 </template>
 
 <script>
 export default {
   name: 'DotGrid',
   props: {
-    scheme: {
-      type: String,
-      default: null
-    },
-    rows: {
-      type: Number,
-      default: 40
-    },
-    overlay: {
-      type: Boolean,
-      default: false
-    },
-    condensed: {
-      type: Boolean,
-      default: false
-    },
-    padless: {
-      type: Boolean,
-      default: false
-    },
-    color: {
-      type: String,
-      default: 'black'
-    }
+    scheme: { type: String, default: null },
+    rows: { type: Number, default: 20 },
+    overlay: { type: Boolean, default: false },
+    condensed: { type: Boolean, default: false },
+    padless: { type: Boolean, default: false },
+    color: { type: String, default: 'black' },
+    keepFirstDot: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -42,7 +25,8 @@ export default {
       return {
         'cw-grid--overlay': this.overlay,
         'cw-grid--condensed': this.condensed,
-        'cw-grid--padless': this.padless
+        'cw-grid--padless': this.padless,
+        'cw-grid--first-dot': this.keepFirstDot
       }
     }
   },
@@ -54,7 +38,7 @@ export default {
           this.columns = w >= 1900 ? 5 : w > 1440 ? 4 : w > 768 ? 3 : 1
           break
         default:
-          this.columns = w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 5
+          this.columns = w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 4
       }
     },
     onResize () {
@@ -97,11 +81,6 @@ export default {
     &:after{
       right:-1px;
       left:auto;
-    }
-    &:first-child:before{
-      @include grid9 {
-        display:none;  
-      }
     }
     &:nth-last-child(-n+5){
       // padding-bottom:0;
@@ -147,7 +126,6 @@ export default {
     top:0; left:0;
     width:100%;
     height:100%;
-    overflow:hidden;
     z-index:-1;
     padding:$gutter;
     pointer-events:none;  
@@ -169,21 +147,10 @@ export default {
     }
   }
 
-  // condensed
-  &.cw-grid--condensed{
-    .cw-grid__item{
-      @media (min-width:$bkpt-grid-9) {
-        padding-bottom: calc(100%/9 * 3/4); // 1.5
-      }
-      @media (min-width:1100px) {
-        padding-bottom: calc(100%/9 * 1/2);
-      }
-      @media ($bkpt-grid-12) {
-        padding-bottom: calc(100%/12 * 1/2);
-      }
-      @media ($bkpt-grid-15) {
-        padding-bottom: calc(100%/15 * 1/2);
-      }
+  // first dot visibility
+  &:not(.cw-grid--first-dot) > .cw-grid__item:first-of-type:before{
+    @include grid9 {
+      display:none;  
     }
   }
 }

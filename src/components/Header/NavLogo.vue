@@ -1,6 +1,6 @@
 <template lang="pug">
   router-link(to="/")
-    img(src='../../assets/logo.svg', :class="{'nav-logo--condensed': condensed}", alt="Chen Williams Logo")
+    img.z2(src='../../assets/logo.svg', :class="{'nav-logo--condensed': condensed}", alt="Chen Williams Logo")
 </template>
 
 <script>
