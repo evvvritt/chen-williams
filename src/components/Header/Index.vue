@@ -160,7 +160,7 @@ export default {
     },
     onScroll: _throttle(function () {
       this.condensed = window.pageYOffset > 2
-    }, 100),
+    }, 50),
     bindScroll (bind = true) {
       if (!bind) return window.removeEventListener('scroll', this.onScroll)
       return window.addEventListener('scroll', this.onScroll)
@@ -299,9 +299,29 @@ export default {
   }
 }
 
-@include grid9{
+@media (min-width:$mobile + 1) {
   .nav__subnavs{
     transition:transform $navCondenseDuration;
+    .app-header--condensed &{
+      transform: translateY(-25%);
+    }
+  }
+  #nav__bg{
+    .app-header--condensed &{
+      transform:translateY(calc(-1 * (100% - #{$gutter}) / 4));
+    }
+  }
+  #nav .nav__primary-nav .nav__vein{
+    transition:max-height $navCondenseDuration;
+    .app-header--condensed & {
+      max-height:calc(75% - 2.75em - 16px);
+    }
+  }
+}
+
+// > 1280px: condense = 50%
+@media (min-width:1280px) {
+  .nav__subnavs{
     .app-header--condensed &{
       transform: translateY(-50%);
     }
@@ -311,11 +331,9 @@ export default {
       transform:translateY(calc(-1 * (100% - #{$gutter}) / 2));
     }
   }
-  .nav__primary-nav .nav__vein{
-    transition:transform $navCondenseDuration;
-    transform-origin:top left;
+  #nav .nav__primary-nav .nav__vein{
     .app-header--condensed & {
-      transform:scale(1,.18);
+      max-height:calc(50% - 2.75em - 16px);
     }
   }
 }

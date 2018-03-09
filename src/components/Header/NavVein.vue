@@ -26,9 +26,10 @@ $gap: 16px;
   .nav__primary-nav .router-link-active &{
     opacity:1;
     left:-1px;
-    top:3em;
+    top:2.75em;
     border-left-style:solid;
-    height:calc(100% - 3em - #{$gap});
+    height:100%;
+    max-height:calc(100% - 2.75em - #{$gap});
     @include mobile {
       top:-1px;
       left:$gap;
