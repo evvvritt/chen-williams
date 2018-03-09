@@ -46,12 +46,13 @@ export default {
   },
   methods: {
     details (variant) {
+      if (!variant) return ''
       const title = variant.title !== 'Default Title' ? variant.title : ''
       const output = title.length > 0 && variant.weight ? title + ', ' : ''
       return variant.weight ? output + variant.weight + ' lbs' : ''
     },
     src (variant) {
-      if (variant.image && Vue.shopClient) {
+      if (variant && variant.image && Vue.shopClient) {
         const ratio = window.devicePixelRatio || 1
         const winW = window.innerWidth
         let length = Vue.is('mobile') ? winW / 4 * ratio : winW / 9 * ratio
