@@ -9,6 +9,7 @@ export default {
   name: 'RadioBtn',
   props: {
     checked: { type: Boolean, default: false },
+    dotted: { type: Boolean, default: false },
     fill: { type: String, default: 'transparent' },
     right: { type: Boolean, default: false },
     type: { type: String, default: '' }
@@ -17,6 +18,7 @@ export default {
     classes () {
       return {
         'radio-btn--checked': this.checked,
+        'radio-btn--dotted': this.dotted,
         'radio-btn--right': this.right,
         'radio-btn--close': this.type === 'close'
       }
@@ -50,12 +52,16 @@ export default {
     background-image:url(../assets/icons/radio-btn--close.svg) !important;
   }
 
+  &.radio-btn--dotted{
+    background-image:url(../assets/icons/radio-btn--dotted.svg) !important;
+  }
+
   .app:not(.app--loading) .router-link-exact-active &,
   .app:not(.app--loading) .nav__primary-nav .router-link-active &,
   &.radio-btn--checked,
   .no-touchevents .app:not(.app--loading) &:hover,
   .no-touchevents .app:not(.app--loading) .radio-btn-label:hover + &{
-    background-image:url(../assets/icons/radio-btn--selected.svg);
+    background-image:url(../assets/icons/radio-btn--selected.svg) !important;
   }
 
   span{

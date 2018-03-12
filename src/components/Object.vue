@@ -1,6 +1,6 @@
 <template lang="pug">
   article.object.overlay
-    .object__body
+    .object__body.overflow-hidden
       background
       overlay-header.object__header(@close="close")
       .object__main.mb-pt-1row(v-if="object.data")
@@ -15,8 +15,8 @@
               h6.mt1(v-if="price") {{price | price}}
           aside(@click="addToCart")
             .relative
-              .radio-btn-label.p-text Add to Cart
-              radio-btn(fill="white")
+              .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
+              radio-btn(fill="white", :dotted="true")
 </template>
 
 <script>
@@ -31,7 +31,8 @@ export default {
   components: { Background, OverlayHeader, Carousel, RadioBtn },
   data () {
     return {
-      richtext: this.$options.filters.richtext
+      richtext: this.$options.filters.richtext,
+      addingToCart: false
     }
   },
   computed: {
@@ -61,7 +62,9 @@ export default {
     },
     addToCart () {
       if (this.variant) {
+        this.addingToCart = true
         this.$store.dispatch('addToCart', this.variant.id).then(() => {
+          this.addingToCart = false
           this.$router.push({hash: '#cart'})
         })
       }
