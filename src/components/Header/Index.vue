@@ -300,6 +300,7 @@ export default {
 }
 
 @media (min-width:$mobile + 1) {
+<<<<<<< HEAD
   .nav__subnavs{
     transition:transform $navCondenseDuration;
     .app-header--condensed &{
@@ -324,16 +325,60 @@ export default {
   .nav__subnavs{
     .app-header--condensed &{
       transform: translateY(-50%);
+=======
+  @supports (pointer-events:none) {
+    #app-header.app-header--condensed{
+      &, #nav{
+        pointer-events:none;
+      }
+      a, #nav__bg{
+        pointer-events:auto;
+      }
+>>>>>>> dev
+    }
+    .nav__subnavs{
+      transition:transform $navCondenseDuration;
+      .app-header--condensed &{
+        transform: translateY(-25%);
+      }
+    }
+    #nav__bg{
+      .app-header--condensed &{
+        transform:translateY(calc(-1 * (100% - #{$gutter}) / 4));
+      }
+    }
+    #nav .nav__primary-nav .nav__vein{
+      transition:max-height $navCondenseDuration;
+      .app-header--condensed & {
+        max-height:calc(75% - 2.75em - 16px);
+      }
     }
   }
-  #nav__bg{
-    .app-header--condensed &{
-      transform:translateY(calc(-1 * (100% - #{$gutter}) / 2));
-    }
-  }
+<<<<<<< HEAD
   #nav .nav__primary-nav .nav__vein{
     .app-header--condensed & {
       max-height:calc(50% - 2.75em - 16px);
+=======
+}
+
+// > 1280px: condense = 50%
+@media (min-width:1280px) {
+  @supports (pointer-events:none) {
+    .nav__subnavs{
+      .app-header--condensed &{
+        transform: translateY(-50%);
+      }
+    }
+    #nav__bg{
+      .app-header--condensed &{
+        transform:translateY(calc(-1 * (100% - #{$gutter}) / 2));
+      }
+    }
+    #nav .nav__primary-nav .nav__vein{
+      .app-header--condensed & {
+        max-height:calc(50% - 2.75em - 16px);
+      }
+>>>>>>> dev
     }
   }
 }
