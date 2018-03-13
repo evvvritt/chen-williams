@@ -37,8 +37,8 @@ export default {
     max-width:25%;
     overflow:hidden;
   }
-  .cw-grid{
-    width:100vw;
+  .nav > .cw-grid{
+    width:calc(100vw - #{$gutter} * 2);
   }  
 }
 </style>
