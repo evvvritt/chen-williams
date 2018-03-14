@@ -11,7 +11,7 @@
           .cell.p-text Quantity
           .cell.p-text Price
         ul
-          li.flex(v-for="item in cart.lineItems")
+          li.flex(v-for="item in cart.lineItems", v-if="item.variant")
             div.cell.bg-cover.relative(:style="'background-image:url(' + src(item.variant) + ')'")
               radio-btn(title="Remove Item", @click="remove(item.id)", fill="white", type="close")
             div.cell.cell-2.p-text 
@@ -36,6 +36,7 @@ import Vue from 'vue'
 import Background from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
 import RadioBtn from '@/components/RadioBtn'
+import _get from 'lodash/get'
 export default {
   name: 'Cart',
   components: { Background, OverlayHeader, RadioBtn },
@@ -52,13 +53,14 @@ export default {
       return variant.weight ? output + variant.weight + ' lbs' : ''
     },
     src (variant) {
-      if (variant && variant.image && Vue.shopClient) {
-        const ratio = window.devicePixelRatio || 1
-        const winW = window.innerWidth
-        let length = Vue.is('mobile') ? winW / 4 * ratio : winW / 9 * ratio
-        length = parseInt(length)
-        return Vue.shopClient.image.helpers.imageForSize(variant.image, {maxWidth: length, maxHeight: length})
-      }
+      if (!variant || !Vue.shopClient) return ''
+      const img = variant.image || _get(variant, 'product.images[0]')
+      if (!img) return ''
+      const ratio = window.devicePixelRatio || 1
+      const winW = window.innerWidth
+      let length = Vue.is('mobile') ? winW / 4 * ratio : winW / 9 * ratio
+      length = parseInt(length)
+      return Vue.shopClient.image.helpers.imageForSize(img, {maxWidth: length, maxHeight: length})
     },
     remove (id) {
       if (id) this.$store.dispatch('removeCartItems', [id])
