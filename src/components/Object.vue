@@ -13,7 +13,7 @@
               h6 {{object.data.dimensions | text}}
               div.mt1(v-html="richtext(object.data.description)")
               h6.mt1(v-if="price") {{price | price}}
-          aside(@click="addToCart")
+          aside(v-if="sku && sku.available", @click="addToCart")
             .relative
               .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
               radio-btn(fill="white", :dotted="true")
@@ -39,17 +39,17 @@ export default {
     object () {
       return this.$store.state.object
     },
-    variant () {
+    sku () {
       if (!this.object) return false
       const id = this.object.data.shopify_product_id
-      const product = _find(this.$store.state.products, id)
+      const product = _find(this.$store.state.products, ['_id', id])
       if (!product) return false
       const hasVariants = product.variants && product.variants.length > 0
       return hasVariants ? product.variants[0] : false
     },
     price () {
-      if (!this.variant) return false
-      return this.variant.price
+      if (!this.sku) return false
+      return this.sku.price
     }
   },
   methods: {
