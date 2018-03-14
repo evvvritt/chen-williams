@@ -61,9 +61,9 @@ export default {
       if (this.slug) this.$store.dispatch('getObject', this.slug)
     },
     addToCart () {
-      if (this.variant) {
+      if (this.sku) {
         this.addingToCart = true
-        this.$store.dispatch('addToCart', this.variant.id).then(() => {
+        this.$store.dispatch('addToCart', this.sku.id).then(() => {
           this.addingToCart = false
           this.$router.push({hash: '#cart'})
         })
