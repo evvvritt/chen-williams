@@ -4,8 +4,8 @@
       section
         header.flex.z2
           h2.p-text {{object.data.title | text}}
-          //- small.p-text(v-if="price && !unavailable", v-html="'$' + price")
-          small.p-text(v-if="price") {{price | price}}
+          small.p-text(v-if="price && !available") Sold Out
+          small.p-text(v-else-if="price") {{price | price}}
         figure
           img(:src="object.data.thumbnail.url")
 </template>
@@ -30,7 +30,7 @@ export default {
     sku () {
       if (!this.object) return false
       const id = this.object.data.shopify_product_id
-      const product = _find(this.$store.state.products, id)
+      const product = _find(this.$store.state.products, ['_id', id])
       const hasVariants = product && product.variants && product.variants.length > 0
       return hasVariants ? product.variants[0] : false
     },
@@ -89,7 +89,7 @@ article{
     left:-1 * $offset;
   }
 
-  &:hover{
+  .no-touchevents &:hover{
     background:white;
     figure{
       transition:all .2s;
