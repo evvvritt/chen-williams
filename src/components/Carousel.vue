@@ -42,9 +42,19 @@ export default {
           })
           // static click: next / prev
           this.flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
-            // next/prev
-            if (event.x < this.slider.offsetWidth * 0.5) return this.previous()
-            return this.next(true)
+            // mute / unmute
+            if (event.target && event.target.tagName === 'SPAN') return false
+            if (Vue.is('mobile')) {
+              if (event.target && event.target.tagName === 'VIDEO') {
+                const video = event.target
+                if (video.paused) return video.play()
+                return video.pause()
+              }
+            } else {
+              // otherwise next/prev on desktop
+              if (event.x < this.slider.offsetWidth * 0.5) return this.previous()
+              return this.next(true)
+            }
           })
         }, delay)
       }

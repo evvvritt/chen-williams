@@ -16,7 +16,7 @@ Vue.config.bkpts = {
 }
 
 Vue.is = (name) => {
-  if (name === 'mobile') return window.innerWidth < Vue.config.bkpts.mobile
+  if (name === 'mobile') return window.innerWidth <= Vue.config.bkpts.mobile
   return false
 }
 
