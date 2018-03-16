@@ -5,7 +5,7 @@
         img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)")
         img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)")
       template(v-if="slide.slice_type === 'video'")
-        carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url")
+        carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
 </template>
 
 <script>
@@ -42,13 +42,7 @@ export default {
           })
           // static click: next / prev
           this.flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
-            // play pause video
-            if (event.target && event.target.tagName === 'VIDEO') {
-              const video = event.target
-              if (video.paused) return video.play()
-              return video.pause()
-            }
-            // otherwise next/prev
+            // next/prev
             if (event.x < this.slider.offsetWidth * 0.5) return this.previous()
             return this.next(true)
           })
