@@ -336,18 +336,18 @@ export default {
     .nav__subnavs{
       transition:transform $navCondenseDuration;
       .app-header--condensed &{
-        transform: translateY(-25%);
+        transform: translateY(-50%);
       }
     }
     #nav__bg{
       .app-header--condensed &{
-        transform:translateY(calc(-1 * (100% - #{$gutter}) / 4));
+        transform:translateY(calc(-1 * (100% - #{$gutter}) / 2));
       }
     }
     #nav .nav__primary-nav .nav__vein{
       transition:max-height $navCondenseDuration;
       .app-header--condensed & {
-        max-height:calc(75% - 2.75em - 16px);
+        max-height:calc(50% - 2.75em - 16px);
       }
     }
   }
