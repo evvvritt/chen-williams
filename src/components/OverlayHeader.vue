@@ -8,7 +8,7 @@
         li.cw-grid__item
           a(@click="$emit('close')")
             nav-link Close
-            radio-btn(fill="white")
+            radio-btn(fill="white", type="close")
         li.cw-grid__item.tblt-hidden(v-if="title")
           a(@click="$emit('close')")
             nav-link {{title}}
