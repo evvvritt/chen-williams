@@ -3,8 +3,8 @@
   aside.cart.fixed.overlay.z-overlay.p2.bg-gray.backdrop-blur
     background(color="gray")
     overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})")
-    section.pt-1row.left-align
-      template(v-if="cart && cart.lineItems.length > 0")
+    template(v-if="cart && cart.lineItems.length > 0")
+      section.left-align
         header.flex.items-end
           .cell
           .cell.cell-2.p-text Items
@@ -26,8 +26,9 @@
             a(v-if="cart.webUrl", :href="cart.webUrl")
               .radio-btn-label.p-text Checkout
               radio-btn
-      //- empty cart
-      template(v-else)
+    //- empty cart
+    template(v-else)
+      .pt-1row.left-align
         .p-text Your cart is empty.
 </template>
 
