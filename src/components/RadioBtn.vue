@@ -35,8 +35,8 @@ export default {
   top:rem(-8px);
   left:rem(-8px);  
   cursor: pointer;
-  width:rem(16px);
-  height:rem(16px);
+  width:$radioBtnSize;
+  height:$radioBtnSize;
   background-image:url(../assets/icons/radio-btn.svg);
   background-size:contain;  
   background-repeat:no-repeat;

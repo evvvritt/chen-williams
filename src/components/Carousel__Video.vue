@@ -59,29 +59,28 @@ video{
 }
 
 .video-icon{
-  display:inline-block;
   cursor: pointer;
   &:after{
     content:'';
     display: block;
-    width:24px;
-    height:24px;
+    width:$radioBtnSize;
+    height:$radioBtnSize;
     background-repeat:no-repeat;
     background-size:contain;
   }
-  &.video-icon--play{
+  &.video-icon--play:after{
     background-image:url('../assets/icons/play-icon.svg');
   }
-  &.video-icon--pause{
+  &.video-icon--pause:after{
     background-image:url('../assets/icons/pause-icon.svg');
   }
-  &.video-icon--mute{
+  &.video-icon--mute:after{
     background-image:url('../assets/icons/muted-icon.svg');
     .no-touchevents &:hover{
       // background-image:url('../assets/icons/muted-icon.svg');  
     }
   }
-  &.video-icon--unmute{
+  &.video-icon--unmute:after{
     background-image:url('../assets/icons/sound-icon.svg');
     .no-touchevents &:hover{
       // background-image:url('../assets/icons/sound-icon.svg');  

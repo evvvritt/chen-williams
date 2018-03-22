@@ -1,3 +1,5 @@
+@import 'helpers';
+
 // grid
 // mobile: 5 colums
 // 769: 9
@@ -21,6 +23,8 @@ $z-overlay: 50;
 
 $fadeDuration: 800ms;
 $navCondenseDuration: 500ms;
+
+$radioBtnSize: rem(16px);
 
 @mixin mobile {
   @media (max-width:$bkpt-grid-9 - 1) {
@@ -48,5 +52,3 @@ $navCondenseDuration: 500ms;
     @content;
   }
 }
-
-@import 'helpers';
