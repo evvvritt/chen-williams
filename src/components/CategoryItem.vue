@@ -6,8 +6,8 @@
           h2.p-text {{object.data.title | text}}
           small.p-text(v-if="price && !available") Sold Out
           small.p-text(v-else-if="price") {{price | price}}
-        figure
-          img(:src="object.data.thumbnail.url")
+        figure.overflow-hidden
+          img.block(:src="object.data.thumbnail.url")
 </template>
 
 <script>
@@ -81,17 +81,15 @@ article{
     }
   }
 
-  figure{
-    $offset: 3%;
-    width:100% + $offset;
-    height:100% + $offset;
-    top:-1 * $offset;
-    left:-1 * $offset;
+  img{
+    transform: scale(1.05, 1.05);
+    transform-origin:center center;
   }
-
+  
+  // blur image on over
   .no-touchevents &:hover{
     background:white;
-    figure{
+    img{
       transition:all .2s;
       filter:blur(5px);
       opacity:.7;
