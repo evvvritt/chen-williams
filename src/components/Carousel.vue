@@ -2,10 +2,10 @@
   .carousel(:class="{'carousel--invisible': !flkty}")
     figure(v-for="(slide, index) in slides")
       template(v-if="slide.slice_type === 'image'")
-        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)")
+        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", @load="index === 0 ? firstSlideLoaded = true : null")
         img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)")
       template(v-if="slide.slice_type === 'video'")
-        carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
+        carousel-video(v-show="firstSlideLoaded", :src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
 </template>
 
 <script>
@@ -21,7 +21,16 @@ export default {
       flkty: null,
       imgLength: window.innerWidth - 40,
       videoSize: window.innerWidth > 1024 ? '720' : '480',
-      afterResize: null
+      afterResize: null,
+      firstSlideLoaded: false
+    }
+  },
+  watch: {
+    slides (slides) {
+      this.firstSlideLoaded = false
+      if (slides && slides[0] && slides[0].slice_type !== 'image') {
+        this.firstSlideLoaded = true
+      }
     }
   },
   methods: {
