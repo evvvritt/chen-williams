@@ -1,17 +1,18 @@
 <template lang="pug">
-  .carousel(:class="{'carousel--invisible': !flkty}")
-    figure(v-for="(slide, index) in slides")
+  .carousel(:class="{'carousel--invisible': !flkty, 'carousel--cursor-prev': cursorIsPrev}", @mousemove="onMousemove")
+    figure(v-for="(slide, index) in slides", :class="{'figure--invisible': index > 0 && !firstSlideLoaded}")
       template(v-if="slide.slice_type === 'image'")
         img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", @load="index === 0 ? firstSlideLoaded = true : null")
         img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)")
       template(v-if="slide.slice_type === 'video'")
-        carousel-video(v-show="firstSlideLoaded", :src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
+        carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
 </template>
 
 <script>
 import Vue from 'vue'
 import Flickity from 'flickity-imagesloaded'
 import CarouselVideo from '@/components/Carousel__Video'
+import _throttle from 'lodash/throttle'
 export default {
   name: 'Carousel',
   props: ['slides'],
@@ -22,7 +23,9 @@ export default {
       imgLength: window.innerWidth - 40,
       videoSize: window.innerWidth > 1024 ? '720' : '480',
       afterResize: null,
-      firstSlideLoaded: false
+      firstSlideLoaded: false,
+      nextPrevThreshold: 0.5,
+      cursorIsPrev: false
     }
   },
   watch: {
@@ -34,7 +37,7 @@ export default {
     }
   },
   methods: {
-    init () {
+    initFlickity () {
       if (!this.flkty) {
         const delay = 0
         setTimeout(() => {
@@ -50,19 +53,24 @@ export default {
             friction: 0.28
           })
           // static click: next / prev
-          this.flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
-            // mute / unmute
-            if (event.target && event.target.tagName === 'DIV') return false
+          this.flkty.on('staticClick', (event, pointer, cellElement, cellIndex) => {
+            const el = event.target
+            // ignore video btns
+            if (el && el.tagName === 'DIV') return false
+            // mobile
             if (Vue.is('mobile')) {
-              if (event.target && event.target.tagName === 'VIDEO') {
-                const video = event.target
-                if (video.paused) return video.play()
-                return video.pause()
+              // play / pause videos
+              if (el && el.tagName === 'VIDEO') {
+                if (el.paused) return el.play()
+                return el.pause()
               }
+            // desktop
             } else {
-              // otherwise next/prev on desktop
-              if (event.x < this.slider.offsetWidth * 0.5) return this.previous()
-              return this.next(true)
+              // next / prev
+              if (event.x < this.flkty.slider.offsetWidth * this.nextPrevThreshold) {
+                return this.flkty.previous()
+              }
+              return this.flkty.next()
             }
           })
         }, delay)
@@ -70,8 +78,8 @@ export default {
     },
     thumb (src) {
       if (!src) return false
-      const lengthIsHeight = window.innerWidth > 768
-      return Vue.thumbSrc(src, this.imgLength, lengthIsHeight)
+      const useHeight = window.innerWidth > 768
+      return Vue.thumbSrc(src, this.imgLength, useHeight)
     },
     setImgLength () {
       const winW = window.innerWidth
@@ -83,17 +91,21 @@ export default {
     },
     onResize () {
       clearTimeout(this.afterResize)
-      this.afterResize = setTimeout(() => {
-        this.setImgLength()
-      }, 500)
-    }
+      this.afterResize = setTimeout(this.setImgLength, 500)
+    },
+    onMousemove: _throttle(function (event) {
+      if (event.x < this.$el.offsetWidth * this.nextPrevThreshold) {
+        this.cursorIsPrev = true; return
+      }
+      this.cursorIsPrev = false
+    }, 50)
   },
   created () {
     this.setImgLength()
     window.addEventListener('resize', this.onResize)
   },
   mounted () {
-    this.init()
+    this.initFlickity()
   },
   destroyed () {
     window.removeEventListener('resize', this.onResize)
@@ -112,11 +124,21 @@ export default {
   &:focus{
     outline:none;
   }
+  // cursor
+  cursor:e-resize;
+  &.carousel--cursor-prev{
+    cursor:w-resize;
+  }
 }
 
 // mobile
 figure{
   width:calc(100%/6 * 5);
+  transition: opacity 500ms;
+  &.figure--invisible{
+    opacity:0;
+  }
+
   img{
     width:100%;
     max-width:none;

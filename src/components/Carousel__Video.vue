@@ -4,7 +4,7 @@
     div.video-icon(:class="{'video-icon--play': !isPlaying, 'video-icon--pause': isPlaying}") 
   div.absolute.bottom-0.right-0.p1.z1.pointer(@click="isMuted = !isMuted")
     div.video-icon(:class="{'video-icon--mute': !isMuted, 'video-icon--unmute': isMuted}")
-  video.pointer(ref="video", :src="src", :poster="poster", @playing="isPlaying = true", @pause="isPlaying = false", @ended="isPlaying = false", playsinline, :muted="isMuted", @canplay="beginAutoplay")
+  video(ref="video", :src="src", :poster="poster", @playing="isPlaying = true", @pause="isPlaying = false", @ended="isPlaying = false", playsinline, :muted="isMuted", @canplay="beginAutoplay")
 </template>
 
 <script>
