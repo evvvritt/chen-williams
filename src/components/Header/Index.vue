@@ -81,7 +81,7 @@
                   radio-btn
               nav-vein(v-if="index < subnav.items.length - 1")
         //- background
-        #nav__bg.absolute.overlay.top-0
+        #nav__bg.absolute.overlay.top-0.backdrop-blur
           #nav__bg__fill.absolute.overlay
           .absolute.left-0.bottom-0.w-100.px2.mbl-hidden
             .relative
@@ -102,7 +102,6 @@ export default {
     return {
       condensed: false,
       mobileCollapsed: true
-      // dotGridRows: window.innerWidth < 768 ? 8 : 2
     }
   },
   computed: {
@@ -123,9 +122,11 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.bindScroll(false) // unbind
+      // unbind
+      this.bindScroll(false)
+      // re-bind if not overlay
       const isOverlay = to.hash === '#info' || to.hash === '#cart' || this.$route.meta.isOverlay
-      this.$nextTick(() => this.bindScroll(!isOverlay)) // bind if not overlay
+      this.$nextTick(() => this.bindScroll(!isOverlay))
       // collapse on mobile ?
       if (to.path !== from.path) this.mobileCollapsed = true
     }

@@ -1,7 +1,7 @@
 <template lang="pug">
   #app.app(:class="{'app--loading': loading}")
     .app__body(:class="{'app__body--blurred': blurBody}")
-      app-header#app-header.fixed.top-0.left-0.w-100.z-nav.backdrop-blur(:loading="loading")
+      app-header#app-header.fixed.top-0.left-0.w-100.z-nav(:loading="loading")
       .app__body__main
         router-view
     transition(name="slideup")
