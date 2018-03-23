@@ -52,7 +52,7 @@ export default {
           // static click: next / prev
           this.flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
             // mute / unmute
-            if (event.target && event.target.tagName === 'SPAN') return false
+            if (event.target && event.target.tagName === 'DIV') return false
             if (Vue.is('mobile')) {
               if (event.target && event.target.tagName === 'VIDEO') {
                 const video = event.target

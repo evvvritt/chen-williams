@@ -1,9 +1,9 @@
 <template lang="pug">
 .video-player.relative(:class="{'video-player--controls': showControlsAlways}")
-  nav.absolute.bottom-0.left-0.p1.z1
-    span.video-icon(:class="{'video-icon--play': !isPlaying, 'video-icon--pause': isPlaying}", @click="isPlaying ? pause() : play()") 
-  nav.absolute.bottom-0.right-0.p1.z1
-    span.video-icon(:class="{'video-icon--mute': !isMuted, 'video-icon--unmute': isMuted}", @click="isMuted = !isMuted")
+  div.absolute.bottom-0.left-0.p1.z1.pointer(@click="isPlaying ? pause() : play()")
+    div.video-icon(:class="{'video-icon--play': !isPlaying, 'video-icon--pause': isPlaying}") 
+  div.absolute.bottom-0.right-0.p1.z1.pointer(@click="isMuted = !isMuted")
+    div.video-icon(:class="{'video-icon--mute': !isMuted, 'video-icon--unmute': isMuted}")
   video.pointer(ref="video", :src="src", :poster="poster", @playing="isPlaying = true", @pause="isPlaying = false", @ended="isPlaying = false", playsinline, :muted="isMuted", @canplay="beginAutoplay")
 </template>
 
@@ -59,28 +59,25 @@ video{
 }
 
 .video-icon{
+  display: block;
   cursor: pointer;
-  &:after{
-    content:'';
-    display: block;
-    width:$radioBtnSize;
-    height:$radioBtnSize;
-    background-repeat:no-repeat;
-    background-size:contain;
-  }
-  &.video-icon--play:after{
+  width:$radioBtnSize;
+  height:$radioBtnSize;
+  background-repeat:no-repeat;
+  background-size:contain;
+  &.video-icon--play{
     background-image:url('../assets/icons/play-icon.svg');
   }
-  &.video-icon--pause:after{
+  &.video-icon--pause{
     background-image:url('../assets/icons/pause-icon.svg');
   }
-  &.video-icon--mute:after{
+  &.video-icon--mute{
     background-image:url('../assets/icons/muted-icon.svg');
     .no-touchevents &:hover{
       // background-image:url('../assets/icons/muted-icon.svg');  
     }
   }
-  &.video-icon--unmute:after{
+  &.video-icon--unmute{
     background-image:url('../assets/icons/sound-icon.svg');
     .no-touchevents &:hover{
       // background-image:url('../assets/icons/sound-icon.svg');  
