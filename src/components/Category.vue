@@ -59,12 +59,14 @@ export default {
       })
     },
     setGridRows () {
-      const winW = window.innerWidth
-      const columns = winW <= 768 ? 4 : winW <= 1440 ? 9 : winW < 1900 ? 12 : 15
-      const bodyWidth = this.$refs.body && this.$refs.body.offsetWidth
-      if (!bodyWidth) return false
-      const block = bodyWidth / columns
-      this.gridRows = 1 + parseInt(document.body.scrollHeight / block)
+      this.$nextTick(() => {
+        const winW = window.innerWidth
+        const columns = winW <= 768 ? 4 : winW <= 1440 ? 9 : winW < 1900 ? 12 : 15
+        const bodyWidth = this.$refs.body && this.$refs.body.offsetWidth
+        if (!bodyWidth) return false
+        const block = bodyWidth / columns
+        this.gridRows = 1 + parseInt(document.body.scrollHeight / block)
+      })
     }
   },
   created () {
