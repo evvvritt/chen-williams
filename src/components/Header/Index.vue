@@ -2,15 +2,17 @@
   header.app-header.left-align(:class="{'app-header--condensed': condensed, 'mbl-bg-white app-header--mobile-collapsed': !mobileCollapsed}")
     //- mobile logo
     logo.tblt-hidden
-    //- mobile cart counter
-    router-link(:to="{hash: 'cart'}", v-show="cartCount > 0").tblt-hidden.absolute.right-0.top-0.p2.z1
+    //- mobile cart button
+    router-link(:to="{hash: 'cart'}", v-show="cartCount > 0").tblt-hidden.absolute.right-0.top-0.p2.z3
       .relative
         radio-btn(fill="white", :right="true") {{cartCount}}
     //- nav
     nav#nav.nav.relative.overflow-hidden(:class="{'nav--mbl-collapsed': mobileCollapsed}")
       dot-grid.tblt-hidden.z1(:rows="9", :overlay="false")
-      //- mobile menu btn
-      ul.cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
+      //- mobile - show menu overlay
+      .absolute.overlay.tblt-hidden.z2.tap-color-none(v-show="mobileCollapsed", @click="mobileCollapsed = false")
+      //- mobile - menu btn
+      ul.cw-grid.tblt-hidden.tap-color-none(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item(v-show="mobileCollapsed")
           nav-link Menu
           radio-btn(:checked="true", fill="white")
@@ -48,7 +50,7 @@
               nav-link Info
               radio-btn
           //- archive
-          transition(name="fade")
+          //- transition(name="fade")
             li.cw-grid__item(v-show="!loading")
               a(target="_blank", rel="noopener")
                 nav-link Archive
@@ -91,6 +93,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import DotGrid from '@/components/DotGrid'
 import RadioBtn from '@/components/RadioBtn'
 import Logo from './NavLogo'
@@ -124,13 +127,12 @@ export default {
   },
   watch: {
     '$route' (to, from) {
+      this.mobileCollapsed = true
       // unbind
       this.bindScroll(false)
       // re-bind if not overlay
       const isOverlay = to.hash === '#info' || to.hash === '#cart' || this.$route.meta.isOverlay
       this.$nextTick(() => this.bindScroll(!isOverlay))
-      // collapse on mobile ?
-      if (to.path !== from.path) this.mobileCollapsed = true
     }
   },
   methods: {
@@ -143,11 +145,15 @@ export default {
     },
     filter (category) {
       if (!category) return false
+      if (Vue.is('mobile') && this.mobileCollapsed) {
+        this.mobileCollapsed = false
+        return
+      }
       const cat = category
       let cats = this.$route.query.filter // empty object || string
-      // if none already: add 1
+      // if no active filters: add
       if (!cats || cats.length === 0) return this.$router.replace({query: {filter: cat}})
-      // otherwise add/remove
+      // otherwise add/remove depending
       cats = cats.split(',')
       const index = cats.indexOf(cat)
       if (index > -1) {
