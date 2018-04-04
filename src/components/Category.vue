@@ -1,33 +1,33 @@
 <template lang="pug">
-  .category.left-align.overflow-hidden.min-h-100vh
+  .category.relative.left-align.overflow-hidden.min-h-100vh.p2
     transition(name="overlay")
       router-view
-    background
-    .pt-2rows.fades(:class="{'opacity-0': querying}")
+    dot-grid(:rows="gridRows")
+    .pt-2rows.fades(ref="body", :class="{'opacity-0': querying}")
       //- Partners
       template(v-if="$route.name === 'Partners'")
         partners
       //- Category Items
       template(v-else)
-        transition(name="fade")
+        transition(name="fade", v-on:after-enter="setGridRows")
           .category__items(v-show="!loading")
-            //- background(:overlay="true", scheme="category", :rows="3", :padless="true")
             item(v-for="object in category.results", :key="object.id", :object="object")
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Background from '@/components/DotGrid'
+import DotGrid from '@/components/DotGrid'
 import Item from '@/components/CategoryItem'
 import Partners from '@/components/Partners'
 import _find from 'lodash/find'
 export default {
   name: 'Category',
   props: ['catSlug'],
-  components: { Item, Background, Partners },
+  components: { Item, DotGrid, Partners },
   data () {
     return {
-      querying: false
+      querying: false,
+      gridRows: 20
     }
   },
   computed: {
@@ -43,6 +43,9 @@ export default {
     },
     catSlug () {
       this.getCategory()
+    },
+    'category.results' () {
+      this.setGridRows()
     }
   },
   methods: {
@@ -54,6 +57,14 @@ export default {
       this.$store.dispatch('getCategory', cat.primary.category_link.id).then(() => {
         this.querying = false
       })
+    },
+    setGridRows () {
+      const winW = window.innerWidth
+      const columns = winW <= 768 ? 4 : winW <= 1440 ? 9 : winW < 1900 ? 12 : 15
+      const bodyWidth = this.$refs.body && this.$refs.body.offsetWidth
+      if (!bodyWidth) return false
+      const block = bodyWidth / columns
+      this.gridRows = 1 + parseInt(document.body.scrollHeight / block)
     }
   },
   created () {
@@ -66,9 +77,6 @@ export default {
 @import '../style/variables';
 
 .category{
-  position: relative;
-  padding:$gutter;
-  min-height:100vh;
   .category__items{
     position: relative;
     z-index:1;

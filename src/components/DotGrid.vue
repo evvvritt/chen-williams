@@ -65,6 +65,7 @@ export default {
   display: flex;
   flex-wrap:wrap;
   align-items:flex-start;
+  align-content:flex-start;
   > .cw-grid__item{
     flex:0 0 25%;
     padding-bottom:25%;

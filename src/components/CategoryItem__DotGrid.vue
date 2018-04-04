@@ -4,6 +4,7 @@ ul
     div
     div
     div.tblt-hidden
+    div.tblt-hidden
   li
     div.item-fill
   li.tblt-hidden
@@ -14,6 +15,7 @@ ul
     div
     div
     div
+    div.tblt-hidden
     div.tblt-hidden
 </template>
 
@@ -37,8 +39,8 @@ ul{
   justify-content: space-between;
 }
 
-
-@supports (pointer-events:none) {
+// hide if supported
+@supports ((pointer-events:none) and (display:flex)) {
   ul{
     display: flex;
     pointer-events:none;  
