@@ -3,14 +3,13 @@ ul
   li
     div
     div
-    div
     div.tblt-hidden
   li
-    div
+    div.item-fill
   li.tblt-hidden
-    div
+    div.item-fill
   li
-    div
+    div.item-fill
   li
     div
     div
@@ -31,15 +30,11 @@ ul{
   display: none; // hide by default
   position: absolute;
   width:100%;
+  height:calc(100%/4 * 5);
   top:0; left:0;
   list-style-type: none;
   flex-direction: column;
   justify-content: space-between;
-  // height
-  // mobile - 4 cols => 5 rows
-  height:calc(100%/4 * 5);
-  // > mobile - 3 cols => 4 rows
-  @include grid9{ height: calc(100%/3*4); }
 }
 
 
@@ -50,14 +45,16 @@ ul{
   }
 }
 
-li, div{
-  display: flex;
-  justify-content: space-between;
+li{
   flex:1 0 0;
 }
 
+li, div{
+  display: flex;
+  justify-content: space-between;
+}
+
 div{
-  // flex:1 0 0;
   &:before, &:after{
     content:'';
     display: block;
@@ -67,6 +64,18 @@ div{
   }
   &:before{ transform: translate(-1px, -1px); }
   &:after{ transform: translate(1px, -1px); }
+  &:not(.item-fill){
+    flex:0 0 25%;
+  }
+}
+
+@include grid9{
+  ul{
+    height: calc(100%/3*4);
+  }
+  div:not(.item-fill){
+    flex:0 0 calc(100%/3);
+  }
 }
 
 </style>
