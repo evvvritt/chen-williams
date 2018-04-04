@@ -1,15 +1,18 @@
 <template lang="pug">
-  .category.left-align.overflow-hidden
+  .category.left-align.overflow-hidden.min-h-100vh
     transition(name="overlay")
       router-view
     background
     .pt-2rows.fades(:class="{'opacity-0': querying}")
+      //- Partners
       template(v-if="$route.name === 'Partners'")
         partners
+      //- Category Items
       template(v-else)
-        .category__items
-          background(:overlay="true", scheme="category", :rows="3", :padless="true")
-          item(v-for="object in category.results", :key="object.id", :object="object")
+        transition(name="fade")
+          .category__items(v-show="!loading")
+            background(:overlay="true", scheme="category", :rows="3", :padless="true")
+            item(v-for="object in category.results", :key="object.id", :object="object")
 </template>
 
 <script>
@@ -29,6 +32,7 @@ export default {
   },
   computed: {
     ...mapState([
+      'loading',
       'category',
       'site'
     ])

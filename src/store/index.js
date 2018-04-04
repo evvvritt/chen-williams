@@ -62,7 +62,6 @@ export default new Vuex.Store({
           { fetchLinks: ['category.title', 'tag.label', 'partners.title'] }
         )
       }).then((resp) => {
-        commit('loading', false)
         commit('setSite', resp.results[0].data)
       }, (err) => {
         console.error('Error: Get Site failed', err)

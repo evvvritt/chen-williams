@@ -1,8 +1,8 @@
 <template lang="pug">
   #app.app(:class="{'app--loading': loading}")
     .app__body(:class="{'app__body--blurred': blurBody}")
-      app-header#app-header.fixed.top-0.left-0.w-100.z-nav(:loading="loading")
-      .app__body__main
+      app-header#app-header.fixed.top-0.left-0.w-100.z-nav
+      .app__body__main.min-h-100vh
         router-view
     transition(name="slideup")
       info(v-if="showInfo")
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import AppHeader from '@/components/Header/Index'
 import Info from '@/components/Info'
@@ -52,11 +53,28 @@ export default {
         const slug = this.site.nav[0].primary.category_link.uid
         this.$router.replace({name: 'Category', params: {catSlug: slug}})
       }
+    },
+    load () {
+      let canFinish = false
+      const minWait = Vue.config.productionTip ? 1500 : 1500
+      const finish = () => this.$store.commit('loading', false)
+      // get site
+      this.getSite().then(() => {
+        if (canFinish) finish()
+      }, (err) => {
+        console.error(err)
+        finish()
+      })
+      // minimum wait
+      setTimeout(() => {
+        canFinish = true
+        if (this.site) finish()
+      }, minWait)
     }
   },
   created () {
+    this.load()
     this.createCheckout()
-    this.getSite()
     this.getProducts()
   }
 }
@@ -114,12 +132,6 @@ h1,h2,h3,h4,h5,h6,small{
       filter:blur(10px);
     }  
   }
-}
-
-.app__body__main{
-  // position: relative;
-  // z-index:1;
-  min-height:100vh;
 }
 
 // transitions
