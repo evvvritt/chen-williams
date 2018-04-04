@@ -34,8 +34,8 @@ export default {
     setColumns () {
       const w = window.innerWidth
       switch (this.scheme) {
-        case 'category':
-          this.columns = w >= 1900 ? 5 : w > 1440 ? 4 : w > 768 ? 3 : 1
+        case 'cat-item':
+          this.columns = 3 //  w >= 1900 ? 5 : w > 1440 ? 4 : w > 768 ? 3 : 1
           break
         default:
           this.columns = w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 4
@@ -94,7 +94,7 @@ export default {
     }
   }
   
-  // scaling
+  // scaling ƒ
   @mixin grid-change ($min, $cols) {
     @media (min-width: $min) {
       & > .cw-grid__item{
@@ -112,14 +112,18 @@ export default {
   @include grid-change($bkpt-grid-12, 12);
   @include grid-change($bkpt-grid-15, 15);
   // category scheme
-  &[data-grid-scheme="category"]{
-    > .cw-grid__item{
-      flex:1 0 100%;
-    }
-    @include grid-change($bkpt-grid-9, 3);
-    @include grid-change($bkpt-grid-12, 4);
-    @include grid-change($bkpt-grid-15, 5);
-  }
+  // &[data-grid-scheme="cat-item"]{
+    // > .cw-grid__item{
+      // flex:1 0 100%;
+    // }
+    // @include grid-change($bkpt-grid-9, 3);
+    // @include grid9 {
+      // .cw-grid__item:nth-child(5),
+      // .cw-grid__item:nth-child(8){
+        // visibility:hidden;
+      // }
+    // }
+  // }
 
   &.cw-grid--background{
     position: absolute;

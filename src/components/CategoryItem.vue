@@ -1,20 +1,23 @@
 <template lang="pug">
-  article(v-show="visible", :class="{'article--transparent': !available}")
+  article.relative.item-fill.overflow-hidden(v-show="visible", :class="{'article--transparent': !available}")
     router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
-      section
-        header.flex.z2
+      section.pb-100
+        header.absolute.top-0.left-0.w-100.flex.z2
           h2.p-text {{object.data.title | text}}
           small.p-text(v-if="price && !available") Sold Out
           small.p-text(v-else-if="price") {{price | price}}
-        figure.overflow-hidden
+        figure.absolute.top-0.left-0.w-100.overflow-hidden
           img.block(:src="object.data.thumbnail.url")
+    dot-grid.overlay.absolute
 </template>
 
 <script>
+import DotGrid from '@/components/CategoryItem__DotGrid'
 import _find from 'lodash/find'
 export default {
   name: 'CategoryItem',
   props: ['object'],
+  components: { DotGrid },
   computed: {
     tags () {
       return this.object.data.tags.map((item) => { return item.tag.uid })
@@ -45,10 +48,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../style/variables';
+
 article{
-  position: relative;
-  flex:0 0 100%;
-  overflow:hidden;
+  //overflow:hidden;
   @media (min-width:769px) {
     flex: 0 0 calc(100%/3);
   }
@@ -61,15 +64,6 @@ article{
 
   &.article--transparent{
     opacity:.2;
-  }
-
-  section{
-    padding-bottom:100%;
-    > *{
-      position: absolute;
-      top:0; left:0;
-      width:100%;
-    }
   }
 
   header{

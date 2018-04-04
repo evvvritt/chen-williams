@@ -49,6 +49,7 @@
 .py2{padding-top:rem(24px);padding-bottom:rem(24px);}
 
 .p-text{padding:rem(8px) rem(5px);}
+.pb-100{padding-bottom: 100%;}
 
 .pt-1row{
   padding-top: 25%;
@@ -78,13 +79,15 @@
 
 .flex{display:flex;}
 .flex-rows{flex-direction:rows;}
+.flex-columns{flex-direction:column;}
 .flex-wrap{flex-wrap:wrap;}
 .justify-center{justify-content:center;}
 .justify-between{justify-content: space-between;}
 .justify-end{justify-content: flex-end;}
 .items-center{align-items:center;}
 .items-end{align-items:flex-end;}
-.item-fill{flex:1 0 auto;}
+.item-fill{flex:1 0 100%;}
+.item-divide{flex:1 0 0;}
 
 .list-style-none{list-style-type: none;}
 

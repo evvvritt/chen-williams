@@ -11,7 +11,7 @@
       template(v-else)
         transition(name="fade")
           .category__items(v-show="!loading")
-            background(:overlay="true", scheme="category", :rows="3", :padless="true")
+            //- background(:overlay="true", scheme="category", :rows="3", :padless="true")
             item(v-for="object in category.results", :key="object.id", :object="object")
 </template>
 
