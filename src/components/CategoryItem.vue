@@ -51,33 +51,8 @@ export default {
 @import '../style/variables';
 
 article{
-  //overflow:hidden;
-  @media (min-width:769px) {
-    flex: 0 0 calc(100%/3);
-  }
-  @media (min-width:1441px) {
-    flex: 0 0 calc(100%/4);
-  }
-  @media (min-width:1900px) {
-    flex: 0 0 calc(100%/5);
-  }
-
   &.article--transparent{
     opacity:.2;
-  }
-
-  header{
-    h2{
-      flex:0 0 calc(100% * 2/3);
-    }
-    small{
-      flex:0 0 calc(100% * 1/3);
-    }
-  }
-
-  img{
-    transform: scale(1.05, 1.05);
-    transform-origin:center center;
   }
   
   // blur image on over
@@ -88,6 +63,46 @@ article{
       filter:blur(5px);
       opacity:.7;
     }
+  }
+}
+
+header{
+  h2{
+    flex:0 0 75%;
+  }
+  small{
+    flex:0 0 25%;
+  }
+}
+
+img{
+  transform: scale(1.05, 1.05);
+  transform-origin:center center;
+}
+
+@include grid9 {
+  article{
+    flex: 0 0 calc(100%/3);
+  }
+  header{
+    h2{
+      flex:0 0 calc(100% * 2/3);
+    }
+    small{
+      flex:0 0 calc(100% * 1/3);
+    }
+  }
+}
+
+@include grid12 {
+  article{
+    flex: 0 0 calc(100%/4);
+  }
+}
+
+@include grid15 {
+  article{
+    flex: 0 0 calc(100%/5);
   }
 }
 </style>
