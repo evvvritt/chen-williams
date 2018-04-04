@@ -1,6 +1,5 @@
 <template lang="pug">
   header.app-header.left-align(:class="{'app-header--condensed': condensed, 'mbl-bg-white app-header--mobile-collapsed': !mobileCollapsed}")
-    //- dot-grid.app-header__dot-grid(:rows="9", :overlay="false", :condensed="condensed")
     //- mobile logo
     logo.tblt-hidden
     //- mobile cart counter
@@ -12,9 +11,12 @@
       dot-grid.tblt-hidden.z1(:rows="9", :overlay="false")
       //- mobile menu btn
       ul.cw-grid.tblt-hidden(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
-        .cw-grid__item
-          nav-link(v-html="mobileCollapsed ? 'Menu' : 'Close'")
-          radio-btn(:checked="false", fill="white")
+        .cw-grid__item(v-show="mobileCollapsed")
+          nav-link Menu
+          radio-btn(:checked="true", fill="white")
+        .cw-grid__item(v-show="!mobileCollapsed")
+          nav-link Close
+          radio-btn(type="close")
       //- loading
       template(v-if="loading")
         ul.nav__primary-nav.cw-grid
