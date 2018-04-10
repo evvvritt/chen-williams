@@ -1,14 +1,16 @@
 <template lang="pug">
-  article.relative.item-fill.overflow-hidden(v-show="visible", :class="{'article--transparent': !available}")
-    router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
-      section.pb-100
-        header.absolute.top-0.left-0.w-100.flex.z2
-          h2.p-text {{object.data.title | text}}
-          small.p-text(v-if="price && !available") Sold Out
-          small.p-text(v-else-if="price") {{price | price}}
-        figure.absolute.top-0.left-0.w-100.overflow-hidden
-          img.block(:src="object.data.thumbnail.url")
-    dot-grid.overlay.absolute
+  transition(name="fade")
+    article.relative.item-fill.overflow-hidden(v-show="visible", :class="{'article--transparent': !available}")
+      router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
+        section.pb-100
+          header.absolute.top-0.left-0.w-100.flex.z2
+            h2.p-text {{object.data.title | text}}
+            small.p-text(v-if="price && !available") Sold Out
+            small.p-text(v-else-if="price") {{price | price}}
+          figure.absolute.top-0.left-0.w-100.overflow-hidden
+            transition(name="fade")
+              img.block(:src="object.data.thumbnail.url", @load="imgLoaded = true", v-show="imgLoaded")
+      dot-grid.overlay.absolute
 </template>
 
 <script>
@@ -18,6 +20,11 @@ export default {
   name: 'CategoryItem',
   props: ['object'],
   components: { DotGrid },
+  data () {
+    return {
+      imgLoaded: false
+    }
+  },
   computed: {
     tags () {
       return this.object.data.tags.map((item) => { return item.tag.uid })
