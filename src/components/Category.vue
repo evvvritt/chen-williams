@@ -12,6 +12,9 @@
         transition(name="fade", v-on:after-enter="setGridRows")
           .category__items(v-show="!loading")
             item(v-for="object in category.results", :key="object.id", :object="object")
+    transition(name="fade")
+      nav.fixed.bottom-0.right-0.p2.z2(v-if="!loading")
+        router-link.btn(:to="{hash: 'info'}") Get 10% coupon
 </template>
 
 <script>

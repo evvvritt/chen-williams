@@ -123,6 +123,10 @@ h1,h2,h3,h4,h5,h6,small{
   img{
     max-width:100%;
   }
+
+  p + p{
+    margin-top: 1em;
+  }
 }
 
 .app__body{

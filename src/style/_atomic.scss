@@ -1,5 +1,6 @@
 .hidden{ display: none;}
 .block{ display:block}
+.inline-block{ display:inline-block}
 .opacity-0{ opacity:0;}
 
 .fixed{ position: fixed;}
@@ -42,8 +43,11 @@
 
 .overflow-hidden{overflow:hidden;}
 
+.mt075{margin-top: 0.75em;}
+.ml1{margin-left: 1em;}
 .mt1{margin-top: 1em;}
 .mb1{margin-bottom:1em;}
+.mb2{margin-bottom: 2em;}
 .p1{padding:rem(8px);}
 .p2{padding:rem(24px) rem(24px);}
 .px2{padding-left:rem(24px);padding-right:rem(24px);}
@@ -99,6 +103,18 @@
 
 .fades{transition: opacity 500ms;}
 
+
+.btn{
+  background-color: $white;
+  border-style:solid;
+  border-radius:10em;
+  line-height: 1;
+  padding: 0.22em 1.4em 0.25em;
+  cursor: pointer;
+  &:active{
+    background-color:darken($white, 12.5%);
+  }
+}
 
 
 // media query based
