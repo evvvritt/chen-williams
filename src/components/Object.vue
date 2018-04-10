@@ -54,7 +54,8 @@ export default {
   },
   methods: {
     close () {
-      const route = this.$route.meta.closeTo ? {name: this.$route.meta.closeTo} : '/'
+      const catSlug = this.$route.params.catSlug
+      const route = catSlug ? { name: 'Category', params: { catSlug: catSlug } } : '/'
       this.$router.push(route)
     },
     getObject () {
