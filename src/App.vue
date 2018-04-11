@@ -4,10 +4,15 @@
       app-header#app-header.fixed.top-0.left-0.w-100.z-nav
       .app__body__main.min-h-100vh
         router-view
+    //- info
     transition(name="slideup")
       info(v-if="showInfo")
+    //- cart
     transition(name="slideup")
       cart(v-show="showCart")
+    //- coupon button
+    transition(name="hidden-on-overlays")
+      coupon-btn.fixed.bottom-0.right-0.p2.z2(v-show="showCouponBtn")
 </template>
 
 <script>
@@ -16,9 +21,10 @@ import { mapState, mapActions } from 'vuex'
 import AppHeader from '@/components/Header/Index'
 import Info from '@/components/Info'
 import Cart from '@/components/Cart'
+import CouponBtn from '@/components/CouponBtn'
 export default {
   name: 'app',
-  components: { AppHeader, Info, Cart },
+  components: { AppHeader, Info, Cart, CouponBtn },
   computed: {
     ...mapState([
       'site',
@@ -32,6 +38,9 @@ export default {
     },
     blurBody () {
       return this.showInfo || this.showCart
+    },
+    showCouponBtn () {
+      return !this.loading && this.site && this.site.show_coupon_button === 'true' && !this.showCart && !this.showInfo
     }
   },
   watch: {
@@ -174,6 +183,17 @@ h1,h2,h3,h4,h5,h6,small{
   .slideup-enter,
   .slideup-leave-to{
     transform:translateY(100%);
+  }
+
+  .hidden-on-overlays-enter-active{
+    transition:opacity 500ms 500ms;
+  }
+  .hidden-on-overlays-leave-active{
+    transition:opacity 0s;
+  }
+  .hidden-on-overlays-enter,
+  .hidden-on-overlays-leave-to{
+    opacity:0;
   }
 }
 </style>
