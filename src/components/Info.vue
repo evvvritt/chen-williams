@@ -7,7 +7,9 @@
         section.mb1
           div(v-html="$options.filters.richtext(info.main)")
         aside
-          subscribe.mb2
+          div.mb2
+            div(v-html="$options.filters.richtext(info.subscribe_form_description)")
+            subscribe.mt075
           div(v-html="$options.filters.richtext(info.sidebar)")
 </template>
 

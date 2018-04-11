@@ -9,8 +9,8 @@
         partners
       //- Category Items
       template(v-else)
-        transition(name="fade", v-on:after-enter="setGridRows")
-          .category__items(v-show="!loading")
+        transition-group(name="results", v-on:after-enter="setGridRows")
+          .category__items(:key="category.id", v-show="!loading || !querying")
             item(v-for="object in category.results", :key="object.id", :object="object")
     transition(name="fade")
       nav.fixed.bottom-0.right-0.p2.z2(v-if="!loading")
@@ -23,13 +23,14 @@ import DotGrid from '@/components/DotGrid'
 import Item from '@/components/CategoryItem'
 import Partners from '@/components/Partners'
 import _find from 'lodash/find'
+import _get from 'lodash/get'
 export default {
   name: 'Category',
   props: ['catSlug'],
   components: { Item, DotGrid, Partners },
   data () {
     return {
-      querying: false,
+      querying: true,
       gridRows: 20
     }
   },
@@ -52,24 +53,34 @@ export default {
     }
   },
   methods: {
+    getCatIDbyUID (uid) {
+      if (!this.site || !this.site.nav) return false
+      const cat = _find(this.site.nav, (navItem) => {
+        return navItem.primary.category_link.uid === uid
+      })
+      return _get(cat, 'primary.category_link.id')
+    },
     getCategory () {
-      if (!this.site) return false
-      const cat = _find(this.site.nav, (navItem) => { return navItem.primary.category_link.uid === this.catSlug })
-      if (!cat) return false
+      const catId = this.getCatIDbyUID(this.catSlug)
+      if (!catId) return false
       this.querying = true
-      this.$store.dispatch('getCategory', cat.primary.category_link.id).then(() => {
+      this.$store.dispatch('getCategory', catId).then(() => {
+        this.querying = false
+      }, err => {
+        console.error(err)
         this.querying = false
       })
     },
     setGridRows () {
-      this.$nextTick(() => {
+      const calcRows = () => {
         const winW = window.innerWidth
         const columns = winW <= 768 ? 4 : winW <= 1440 ? 9 : winW < 1900 ? 12 : 15
         const bodyWidth = this.$refs.body && this.$refs.body.offsetWidth
         if (!bodyWidth) return false
         const block = bodyWidth / columns
         this.gridRows = 1 + parseInt(document.body.scrollHeight / block)
-      })
+      }
+      this.$nextTick(calcRows)
     }
   },
   created () {
@@ -80,6 +91,17 @@ export default {
 
 <style lang="scss" scoped>
 @import '../style/variables';
+
+.results-enter-active{
+  transition: opacity 600ms 400ms
+}
+.results-leave-active{
+  transition: opacity 400ms
+}
+.results-enter,
+.results-leave-to{
+  opacity:0;
+}
 
 .category{
   .category__items{

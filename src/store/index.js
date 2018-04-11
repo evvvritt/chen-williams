@@ -99,6 +99,7 @@ export default new Vuex.Store({
       })
     },
     getCategory ({ commit, state }, id) {
+      // Get Prismic Objects by linked Category doc (by ID, not UID)
       if (id !== state.category.id) {
         Prismic.getApi(state.prismicUrl).then(function (api) {
           return api.query(
