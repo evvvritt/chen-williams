@@ -80,7 +80,7 @@
                 nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
               //- partners
               template(v-if="subitem.link.type === 'partners'")
-                router-link(:to="{name: 'Partners'}")
+                router-link(:to="{name: 'Partners'}", v-if="$route.params.catSlug")
                   nav-link {{subitem.link.data.title | text}}
                   radio-btn
               nav-vein(v-if="index < subnav.items.length - 1")

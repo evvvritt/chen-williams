@@ -11,7 +11,7 @@
               h1 {{object.data.title | text}}
               h6 {{object.data.year}}
               h6 {{object.data.dimensions | text}}
-              div.mt1(v-html="richtext(object.data.description)")
+              div.mt1(v-html="$options.filters.richtext(object.data.description)")
               h6.mt1(v-if="price") {{price | price}}
           aside(v-if="sku && sku.available", @click="addToCart")
             .relative
@@ -20,19 +20,25 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Background from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
 import Carousel from '@/components/Carousel'
 import RadioBtn from '@/components/RadioBtn'
 import _find from 'lodash/find'
+import _get from 'lodash/get'
 export default {
   name: 'Object',
   props: ['slug'],
   components: { Background, OverlayHeader, Carousel, RadioBtn },
   data () {
     return {
-      richtext: this.$options.filters.richtext,
       addingToCart: false
+    }
+  },
+  watch: {
+    object () {
+      this.updateMeta()
     }
   },
   computed: {
@@ -50,12 +56,14 @@ export default {
     price () {
       if (!this.sku) return false
       return this.sku.price
+    },
+    catSlug () {
+      return _get(this.object, 'data.category.uid')
     }
   },
   methods: {
     close () {
-      const catSlug = this.$route.params.catSlug
-      const route = catSlug ? { name: 'Category', params: { catSlug: catSlug } } : '/'
+      const route = this.catSlug ? { name: 'Category', params: { catSlug: this.catSlug } } : '/'
       this.$router.push(route)
     },
     getObject () {
@@ -69,6 +77,13 @@ export default {
           this.$router.push({hash: '#cart'})
         })
       }
+    },
+    updateMeta () {
+      if (!this.object || !this.object.data) return false
+      const text = this.$options.filters.text
+      const title = text(this.object.data.title)
+      const descrip = text(this.object.data.meta_description)
+      Vue.updateMeta.set(title, descrip)
     }
   },
   created () {

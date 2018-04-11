@@ -38,6 +38,25 @@ Vue.thumbSrc = (src, length, useHeight = false, format = 'jpg') => {
   return `${Vue.config.IMG.url}/image/fetch/q_auto:best,${urlParam},f_${format}/${src}`
 }
 
+// update Meta
+Vue.updateMeta = {
+  _siteTitle: 'Chen Williams',
+  _siteDescription: 'Chen Chen & Kai Williams is a design studio that explores materials and new ways to use them',
+  setTitle (pageTitle = '') {
+    const title = pageTitle.length > 0 ? pageTitle + ' | ' + this._siteTitle : this._siteTitle
+    document.title = title
+  },
+  setDescription (description = '') {
+    description = description.length > 0 ? description : this._siteDescription
+    const meta = document.querySelector('meta[name="description"]')
+    if (meta) meta.setAttribute('content', description)
+  },
+  set (title, descrip) {
+    this.setTitle(title)
+    this.setDescription(descrip)
+  }
+}
+
 // Prismic raw Text
 Vue.filter('text', function (value) {
   if (!value || !value[0]) return ''

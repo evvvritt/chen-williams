@@ -24,7 +24,7 @@ export default new Router({
       props: true,
       children: [
         {
-          path: ':slug',
+          path: '/item/:slug',
           name: 'CategoryObject',
           component: Object,
           props: true,

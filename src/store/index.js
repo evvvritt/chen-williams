@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Prismic from 'prismic-javascript'
 import Shopify from 'shopify-buy'
+import _get from 'lodash/get'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     checkout: { lineItems: [] },
     loading: true,
     site: null,
-    category: { id: 'no-id', results: [] },
+    categories: [],
+    objects: { catID: 'no-id', items: [] },
     object: { uid: null },
     info: null,
     products: null,
@@ -26,6 +28,9 @@ export default new Vuex.Store({
   getters: {
     cartCount: state => {
       return state.checkout.lineItems.length
+    },
+    homeCategoryUID: state => {
+      return _get(state.site, 'nav[0].primary.category_link.uid')
     }
   },
   mutations: {
@@ -34,9 +39,17 @@ export default new Vuex.Store({
     },
     setSite (state, payload) {
       state.site = payload
+      // update meta defaults
+      const title = _get(state.site, 'title[0].text')
+      if (title) Vue.updateMeta._siteTitle = title
+      const descrip = _get(state.site, 'meta_description[0].text')
+      if (descrip) Vue.updateMeta._siteDescription = descrip
     },
-    setCategory (state, payload) {
-      state.category = payload
+    setCategories (state, array) {
+      state.categories = array
+    },
+    setObjects (state, payload) {
+      state.objects = payload
     },
     setObject (state, payload) {
       state.object = payload
@@ -58,11 +71,17 @@ export default new Vuex.Store({
     getSite ({ commit, state }) {
       Prismic.getApi(state.prismicUrl).then(function (api) {
         return api.query(
-          Prismic.Predicates.at('document.type', 'site'),
-          { fetchLinks: ['category.title', 'tag.label', 'partners.title'] }
+          Prismic.Predicates.any('document.type', ['site', 'category']),
+          { pageSize: 100, fetchLinks: ['category.title', 'tag.label', 'partners.title'] }
         )
-      }).then((resp) => {
-        commit('setSite', resp.results[0].data)
+      }).then(resp => {
+        const categories = []
+        for (var i = 0; i < resp.results.length; i++) {
+          const doc = resp.results[i]
+          if (doc.type === 'site') commit('setSite', doc.data)
+          if (doc.type === 'category') categories.push(doc)
+        }
+        commit('setCategories', categories)
       }, (err) => {
         console.error('Error: Get Site failed', err)
       })
@@ -98,9 +117,9 @@ export default new Vuex.Store({
         console.error('Error: Get Products failed', err)
       })
     },
-    getCategory ({ commit, state }, id) {
+    getObjectsByCategoryID ({ commit, state }, id) {
       // Get Prismic Objects by linked Category doc (by ID, not UID)
-      if (id !== state.category.id) {
+      if (id !== state.objects.catID) {
         Prismic.getApi(state.prismicUrl).then(function (api) {
           return api.query(
             [
@@ -110,7 +129,7 @@ export default new Vuex.Store({
             { pageSize: 100, fetch: ['object.title', 'object.thumbnail', 'object.tags', 'object.shopify_product_id'] }
           )
         }).then((resp) => {
-          commit('setCategory', { ...state.category, id: id, results: resp.results })
+          commit('setObjects', { catID: id, items: resp.results })
         }, (err) => {
           console.error('Error: Get Category failed', err)
         })

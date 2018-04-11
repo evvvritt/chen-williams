@@ -10,17 +10,17 @@
       //- Category Items
       template(v-else)
         transition-group(name="results", v-on:after-enter="setGridRows")
-          .category__items(:key="category.id", v-show="!loading || !querying")
-            item(v-for="object in category.results", :key="object.id", :object="object")
+          .category__items(:key="objects.catID", v-show="!loading || !querying")
+            item(v-for="object in objects.items", :key="object.id", :object="object")
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState } from 'vuex'
 import DotGrid from '@/components/DotGrid'
 import Item from '@/components/CategoryItem'
 import Partners from '@/components/Partners'
 import _find from 'lodash/find'
-import _get from 'lodash/get'
 export default {
   name: 'Category',
   props: ['catSlug'],
@@ -28,40 +28,36 @@ export default {
   data () {
     return {
       querying: true,
-      gridRows: 20
+      gridRows: 20,
+      getText: this.$options.filters.text
     }
   },
   computed: {
     ...mapState([
       'loading',
-      'category',
-      'site'
-    ])
+      'objects'
+    ]),
+    category () {
+      return _find(this.$store.state.categories, ['uid', this.catSlug])
+    }
   },
   watch: {
-    site () {
-      this.getCategory()
+    category () {
+      this.getItems()
+      this.updateMeta()
     },
-    catSlug () {
-      this.getCategory()
-    },
-    'category.results' () {
+    'objects.items' () {
       this.setGridRows()
+    },
+    '$route' () {
+      this.updateMeta()
     }
   },
   methods: {
-    getCatIDbyUID (uid) {
-      if (!this.site || !this.site.nav) return false
-      const cat = _find(this.site.nav, (navItem) => {
-        return navItem.primary.category_link.uid === uid
-      })
-      return _get(cat, 'primary.category_link.id')
-    },
-    getCategory () {
-      const catId = this.getCatIDbyUID(this.catSlug)
-      if (!catId) return false
+    getItems () {
+      if (this.$route.name !== 'Category' || !this.category || !this.category.id) return false
       this.querying = true
-      this.$store.dispatch('getCategory', catId).then(() => {
+      this.$store.dispatch('getObjectsByCategoryID', this.category.id).then(() => {
         this.querying = false
       }, err => {
         console.error(err)
@@ -78,10 +74,18 @@ export default {
         this.gridRows = 1 + parseInt(document.body.scrollHeight / block)
       }
       this.$nextTick(calcRows)
+    },
+    updateMeta () {
+      if (this.$route.name !== 'Category') return false
+      let title, descrip, cannonical
+      const isHome = this.$store.getters.homeCategoryUID === this.category.uid
+      title = !isHome ? this.getText(this.category.data.title) : title
+      descrip = !isHome ? this.getText(this.category.data.meta_description) : descrip
+      Vue.updateMeta.set(title, descrip, cannonical)
     }
   },
   created () {
-    this.getCategory()
+    this.getItems()
   }
 }
 </script>
