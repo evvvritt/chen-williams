@@ -103,13 +103,19 @@
 
 .fades{transition: opacity 500ms;}
 
+.underline-links a{
+  border-bottom-style: solid;
+  &:hover{
+    border-bottom-color:transparent;
+  }
+}
 
 .btn{
   background-color: $white;
   border-style:solid;
   border-radius:10em;
   line-height: 1;
-  padding: 0.22em 1.4em 0.25em;
+  padding: 0em 1.4em .25em;
   cursor: pointer;
   &:active{
     background-color:darken($white, 12.5%);

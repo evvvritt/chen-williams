@@ -3,7 +3,7 @@
     background(color="gray")
     overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})", title="Info")
     transition(name="fade")
-      .pt-1row.flex.mbl-block.left-align(v-if="info")
+      .pt-1row.flex.mbl-block.left-align.underline-links(v-if="info")
         section.mb1
           div(v-html="$options.filters.richtext(info.main)")
         aside

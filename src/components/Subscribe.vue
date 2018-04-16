@@ -37,10 +37,16 @@ input{
     }
   }
   &[type="submit"]{
+    font-size:inherit;
+    font-style:inherit;
+    font-weight:inherit;
     border:none;
     background:none;
-    padding-bottom: .125em;
+    // padding-bottom: .125em;
     border-bottom: 1px solid gray;
+    &:hover{
+      border-bottom-color:transparent ;
+    }
   }
 }
 </style>
