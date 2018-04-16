@@ -1,5 +1,5 @@
 <template lang="pug">
-  article.fixed.overlay.h-100vh.z-overlay.bg-gray.backdrop-blur.overflow-y-scroll
+  article.info-overlay.fixed.overlay.h-100vh.z-overlay.bg-gray.backdrop-blur.overflow-y-scroll
     overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})", title="Info")   
     .relative.p2.pb-50vh.overflow-y-hidden
       transition(name="fade")
@@ -66,19 +66,16 @@ export default {
 
 <style lang="scss">
 @import '../style/variables';
-.block-img {
+.info-overlay .block-img {
   float: left;
   margin: 1em 0;
   padding: 0 1em 0 0;
   width: 25%;
-}
-
-.block-img  a {
-  border-bottom:none;
-}
-
-@include mobile {
-  .block-img{
+  a {
+    border-bottom:none;
+  }
+  // mobile
+  @include mobile {
     width:50%;
   }
 }
