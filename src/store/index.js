@@ -35,6 +35,7 @@ export default new Vuex.Store({
   },
   mutations: {
     loading (state, payload) {
+      console.log('loading:', payload)
       state.loading = payload
     },
     setSite (state, payload) {
@@ -170,7 +171,7 @@ export default new Vuex.Store({
     },
     addToCart ({ commit, state }, variantId, qty = 1) {
       if (!state.checkout.id) return false
-      const lineItemsToAdd = [{ variantId: variantId, quantity: qty }]
+      const lineItemsToAdd = [{ variantId: variantId, quantity: qty, customAttributes: [{key: 'date', value: '2018-04-15'}] }]
       shop.checkout.addLineItems(state.checkout.id, lineItemsToAdd).then((checkout) => {
         commit('setCheckout', checkout)
       })

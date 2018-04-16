@@ -2,16 +2,17 @@
   .category.relative.left-align.overflow-hidden.min-h-100vh.p2
     transition(name="overlay")
       router-view
+    .pt-2rows.fades(ref="body", :class="{'opacity-0': loading}")
+      transition-group(name="results")
+        //- Partners
+        div(v-if="$route.name === 'Partners'", key="partners")
+          partners
+        //- Category Items
+        div(v-else, key="items")
+          transition-group(name="results", v-on:after-enter="setGridRows")
+            section.category__items(:key="objects.catID")
+              item(v-for="object in objects.items", :key="object.id", :object="object")
     dot-grid(:rows="gridRows")
-    .pt-2rows.fades(ref="body", :class="{'opacity-0': querying}")
-      //- Partners
-      template(v-if="$route.name === 'Partners'")
-        partners
-      //- Category Items
-      template(v-else)
-        transition-group(name="results", v-on:after-enter="setGridRows")
-          .category__items(:key="objects.catID", v-show="!loading || !querying")
-            item(v-for="object in objects.items", :key="object.id", :object="object")
 </template>
 
 <script>
@@ -27,7 +28,6 @@ export default {
   components: { Item, DotGrid, Partners },
   data () {
     return {
-      querying: true,
       gridRows: 20,
       getText: this.$options.filters.text
     }
@@ -56,13 +56,7 @@ export default {
   methods: {
     getItems () {
       if (this.$route.name !== 'Category' || !this.category || !this.category.id) return false
-      this.querying = true
-      this.$store.dispatch('getObjectsByCategoryID', this.category.id).then(() => {
-        this.querying = false
-      }, err => {
-        console.error(err)
-        this.querying = false
-      })
+      this.$store.dispatch('getObjectsByCategoryID', this.category.id).catch(err => console.error(err))
     },
     setGridRows () {
       const calcRows = () => {
@@ -94,7 +88,7 @@ export default {
 @import '../style/variables';
 
 .results-enter-active{
-  transition: opacity 600ms 400ms
+  transition: opacity 600ms 400ms;
 }
 .results-leave-active{
   transition: opacity 400ms

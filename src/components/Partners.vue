@@ -1,15 +1,16 @@
 <template lang="pug">
-  section(v-if="partners").mbl-block.flex.flex-wrap
-    article.bg-gray.relative.pointer(v-for="partner in partners.body")
-      a.radio-btn-label.overlay.absolute(v-for="partner in partners.body", :href="partner.primary.link.url", target="_blank", rel="noopener")
-        header.z2.absolute.top-0.left-0
-          h1.hidden {{partner.primary.name | text}}
-          template(v-if="partner.primary.logo.url")
-            img.block.p1(:src="partner.primary.logo.url", :alt="partner.primary.logo.alt")
-        div.z1.absolute.top-0.left-0.pt-2rows.w-100
-          .p1(v-html="$options.filters.richtext(partner.primary.description)")
-        figure.z0.overlay.absolute.bg-cover.fades(:style="'background-image:url(' + thumb(partner.primary.background_image.url) + ')'")
-      radio-btn(fill="white")
+  section.mbl-block.flex.flex-wrap.fades(:class="{'opacity-0': loading}")
+    template(v-if="partners && partners.body")
+      article.bg-gray.relative.pointer(v-for="partner in partners.body")
+        a.radio-btn-label.overlay.absolute(:href="partner.primary.link.url", target="_blank", rel="noopener")
+          header.z2.absolute.top-0.left-0
+            h1.hidden {{partner.primary.name | text}}
+            template(v-if="partner.primary.logo.url")
+              img.block.p1(:src="partner.primary.logo.url", :alt="partner.primary.logo.alt")
+          div.z1.absolute.top-0.left-0.pt-2rows.w-100
+            .p1(v-html="$options.filters.richtext(partner.primary.description)")
+          figure.z0.overlay.absolute.bg-cover.fades(:style="'background-image:url(' + thumb(partner.primary.background_image.url) + ')'")
+        radio-btn(fill="white")
 </template>
 
 <script>
@@ -23,6 +24,11 @@ export default {
       return this.$store.state.partners
     }
   },
+  data () {
+    return {
+      loading: true
+    }
+  },
   methods: {
     thumb (src) {
       if (!src) return ''
@@ -31,7 +37,9 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getPartners')
+    this.$store.dispatch('getPartners').then(() => {
+      this.loading = false
+    })
   }
 }
 </script>
