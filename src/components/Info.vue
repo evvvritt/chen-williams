@@ -1,16 +1,17 @@
 <template lang="pug">
-  article.fixed.overlay.z-overlay.p2.bg-gray.backdrop-blur
-    background(color="gray")
-    overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})", title="Info")
-    transition(name="fade")
-      .pt-1row.flex.mbl-block.left-align.underline-links(v-if="info")
-        section.mb1
-          div(v-html="$options.filters.richtext(info.main)")
-        aside
-          div.mb2
-            div(v-html="$options.filters.richtext(info.subscribe_form_description)")
-            subscribe.mt075
-          div(v-html="$options.filters.richtext(info.sidebar)")
+  article.fixed.overlay.h-100vh.z-overlay.bg-gray.backdrop-blur.overflow-y-scroll
+    overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})", title="Info")   
+    .relative.p2.pb-50vh.overflow-y-hidden
+      transition(name="fade")
+        .pt-1row.flex.mbl-block.left-align.underline-links(v-if="info")
+          section.mb1
+            div(v-html="$options.filters.richtext(info.main)")
+          aside
+            div.mb2
+              div(v-html="$options.filters.richtext(info.subscribe_form_description)")
+              subscribe.mt075
+            div(v-html="$options.filters.richtext(info.sidebar)")
+      background(color="gray").absolute.overlay.z_-1
 </template>
 
 <script>
@@ -59,6 +60,26 @@ export default {
   }
   aside{
     flex:0 0 cols(4,15);
+  }
+}
+</style>
+
+<style lang="scss">
+@import '../style/variables';
+.block-img {
+  float: left;
+  margin: 1em 0;
+  padding: 0 1em 0 0;
+  width: 25%;
+}
+
+.block-img  a {
+  border-bottom:none;
+}
+
+@include mobile {
+  .block-img{
+    width:50%;
   }
 }
 </style>

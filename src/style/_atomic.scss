@@ -21,6 +21,7 @@
 
 .w-100{ width:100%;}
 .h-100{ height:100%;}
+.h-100vh{ height:100vh;}
 .min-h-100vh{ min-height: 100vh;}
 
 .bg-white{ background:$white;}
@@ -42,6 +43,8 @@
 }
 
 .overflow-hidden{overflow:hidden;}
+.overflow-y-hidden{overflow-y:hidden}
+.overflow-y-scroll{overflow-y:scroll; -webkit-overflow-scrolling: touch;}
 
 .mt075{margin-top: 0.75em;}
 .ml1{margin-left: 1em;}
@@ -55,6 +58,7 @@
 
 .p-text{padding:rem(8px) rem(5px);}
 .pb-100{padding-bottom: 100%;}
+.pb-50vh{padding-bottom: 50vh;}
 
 .pt-1row{
   padding-top: 25%;
