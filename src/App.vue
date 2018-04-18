@@ -65,7 +65,7 @@ export default {
     },
     load () {
       let canFinish = false
-      const minWait = Vue.config.productionTip ? 1500 : 1500
+      const minWait = Vue.config.productionTip ? 2000 : 2000
       const finish = () => this.$store.commit('loading', false)
       // get site
       this.getSite().then(() => {

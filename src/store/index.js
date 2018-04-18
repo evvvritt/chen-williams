@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Prismic from 'prismic-javascript'
 import Shopify from 'shopify-buy'
 import _get from 'lodash/get'
+import _find from 'lodash/find'
 
 Vue.use(Vuex)
 
@@ -35,7 +36,6 @@ export default new Vuex.Store({
   },
   mutations: {
     loading (state, payload) {
-      console.log('loading:', payload)
       state.loading = payload
     },
     setSite (state, payload) {
@@ -119,21 +119,19 @@ export default new Vuex.Store({
       })
     },
     getObjectsByCategoryID ({ commit, state }, id) {
-      // Get Prismic Objects by linked Category doc (by ID, not UID)
+      if (!id) return Promise.reject(new Error('No Category ID specified'))
       if (id !== state.objects.catID) {
-        Prismic.getApi(state.prismicUrl).then(function (api) {
-          return api.query(
-            [
-              Prismic.Predicates.at('document.type', 'object'),
-              Prismic.Predicates.at('my.object.category', id)
-            ],
-            { pageSize: 100, fetch: ['object.title', 'object.thumbnail', 'object.tags', 'object.shopify_product_id'] }
-          )
-        }).then((resp) => {
-          commit('setObjects', { catID: id, items: resp.results })
-        }, (err) => {
-          console.error('Error: Get Category failed', err)
+        const cat = _find(state.categories, ['id', id])
+        if (!cat) return false
+        const objectIDs = cat.data.objects.map(item => {
+          const id = _get(item, 'primary.object.id')
+          if (id) return id
         })
+        if (objectIDs.length < 1) return false
+        Prismic.getApi(state.prismicUrl)
+        .then(function (api) { return api.getByIDs(objectIDs) })
+        .then(resp => commit('setObjects', { catID: id, items: resp.results }))
+        .catch(err => console.error('Error: Get Category Items failed', err))
       }
     },
     getObject ({ commit, state }, uid) {
