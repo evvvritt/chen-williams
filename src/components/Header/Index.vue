@@ -1,7 +1,5 @@
 <template lang="pug">
   header.app-header.left-align(:class="{'app-header--condensed': condensed, 'mbl-bg-white app-header--mobile-collapsed': !mobileCollapsed}")
-    //- mobile logo
-    logo.tblt-hidden
     //- mobile cart button
     router-link(:to="{hash: 'cart'}", v-show="cartCount > 0").tblt-hidden.absolute.right-0.top-0.p2.z3
       .relative

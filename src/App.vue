@@ -10,6 +10,8 @@
     //- cart
     transition(name="slideup")
       cart(v-show="showCart")
+    //- mobile logo
+    logo.tblt-hidden
     //- coupon button
     transition(name="hidden-on-overlays")
       coupon-btn.fixed.bottom-0.right-0.p2.z2(v-show="showCouponBtn")
@@ -22,9 +24,10 @@ import AppHeader from '@/components/Header/Index'
 import Info from '@/components/Info'
 import Cart from '@/components/Cart'
 import CouponBtn from '@/components/CouponBtn'
+import Logo from '@/components/Header/NavLogo.vue'
 export default {
   name: 'app',
-  components: { AppHeader, Info, Cart, CouponBtn },
+  components: { AppHeader, Info, Cart, CouponBtn, Logo },
   computed: {
     ...mapState([
       'site',

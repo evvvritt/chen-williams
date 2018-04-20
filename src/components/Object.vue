@@ -1,6 +1,6 @@
 <template lang="pug">
-  article.object.overlay
-    .object__body.overflow-hidden
+  article.object.overlay.overflow-y-scroll
+    .object__body.overflow-hidden.p2.mbl-pb-25vh
       background
       overlay-header.object__header(@close="close")
       .object__main.mb-pt-1row(v-if="object.data")
@@ -11,9 +11,13 @@
               h1 {{object.data.title | text}}
               h6 {{object.data.year}}
               h6 {{object.data.dimensions | text}}
-              div.mt1(v-html="$options.filters.richtext(object.data.description)")
+              .mt1(v-if="skus && skus.length > 0", v-show="skus.length > 1")
+                label {{selectLbl}}: 
+                select(ref="select", v-model="selectedSKUid")
+                  option(v-for="(sku, index) in skus", :value="sku.id", :disabled="!sku.available") {{sku.title}}
+              .mt1(v-html="$options.filters.richtext(object.data.description)")
               h6.mt1(v-if="price") {{price | price}}
-          aside(v-if="sku && sku.available", @click="addToCart")
+          aside(v-if="skus", v-show="selectedSKU !== ''", @click="addToCart")
             .relative
               .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
               radio-btn(fill="white", :dotted="true")
@@ -33,32 +37,46 @@ export default {
   components: { Background, OverlayHeader, Carousel, RadioBtn },
   data () {
     return {
-      addingToCart: false
-    }
-  },
-  watch: {
-    object () {
-      this.updateMeta()
+      addingToCart: false,
+      selectedSKUid: ''
     }
   },
   computed: {
     object () {
       return this.$store.state.object
     },
-    sku () {
+    skus () {
       if (!this.object) return false
-      const id = this.object.data.shopify_product_id
+      const id = _get(this.object, 'data.shopify_product_id')
       const product = _find(this.$store.state.products, ['_id', id])
-      if (!product) return false
-      const hasVariants = product.variants && product.variants.length > 0
-      return hasVariants ? product.variants[0] : false
+      return product && product.variants ? product.variants : false
+    },
+    selectedSKU () {
+      if (!this.skus) return false
+      return _find(this.skus, ['id', this.selectedSKUid])
     },
     price () {
-      if (!this.sku) return false
-      return this.sku.price
+      if (!this.selectedSKU) return false
+      return this.selectedSKU.price
     },
     catSlug () {
-      return _get(this.object, 'data.category.uid')
+      const matches = this.$store.state.categories.filter(cat => {
+        if (!cat.data.objects) return false
+        const obj = _find(cat.data.objects, ['primary.object.id', this.object.id])
+        if (obj) return cat
+      })
+      return matches[0] && matches[0].uid
+    },
+    selectLbl () {
+      return _get(this.object, 'data.variants_select_label[0].text') || 'Options'
+    }
+  },
+  watch: {
+    object () {
+      this.updateMeta()
+    },
+    skus () {
+      this.setDefaultSKUid()
     }
   },
   methods: {
@@ -70,13 +88,14 @@ export default {
       if (this.slug) this.$store.dispatch('getObject', this.slug)
     },
     addToCart () {
-      if (this.sku) {
-        this.addingToCart = true
-        this.$store.dispatch('addToCart', this.sku.id).then(() => {
-          this.addingToCart = false
-          this.$router.push({hash: '#cart'})
-        })
-      }
+      if (this.selectedSKUid === '') return false
+      this.addingToCart = true
+      this.$store.dispatch('addToCart', this.selectedSKUid)
+      .then(() => {
+        this.addingToCart = false
+        this.$router.push({hash: '#cart'})
+      })
+      .catch(err => console.error(err))
     },
     updateMeta () {
       if (!this.object || !this.object.data) return false
@@ -84,10 +103,14 @@ export default {
       const title = text(this.object.data.title)
       const descrip = text(this.object.data.meta_description)
       Vue.updateMeta.set(title, descrip)
+    },
+    setDefaultSKUid () {
+      if (this.skus && this.skus[0] && this.skus[0].available) this.selectedSKUid = this.skus[0].id
     }
   },
   created () {
     this.getObject()
+    this.setDefaultSKUid()
   }
 }
 </script>
@@ -100,7 +123,6 @@ export default {
   width:100%;
   height:100%;
   overflow-x:hidden;
-  overflow-y:auto;
   z-index: $z-overlay;
   background:$white;
   .app-header{
@@ -110,7 +132,7 @@ export default {
 }
 .object__body{
   position: relative;
-  padding:$gutter;
+  // padding:$gutter;
   min-height:100vh;
 }
 

@@ -2,7 +2,7 @@
 <template lang="pug">
   aside.cart.fixed.overlay.z-overlay.p2.bg-gray.backdrop-blur
     background(color="gray")
-    overlay-header.absolute.top-0.left-0.w-100(@close="$router.push({hash: null})")
+    overlay-header.absolute.z1.top-0.left-0.w-100(@close="$router.push({hash: null})")
     template(v-if="cart && cart.lineItems.length > 0")
       section.left-align
         header.flex.items-end
@@ -10,8 +10,8 @@
           .cell.cell-2.p-text Items
           .cell.p-text Quantity
           .cell.p-text Price
-        ul
-          li.flex(v-for="item in cart.lineItems", v-if="item.variant")
+        ul.relative.z2
+          li.flex.items-start(v-for="item in cart.lineItems", v-if="item.variant")
             div.cell.bg-cover.relative(:style="'background-image:url(' + src(item.variant) + ')'")
               radio-btn(title="Remove Item", @click="remove(item.id)", fill="white", type="close")
             div.cell.cell-2.p-text 

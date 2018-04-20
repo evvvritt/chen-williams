@@ -4,9 +4,9 @@
     .relative.p2.pb-50vh.overflow-y-hidden
       transition(name="fade")
         .pt-1row.flex.mbl-block.left-align.underline-links(v-if="info")
-          section.mb1
-            div(v-html="$options.filters.richtext(info.main)")
-          aside
+          section.mb1.clear
+            div.info-overlay__body.flex.flex-wrap.justify-between(v-html="$options.filters.richtext(info.main)")
+          aside.mbl-mt3
             div.mb2
               div(v-html="$options.filters.richtext(info.subscribe_form_description)")
               subscribe.mt075
@@ -66,17 +66,24 @@ export default {
 
 <style lang="scss">
 @import '../style/variables';
-.info-overlay .block-img {
-  float: left;
-  margin: 1em 0;
-  padding: 0 1em 0 0;
-  width: 25%;
-  a {
-    border-bottom:none;
-  }
-  // mobile
-  @include mobile {
-    width:50%;
+.info-overlay__body{
+  > * {
+    flex:1 0 100%;
+    width:100%;
+    max-width:100%;
+    &.block-img {
+      flex:0 0 25%;
+      max-width:25%;
+      padding-right: 1em;
+      a {
+        border-bottom:none;
+      }
+
+      @include mobile{
+        flex:0 0 50%;
+        max-width: 50%;
+      }
+    }
   }
 }
 </style>

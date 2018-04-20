@@ -20,6 +20,7 @@ export default {
     position: fixed;
     left: .5rem;
     bottom:2rem;
+    z-index:100;
   }
 }
 
