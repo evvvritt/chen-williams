@@ -55,7 +55,7 @@
                 radio-btn
           //- cart
           transition(name="fade")
-            router-link(tag="li", :to="{hash: 'cart'}").cw-grid__item(v-show="!loading")
+            router-link(tag="li", :to="{hash: 'cart'}", v-show="!loading").cw-grid__item
               a(v-show="!loading")
                 nav-link Cart
                 radio-btn
