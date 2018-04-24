@@ -68,8 +68,10 @@ Vue.filter('richtext', function (key) {
   if (!key) return ''
   const html = RichText.asHtml(key, (doc) => {
     // Link Resolving
-    // if (doc.type === 'collection') return '/collections/' + doc.uid
     if (doc.type === 'info') return '#info'
+    if (doc.type === 'category') return '/' + doc.uid
+    if (doc.type === 'object') return '/item/' + doc.uid
+    if (doc.type === 'partners') return '/shop/partners'
     if (doc.type === 'site') return '/'
     // Fallback
     return '/doc/' + doc.uid
