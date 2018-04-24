@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import PrismicDOM from 'prismic-dom'
+import { RichText } from 'prismic-dom'
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 Vue.config.IMG = {
@@ -66,7 +66,7 @@ Vue.filter('text', function (value) {
 // Prismic Rich Text
 Vue.filter('richtext', function (key) {
   if (!key) return ''
-  const html = PrismicDOM.RichText.asHtml(key, (doc) => {
+  const html = RichText.asHtml(key, (doc) => {
     // Link Resolving
     // if (doc.type === 'collection') return '/collections/' + doc.uid
     if (doc.type === 'info') return '#info'

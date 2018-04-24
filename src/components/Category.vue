@@ -18,10 +18,10 @@
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
+import _find from 'lodash/find'
 import DotGrid from '@/components/DotGrid'
 import Item from '@/components/CategoryItem'
-import Partners from '@/components/Partners'
-import _find from 'lodash/find'
+const Partners = () => import('@/components/Partners')
 export default {
   name: 'Category',
   props: ['catSlug'],

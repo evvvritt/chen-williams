@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Category from '@/components/Category'
-import Object from '@/components/Object'
+const _Object = () => import('@/components/Object')
 
 Vue.use(Router)
 
@@ -26,7 +26,7 @@ export default new Router({
         {
           path: '/item/:slug',
           name: 'CategoryObject',
-          component: Object,
+          component: _Object,
           props: true,
           meta: {
             isOverlay: true
