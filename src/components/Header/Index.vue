@@ -69,12 +69,12 @@
                 radio-btn
               nav-vein
             //- loop through filters
-            li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': activeFilter(subitem.link.uid)}")
+            li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': isActiveFilter(subitem.link.uid)}")
               //- filters (tags)
               template(v-if="subitem.link.type === 'tag'")
                 a(@click="filter(subitem.link.uid)")
                   nav-link {{subitem.link.data.label | text}}
-                  radio-btn(:checked="activeFilter(subitem.link.uid)")
+                  radio-btn(:checked="isActiveFilter(subitem.link.uid)")
                 nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
               //- partners
               template(v-if="subitem.link.type === 'partners'")
@@ -137,33 +137,32 @@ export default {
     isCategory (catUID) {
       return this.$route.params.catSlug === catUID
     },
-    activeFilter (filter) {
+    isActiveFilter (filter) {
       if (!filter) return false
       return this.activeFilters.indexOf(filter) > -1
     },
-    filter (category) {
-      if (!category) return false
+    filter (filter) {
+      if (!filter) return false
+      // Mobile – open menu first, if collapsed
       if (Vue.is('mobile') && this.mobileCollapsed) {
         this.mobileCollapsed = false
         return
       }
-      const cat = category
-      let cats = this.$route.query.filter // empty object || string
-      // if no active filters: add
-      if (!cats || cats.length === 0) return this.$router.replace({query: {filter: cat}})
-      // otherwise add/remove depending
-      cats = cats.split(',')
-      const index = cats.indexOf(cat)
-      if (index > -1) {
-        // remove
-        cats.splice(index, 1)
-        if (cats.length === 0) return this.$router.replace({query: null})
-      } else {
-        // add
-        cats.push(cat)
-      }
-      cats = cats.join(',')
-      this.$router.replace({query: {filter: cats}})
+      // setup route
+      const catSlug = this.$route.params.catSlug
+      if (!catSlug) return false
+      const route = {name: 'Category', params: {catSlug: catSlug}}
+      // active filters
+      let filters = this.$route.query.filter
+      filters = filters ? filters.split(',') : []
+      // add/remove
+      const index = filters.indexOf(filter)
+      const isActive = index > -1
+      if (isActive) filters.splice(index, 1) // remove if exists
+      else filters.push(filter) // add
+      // update route obj
+      route.query = filters.length > 0 ? {filter: filters.join(',')} : null
+      return this.$router.replace(route)
     },
     onScroll: _throttle(function () {
       this.condensed = window.pageYOffset > 2
