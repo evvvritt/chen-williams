@@ -87,16 +87,17 @@ export default new Vuex.Store({
         console.error('Error: Get Site failed', err)
       })
     },
-    createCheckout ({ dispatch, commit, state }) {
+    createCheckout ({ dispatch, commit, state }, logSuccess = false) {
       const savedId = localStorage.getItem('checkoutId')
       if (savedId) {
         return shop.checkout.fetch(savedId).then((checkout) => {
           commit('setCheckout', checkout)
+          if (logSuccess) console.log('Success')
         }, err => {
           console.error(err)
-          console.error('Fetch checkout by ID failed. Creating new...')
+          console.log('Fetch checkout by ID failed. Creating new...')
           localStorage.removeItem('checkoutId')
-          dispatch('createCheckout')
+          dispatch('createCheckout', true)
         })
       }
       // else, create new
