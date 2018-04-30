@@ -92,7 +92,6 @@ export default new Vuex.Store({
       if (savedId) {
         return shop.checkout.fetch(savedId).then((checkout) => {
           commit('setCheckout', checkout)
-          if (logSuccess) console.log('Success')
         }, err => {
           console.error(err)
           console.log('Fetch checkout by ID failed. Creating new...')
@@ -105,6 +104,7 @@ export default new Vuex.Store({
         // save id for future retrieving
         localStorage.setItem('checkoutId', checkout.id)
         commit('setCheckout', checkout)
+        if (logSuccess) console.log('Success')
       }, err => console.error('Create new checkout failed.', err))
     },
     getProducts ({ commit, state }) {
