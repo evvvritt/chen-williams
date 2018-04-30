@@ -5,7 +5,7 @@ module.exports = {
   PRISMIC: '"https://cckwus.cdn.prismic.io/api/v2"',
   CLOUDINARY: '"https://res.cloudinary.com/dkh08saaw"',
   SHOPIFY: {
-    DOMAIN: '"cckwus.myshopify.com"',
-    TOKEN: '"591b9eec4e9e45b65ee282187072a1dd"' 
+    DOMAIN: '"chen-williams.myshopify.com"',
+    TOKEN: '"277a343d590f32670f02b39fcfb5c74c"' 
   }
 }
