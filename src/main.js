@@ -24,7 +24,7 @@ Vue.is = (name) => {
 Vue.thumbSrc = (src, length, useHeight = false, format = 'jpg') => {
   // return `${Vue.config.IMG.url}/image/fetch/${src}`
   let optimal = 0
-  const dpx = window.devicePixelRatio / 1.25 // less density optically ok ?
+  const dpx = window.devicePixelRatio * 0.8 // less density optically ok ?
   length = length * dpx
   const sizes = Vue.config.IMG.sizes
   for (var i = 0; i < sizes.length; i++) {

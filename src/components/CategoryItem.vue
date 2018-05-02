@@ -8,11 +8,12 @@
           small.p-text(v-else-if="price") {{price | price}}
         figure.absolute.top-0.left-0.w-100.overflow-hidden
           transition(name="fade")
-            img.block(:src="object.data.thumbnail.url", @load="imgLoaded = true", v-show="imgLoaded")
+            img.block.w-100(:src="thumb(object.data.thumbnail.url)", @load="imgLoaded = true", v-show="imgLoaded")
     dot-grid.overlay.absolute
 </template>
 
 <script>
+import Vue from 'vue'
 import DotGrid from '@/components/CategoryItem__DotGrid'
 import _find from 'lodash/find'
 export default {
@@ -48,6 +49,13 @@ export default {
     },
     available () {
       return this.sku ? this.sku.available : true
+    }
+  },
+  methods: {
+    thumb (src) {
+      if (!src) return
+      const getImgW = (winW) => winW >= 1900 ? winW / 5 : winW > 1440 ? winW / 4 : winW > 768 ? winW / 3 : winW
+      return Vue.thumbSrc(src, getImgW(window.innerWidth))
     }
   }
 }
