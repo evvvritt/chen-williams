@@ -112,7 +112,7 @@ export default new Vuex.Store({
       // have to specify "pageSize" even though there's no way to query by page...
       // Docs: https://shopify.github.io/js-buy-sdk/ProductResource.html
       // Issue: https://github.com/Shopify/js-buy-sdk/issues/448
-      const pageSize = 100 // max 250
+      const pageSize = 250 // max 250
       shop.product.fetchAll(pageSize).then((results) => {
         const products = results.map((item) => {
           let id = atob(item.id).split('/')
