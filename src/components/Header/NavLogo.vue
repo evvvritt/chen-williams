@@ -16,10 +16,10 @@ export default {
 // Mobile
 @include mobile {
   img{
-    width:3rem;
+    width: 2rem;
     position: fixed;
-    left: .5rem;
-    bottom:2rem;
+    left: 1rem;
+    bottom: 1.5rem;
     z-index:100;
   }
 }

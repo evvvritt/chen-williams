@@ -13,7 +13,7 @@
       ul.cw-grid.tblt-hidden.tap-color-none(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item(v-show="mobileCollapsed")
           nav-link Menu
-          radio-btn(:checked="true", fill="white")
+          radio-btn(:checked="false", fill="white")
         .cw-grid__item(v-show="!mobileCollapsed")
           nav-link Close
           radio-btn(type="close")
@@ -284,7 +284,7 @@ export default {
     // closed state
     &.nav--mbl-collapsed{
       min-height:0;
-      height:calc((100vw - 4rem)/4 + 2rem - 1px);
+      height: calc((100vw - 4rem)/5 + 2rem - 1px);
       .nav__subnavs .nav__vein{
         display:none;
       }
