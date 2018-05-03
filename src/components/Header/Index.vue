@@ -64,9 +64,10 @@
           dot-grid.mbl-hidden(:rows="1", :overlay="false", :padless="true")
           ul.nav__subnav.cw-grid(v-for="(subnav, navIndex) in nav", :key="navIndex", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
             router-link(tag="li", :to="{name: 'Category', params: {catSlug: subnav.primary.category_link.uid}}").cw-grid__item
-              a
-                nav-link Everything
-                radio-btn
+              span(@click="mobileCollapsed = true")
+                a
+                  nav-link Everything
+                  radio-btn
               nav-vein
             //- loop through filters
             li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': isActiveFilter(subitem.link.uid)}")
@@ -125,7 +126,6 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.mobileCollapsed = true
       // unbind
       this.bindScroll(false)
       // re-bind if not overlay
@@ -143,11 +143,12 @@ export default {
     },
     filter (filter) {
       if (!filter) return false
-      // Mobile – open menu first, if collapsed
+      // Mobile – open menu first, if collapsed, otherwise close
       if (Vue.is('mobile') && this.mobileCollapsed) {
         this.mobileCollapsed = false
         return
       }
+      this.mobileCollapsed = true
       // setup route
       const catSlug = this.$route.params.catSlug
       if (!catSlug) return false
