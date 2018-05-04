@@ -11,7 +11,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:ga": "autotrack -o static/autotrack.custom.js -p cleanUrlTracker,urlChangeTracker,outboundLinkTracker,pageVisibilityTracker,maxScrollTracker"
   },
   "dependencies": {
     "flickity-imagesloaded": "^2.0.0",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
+    "autotrack": "^2.4.1",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

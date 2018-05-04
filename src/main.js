@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import { RichText } from 'prismic-dom'
+import Analytics from '@/plugins/google-analytics' // google analytics init
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 Vue.config.IMG = {
@@ -92,5 +93,8 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  mounted () {
+    Analytics()
+  }
 })

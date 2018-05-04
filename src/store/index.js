@@ -8,8 +8,8 @@ import _find from 'lodash/find'
 Vue.use(Vuex)
 
 Vue.shopClient = Shopify.buildClient({
-  domain: process.env.SHOPIFY.DOMAIN,
-  storefrontAccessToken: process.env.SHOPIFY.TOKEN
+  domain: process.env.SHOPIFY_DOMAIN,
+  storefrontAccessToken: process.env.SHOPIFY_TOKEN
 })
 const shop = Vue.shopClient
 
