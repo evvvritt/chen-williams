@@ -32,6 +32,7 @@ export default {
     top:rem(-6px); 
     left:rem(-6px);
     // transform:translateX(rem(-6px)) translateY(rem(-6px));
+    will-change:transform;
     transition: transform $navCondenseDuration;
     transform-origin:top left;
     &.nav-logo--condensed{

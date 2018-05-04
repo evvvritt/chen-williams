@@ -1,7 +1,9 @@
 <template lang="pug">
-  .cw-grid.cw-grid--background(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
+  .cw-grid.cw-grid--bg(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
+    //- column
     .cw-grid__item(v-for="n in ((rows) * columns)", :key="n")
-      .cw-grid__item__sizer
+      //- row height (requires separate element in Firefox :/)
+      .cw-grid__item__sizer(v-if="!zeroHeight")
 </template>
 
 <script>
@@ -14,7 +16,8 @@ export default {
     condensed: { type: Boolean, default: false },
     padless: { type: Boolean, default: false },
     color: { type: String, default: 'black' },
-    keepFirstDot: { type: Boolean, default: false }
+    keepFirstDot: { type: Boolean, default: false },
+    zeroHeight: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -34,13 +37,7 @@ export default {
   methods: {
     setColumns () {
       const w = window.innerWidth
-      switch (this.scheme) {
-        case 'cat-item':
-          this.columns = 3 //  w >= 1900 ? 5 : w > 1440 ? 4 : w > 768 ? 3 : 1
-          break
-        default:
-          this.columns = w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 4
-      }
+      this.columns = this.scheme === 'cat-item' ? 3 : w >= 1900 ? 15 : w > 1440 ? 12 : w > 768 ? 9 : 4
     },
     onResize () {
       const after = setTimeout(() => {
@@ -95,7 +92,14 @@ export default {
     }
   }
 
-  // colors
+  // no dots
+  &.cw-grid--no-dots > .cw-grid__item{
+    &:after, &:before{
+      visibility:hidden;
+    }
+  }
+
+  // color
   &[data-dot-color="gray"] > .cw-grid__item{
     &:after, &:before{
       background:#8e8e8e;
@@ -118,7 +122,7 @@ export default {
   @include grid-change($bkpt-grid-12, 12);
   @include grid-change($bkpt-grid-15, 15);
 
-  &.cw-grid--background{
+  &.cw-grid--bg{
     position: absolute;
     top:0; left:0;
     width:100%;

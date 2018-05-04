@@ -12,6 +12,7 @@
 .z2{ z-index:2;}
 .z3{ z-index:3;}
 .z-nav{ z-index:10;}
+.z-nav-bg{ z-index: 9}
 .z-overlay{ z-index:50;}
 
 .top-0{ top:0;}
@@ -122,6 +123,9 @@
     border-bottom-color:transparent;
   }
 }
+
+// safari flicker fix
+// .no-flick{-webkit-transform:translate3d(0,0,0); -webkit-transform-style: preserve-3d;}
 
 .btn{
   background-color: $white;

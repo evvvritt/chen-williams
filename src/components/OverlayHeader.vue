@@ -1,5 +1,5 @@
 <template lang="pug">
-  header.app-header.z1
+  header.z1
     //- nav-logo(:condensed="true").tblt-hidden
     nav.nav
       ul.cw-grid
@@ -36,7 +36,7 @@ export default {
   visibility:hidden;
 }
 @include grid9{
-  .app-header{
+  header{
     max-width:25%;
     overflow:hidden;
   }
