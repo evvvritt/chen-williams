@@ -1,5 +1,5 @@
 <template>
-  <form id="mc-embedded-subscribe-form" action="http://chen-williams.us7.list-manage.com/subscribe/post?u=c5bdca666893be0f93b28b913&amp;id=61fd4a23af" method="post" name="mc-embedded-subscribe-form" target="_blank" validate>
+  <form id="mc-embedded-subscribe-form" action="https://chen-williams.us7.list-manage.com/subscribe/post?u=c5bdca666893be0f93b28b913&amp;id=61fd4a23af" method="post" name="mc-embedded-subscribe-form" target="_blank" validate>
     <label for="mce-EMAIL" class="hidden">Email</label>
     <div class="flex items-center">
       <input class="inline-block" id="mce-EMAIL" name="EMAIL" required="" type="email" value="" placeholder="email">
