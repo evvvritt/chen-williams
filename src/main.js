@@ -46,10 +46,13 @@ Vue.updateMeta = {
     const title = pageTitle.length > 0 ? pageTitle + ' | ' + this._siteTitle : this._siteTitle
     document.title = title
   },
-  setDescription (description = '') {
-    description = description.length > 0 ? description : this._siteDescription
+  setDescription (descrip = '') {
+    descrip = descrip.length > 0 ? descrip : this._siteDescription
+    const set = (el, txt) => el ? el.setAttribute('content', txt) : false
     const meta = document.querySelector('meta[name="description"]')
-    if (meta) meta.setAttribute('content', description)
+    const ogMeta = document.querySelector('meta[property="og:description"]')
+    set(meta, descrip)
+    set(ogMeta, descrip)
   },
   set (title, descrip) {
     this.setTitle(title)
