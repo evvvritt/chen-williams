@@ -28,6 +28,7 @@
 .bg-white{ background:$white;}
 .bg-gray{ background:rgba($ltgray, .5);}
 .bg-cover{ background-size:cover;}
+.bg-center{background-position: center center;}
 
 .backdrop-blur{
   @supports (backdrop-filter:blur(10px)){

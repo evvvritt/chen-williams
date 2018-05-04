@@ -12,7 +12,7 @@
           .cell.p-text Price
         ul.relative.z2
           li.flex.items-start(v-for="item in cart.lineItems", v-if="item.variant")
-            div.cell.bg-cover.relative(:style="'background-image:url(' + src(item.variant) + ')'")
+            div.cell.bg-cover.bg-center.relative(:style="'background-image:url(' + src(item.variant) + ')'")
               radio-btn(title="Remove Item", @click="remove(item.id)", fill="white", type="close")
             div.cell.cell-2.p-text 
               div {{item.title}}
