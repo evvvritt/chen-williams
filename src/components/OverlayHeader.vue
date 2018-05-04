@@ -1,14 +1,13 @@
 <template lang="pug">
-  header.z1
-    //- nav-logo(:condensed="true").tblt-hidden
+  header.z1.pointer-events-none
     nav.nav
       ul.cw-grid
         li.cw-grid__item.mbl-hidden
           .cw-grid__item__sizer
-            nav-logo(:condensed="true")
-        li.cw-grid__item(@click="$emit('close')")
+            nav-logo.pointer-events(:condensed="true")
+        li.cw-grid__item
           .cw-grid__item__sizer
-            a
+            a.pointer-events(@click="$emit('close')")
               nav-link Close
               radio-btn(fill="white", type="close")
         li.cw-grid__item.tblt-hidden(v-if="title")
