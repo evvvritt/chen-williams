@@ -4,15 +4,18 @@
     nav.nav
       ul.cw-grid
         li.cw-grid__item.mbl-hidden
-          nav-logo(:condensed="true")
+          .cw-grid__item__sizer
+            nav-logo(:condensed="true")
         li.cw-grid__item(@click="$emit('close')")
-          a
-            nav-link Close
-            radio-btn(fill="white", type="close")
+          .cw-grid__item__sizer
+            a
+              nav-link Close
+              radio-btn(fill="white", type="close")
         li.cw-grid__item.tblt-hidden(v-if="title")
-          a
-            nav-link {{title}}
-            radio-btn(fill="white", :checked="true")
+          .cw-grid__item__sizer
+            a
+              nav-link {{title}}
+              radio-btn(fill="white", :checked="true")
 </template>
 
 <script>

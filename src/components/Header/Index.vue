@@ -12,77 +12,95 @@
       //- mobile - menu btn
       ul.cw-grid.tblt-hidden.tap-color-none(v-show="!loading", @click="mobileCollapsed = !mobileCollapsed")
         .cw-grid__item(v-show="mobileCollapsed")
-          nav-link Menu
-          radio-btn(:checked="false", fill="white")
+          .cw-grid__item__sizer
+            nav-link Menu
+            radio-btn(:checked="false", fill="white")
         .cw-grid__item(v-show="!mobileCollapsed")
-          nav-link Close
-          radio-btn(type="close")
+          .cw-grid__item__sizer
+            nav-link Close
+            radio-btn(type="close")
       //- loading
       template(v-if="loading")
-        ul.nav__primary-nav.cw-grid
-          li.cw-grid__item.mbl-hidden
-            router-link(to="/")
-              logo(:condensed="condensed")
-          li.cw-grid__item.mbl-hidden
-            nav-link Loading
-            radio-btn(:checked="true")
-          li.cw-grid__item.mbl-hidden <radio-btn/>
-          li.cw-grid__item.mbl-hidden <radio-btn/>
-          li.cw-grid__item.mbl-hidden <radio-btn/>
+        div
+          ul.nav__primary-nav.cw-grid
+            li.cw-grid__item.mbl-hidden
+              .cw-grid__item__sizer
+                router-link(to="/")
+                  logo(:condensed="condensed")
+            li.cw-grid__item.mbl-hidden
+              .cw-grid__item__sizer
+                nav-link Loading
+                radio-btn(:checked="true")
+            li.cw-grid__item.mbl-hidden
+              .cw-grid__item__sizer
+                <radio-btn/>
+            li.cw-grid__item.mbl-hidden
+              .cw-grid__item__sizer
+                <radio-btn/>
+            li.cw-grid__item.mbl-hidden
+              .cw-grid__item__sizer
+                <radio-btn/>
       //- loaded
       template(v-else)
-        ul.nav__primary-nav.cw-grid.relative.z1(:class="{'cw-grid--condensed': condensed}")
-          dot-grid.mbl-hidden(:rows="1", :overlay="false", :padless="true")
-          //- logo
-          li.cw-grid__item.mbl-hidden
-            logo(:condensed="condensed")
-          //- categories loop
-          router-link(v-for="(item, index) in nav", :key="index", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
-            a
-              nav-link {{item.primary.category_link.data.title | text}}
-              radio-btn
-            nav-vein
-          //- info
-          router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
-            a
-              nav-link Info
-              radio-btn
-          //- archive
-          //- transition(name="fade")
-            li.cw-grid__item(v-show="!loading")
-              a(target="_blank", rel="noopener")
-                nav-link Archive
-                radio-btn
-          //- cart
-          transition(name="fade")
-            router-link(tag="li", :to="{hash: 'cart'}", v-show="!loading").cw-grid__item
-              a(v-show="!loading")
-                nav-link Cart
-                radio-btn
+        div
+          ul.nav__primary-nav.cw-grid.relative.z1(:class="{'cw-grid--condensed': condensed}")
+            dot-grid.mbl-hidden(:rows="1", :overlay="false", :padless="true")
+            //- logo
+            li#app-header__desktop-logo.cw-grid__item.mbl-hidden
+              .cw-grid__item__sizer
+                logo(:condensed="condensed")
+            //- categories loop
+            router-link(v-for="(item, index) in nav", :key="index", tag="li", :to="{name: 'Category', params: {catSlug: item.primary.category_link.uid}}").cw-grid__item
+              .cw-grid__item__sizer
+                a
+                  nav-link {{item.primary.category_link.data.title | text}}
+                  radio-btn
+                nav-vein
+            //- info
+            router-link(tag="li", :to="{hash: 'info'}").cw-grid__item
+              .cw-grid__item__sizer
+                a
+                  nav-link Info
+                  radio-btn
+            //- archive
+            //- transition(name="fade")
+              li.cw-grid__item(v-show="!loading")
+                a(target="_blank", rel="noopener")
+                  nav-link Archive
+                  radio-btn
+            //- cart
+            transition(name="fade")
+              router-link(tag="li", :to="{hash: 'cart'}", v-show="!loading").cw-grid__item
+                .cw-grid__item__sizer
+                  a(v-show="!loading")
+                    nav-link Cart
+                    radio-btn
         //- sub navs
         .nav__subnavs.relative.z1
           dot-grid.mbl-hidden(:rows="1", :overlay="false", :padless="true")
           ul.nav__subnav.cw-grid(v-for="(subnav, navIndex) in nav", :key="navIndex", v-show="isCategory(subnav.primary.category_link.uid)", :class="{'cw-grid--condensed': condensed}")
             router-link(tag="li", :to="{name: 'Category', params: {catSlug: subnav.primary.category_link.uid}}").cw-grid__item
-              span(@click="mobileCollapsed = true")
-                a
-                  nav-link Everything
-                  radio-btn
-              nav-vein
+              .cw-grid__item__sizer
+                span(@click="mobileCollapsed = true")
+                  a
+                    nav-link Everything
+                    radio-btn
+                nav-vein
             //- loop through filters
             li.cw-grid__item(v-for="(subitem, index) in subnav.items", :class="{'mb-active-filter': isActiveFilter(subitem.link.uid)}")
-              //- filters (tags)
-              template(v-if="subitem.link.type === 'tag'")
-                a(@click="filter(subitem.link.uid)")
-                  nav-link {{subitem.link.data.label | text}}
-                  radio-btn(:checked="isActiveFilter(subitem.link.uid)")
-                nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
-              //- partners
-              template(v-if="subitem.link.type === 'partners'")
-                router-link(:to="{name: 'Partners'}", v-if="$route.params.catSlug")
-                  nav-link {{subitem.link.data.title | text}}
-                  radio-btn
-              nav-vein(v-if="index < subnav.items.length - 1")
+              .cw-grid__item__sizer
+                //- filters (tags)
+                template(v-if="subitem.link.type === 'tag'")
+                  a(@click="filter(subitem.link.uid)")
+                    nav-link {{subitem.link.data.label | text}}
+                    radio-btn(:checked="isActiveFilter(subitem.link.uid)")
+                  nav-vein.mbl-hidden(v-if="navIndex + 1 > subnav.items.length")
+                //- partners
+                template(v-if="subitem.link.type === 'partners'")
+                  router-link(:to="{name: 'Partners'}", v-if="$route.params.catSlug")
+                    nav-link {{subitem.link.data.title | text}}
+                    radio-btn
+                nav-vein(v-if="index < subnav.items.length - 1")
         //- background
         #nav__bg.absolute.overlay.top-0.backdrop-blur
           #nav__bg__fill.absolute.overlay
@@ -196,35 +214,29 @@ export default {
   ul{
     list-style-type: none;
   }
-
-  > ul{
-    > li{
-      position: relative;
-      height:0;
-      transition:padding-bottom $navCondenseDuration;
-      
-      // loading animation
-      .app--loading &{
-        $cycle: 5000ms;
-        $steps: 4;
-        $pace: ($cycle/2/$steps);
-        &:nth-child(2) .radio-btn{
-          opacity:0;
-          animation:pulse $cycle 0s infinite;
-        }
-        &:nth-child(3) .radio-btn{
-          opacity:0;
-          animation:pulse $cycle $pace infinite;
-        }
-        &:nth-child(4) .radio-btn{
-          opacity:0;
-          animation:pulse $cycle $pace*2 infinite;
-        }    
-        &:nth-child(5) .radio-btn{
-          opacity:0;
-          animation:pulse $cycle $pace*3 infinite;
-        }    
+  
+  // loading animation
+  .cw-grid__item{
+    .app--loading &{
+      $cycle: 5000ms;
+      $steps: 4;
+      $pace: ($cycle/2/$steps);
+      &:nth-child(2) .radio-btn{
+        opacity:0;
+        animation:pulse $cycle 0s infinite;
       }
+      &:nth-child(3) .radio-btn{
+        opacity:0;
+        animation:pulse $cycle $pace infinite;
+      }
+      &:nth-child(4) .radio-btn{
+        opacity:0;
+        animation:pulse $cycle $pace*2 infinite;
+      }    
+      &:nth-child(5) .radio-btn{
+        opacity:0;
+        animation:pulse $cycle $pace*3 infinite;
+      }    
     }
   }
 }

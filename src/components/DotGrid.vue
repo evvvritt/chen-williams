@@ -1,6 +1,7 @@
 <template lang="pug">
   .cw-grid.cw-grid--background(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
-    .cw-grid__item(v-for="n in ((rows) * columns)")
+    .cw-grid__item(v-for="n in ((rows) * columns)", :key="n")
+      .cw-grid__item__sizer
 </template>
 
 <script>
@@ -66,11 +67,12 @@ export default {
   flex-wrap:wrap;
   align-items:flex-start;
   align-content:flex-start;
+
   > .cw-grid__item{
     flex:0 0 25%;
-    padding-bottom:25%;
     position: relative;
-    transition:padding-bottom $navCondenseDuration;
+    
+    // dots
     &:after, &:before{
       content:'';
       display: block;
@@ -83,8 +85,13 @@ export default {
       right:-1px;
       left:auto;
     }
-    &:nth-last-child(-n+5){
-      // padding-bottom:0;
+
+    > .cw-grid__item__sizer{
+      position: relative;
+      width:100%;
+      height:0;
+      padding-bottom: 100%;
+      transition:padding-bottom $navCondenseDuration;
     }
   }
 
@@ -100,11 +107,9 @@ export default {
     @media (min-width: $min) {
       & > .cw-grid__item{
         $width: calc(100% / #{$cols});
+        $width: (100% / #{$cols});
         flex:0 0 $width;
-        padding-bottom: $width;
-        &:nth-last-child(-n + #{$cols}){
-          // padding-bottom:0;
-        }
+        max-width: $width; // ie
       }
     }
   }
@@ -112,19 +117,6 @@ export default {
   @include grid-change($bkpt-grid-9, 9);
   @include grid-change($bkpt-grid-12, 12);
   @include grid-change($bkpt-grid-15, 15);
-  // category scheme
-  // &[data-grid-scheme="cat-item"]{
-    // > .cw-grid__item{
-      // flex:1 0 100%;
-    // }
-    // @include grid-change($bkpt-grid-9, 3);
-    // @include grid9 {
-      // .cw-grid__item:nth-child(5),
-      // .cw-grid__item:nth-child(8){
-        // visibility:hidden;
-      // }
-    // }
-  // }
 
   &.cw-grid--background{
     position: absolute;

@@ -69,14 +69,17 @@ article{
     opacity:.2;
   }
   
-  // blur image on over
+  // hover effects
   .no-touchevents &:hover{
     background:white;
     img{
       transition:all .2s;
-      filter:blur(5px);
       opacity:.7;
     }
+  }
+  // blur, if enabled
+  .no-touchevents .app--blur-enabled &:hover img{
+    filter:blur(5px);
   }
 }
 

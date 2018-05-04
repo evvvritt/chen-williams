@@ -1,5 +1,5 @@
 <template lang="pug">
-  #app.app(:class="{'app--loading': loading}")
+  #app.app(:class="classes")
     .app__body(:class="{'app__body--blurred': blurBody}")
       app-header#app-header.fixed.top-0.left-0.w-100.z-nav
       .app__body__main.min-h-100vh
@@ -28,11 +28,22 @@ import Logo from '@/components/Header/NavLogo.vue'
 export default {
   name: 'app',
   components: { AppHeader, Info, Cart, CouponBtn, Logo },
+  data () {
+    return {
+      blurEnabled: window.navigator.userAgent.indexOf('Firefox') === -1
+    }
+  },
   computed: {
     ...mapState([
       'site',
       'loading'
     ]),
+    classes () {
+      return {
+        'app--loading': this.loading,
+        'app--blur-enabled': this.blurEnabled
+      }
+    },
     showInfo () {
       return this.$route.hash === '#info' && !this.loading
     },
@@ -143,10 +154,22 @@ h1,h2,h3,h4,h5,h6,small{
 
 .app__body{
   @supports not (backdrop-filter:blur(10px)) {
-    transition: filter $fadeDuration/2;
+    $speed: $fadeDuration/2;
+    // default: fade out
+    transition: opacity $speed;
+    #app-header__desktop-logo{ transition: opacity $speed; }
     &.app__body--blurred{
-      filter:blur(10px);
-    }  
+      opacity: .125;
+      #app-header__desktop-logo{ opacity: 0 }
+    }
+    // blur, if enabled
+    .app--blur-enabled & {
+      transition: filter $speed;
+      &.app__body--blurred{
+        filter:blur(10px);
+        opacity:1;
+      }    
+    }
   }
 }
 
