@@ -67,7 +67,7 @@ export default {
   .no-touchevents .app:not(.app--loading) &.radio-btn--checked:hover,
   .no-touchevents .app:not(.app--loading) .mb-active-filter .radio-btn-label:hover + &{
     background-image:url(../assets/icons/radio-btn--dotted.svg) !important;
-    // background-image:url(../assets/icons/radio-btn--close.svg) !important;
+    background-image:url(../assets/icons/radio-btn--close.svg) !important;
   }
 
 
