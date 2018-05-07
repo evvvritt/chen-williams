@@ -59,16 +59,19 @@ export default {
   .app:not(.app--loading) .router-link-exact-active &,
   .app:not(.app--loading) .nav__primary-nav .router-link-active &,
   &.radio-btn--checked,
-  .no-touchevents .app:not(.app--loading) &:hover,
-  .no-touchevents .app:not(.app--loading) .radio-btn-label:hover + &{
+  // .no-touchevents .app:not(.app--loading) &:hover,
+  // .no-touchevents .app:not(.app--loading) .radio-btn-label:hover + &
+  {
     background-image:url(../assets/icons/radio-btn--selected.svg) !important;
   }
-
+  
+  /*
   .no-touchevents .app:not(.app--loading) &.radio-btn--checked:hover,
   .no-touchevents .app:not(.app--loading) .mb-active-filter .radio-btn-label:hover + &{
     background-image:url(../assets/icons/radio-btn--dotted.svg) !important;
     background-image:url(../assets/icons/radio-btn--close.svg) !important;
   }
+  */
 
 
   span{
