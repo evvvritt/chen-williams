@@ -64,6 +64,13 @@ export default {
     background-image:url(../assets/icons/radio-btn--selected.svg) !important;
   }
 
+  .no-touchevents .app:not(.app--loading) &.radio-btn--checked:hover,
+  .no-touchevents .app:not(.app--loading) .mb-active-filter .radio-btn-label:hover + &{
+    background-image:url(../assets/icons/radio-btn--dotted.svg) !important;
+    // background-image:url(../assets/icons/radio-btn--close.svg) !important;
+  }
+
+
   span{
     font-size:70%;
   }
