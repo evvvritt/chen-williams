@@ -41,7 +41,7 @@ Vue.thumbSrc = (src, length, useHeight = false, format = 'jpg') => {
 
 // update Meta
 Vue.updateMeta = {
-  _siteTitle: 'Chen Williams',
+  _siteTitle: 'Chen Chen & Kai Williams',
   _siteDescription: 'Chen Chen & Kai Williams is a design studio that explores materials and new ways to use them',
   setTitle (pageTitle = '') {
     const title = pageTitle.length > 0 ? pageTitle + ' | ' + this._siteTitle : this._siteTitle
