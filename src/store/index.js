@@ -45,6 +45,7 @@ export default new Vuex.Store({
       if (title) Vue.updateMeta._siteTitle = title
       const descrip = _get(state.site, 'meta_description[0].text')
       if (descrip) Vue.updateMeta._siteDescription = descrip
+      Vue.updateMeta() // apply
     },
     setCategories (state, array) {
       state.categories = array
