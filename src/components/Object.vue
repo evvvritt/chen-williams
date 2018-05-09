@@ -76,7 +76,6 @@ export default {
       this.updateMeta()
     },
     skus (val) {
-      console.log(val)
       this.setDefaultSKUid()
     }
   },
