@@ -88,18 +88,18 @@ export default {
       let canFinish = false
       const minWait = Vue.config.productionTip ? 2000 : 2000
       const finish = () => this.$store.commit('loading', false)
-      // get site
-      this.getSite().then(() => {
-        if (canFinish) finish()
-      }, (err) => {
-        console.error(err)
-        finish()
-      })
+      // request
+      this.getSite()
       // minimum wait
       setTimeout(() => {
         canFinish = true
         if (this.site) finish()
       }, minWait)
+      // finish if min wait reached
+      const unwatch = this.$watch('site', () => {
+        unwatch() // remove watcher
+        if (canFinish) finish()
+      })
     }
   },
   created () {

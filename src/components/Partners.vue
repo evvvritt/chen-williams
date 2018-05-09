@@ -2,14 +2,18 @@
   section.mbl-block.flex.flex-wrap.fades(:class="{'opacity-0': loading}")
     template(v-if="partners && partners.body")
       article.bg-gray.relative.pointer(v-for="partner in partners.body")
+        //- sizer
+        .pb-100
+        //- content
         a.radio-btn-label.overlay.absolute(:href="partner.primary.link.url", target="_blank", rel="noopener")
           header.z2.absolute.top-0.left-0
             h1.hidden {{partner.primary.name | text}}
             template(v-if="partner.primary.logo.url")
-              img.block.p1(:src="partner.primary.logo.url", :alt="partner.primary.logo.alt")
+              img.block.p1(:src="partner.primary.logo.url", :alt="partner.primary.logo.alt || 'Logo'")
           div.z1.absolute.top-0.left-0.pt-2rows.w-100
             .p1(v-html="$options.filters.richtext(partner.primary.description)")
           figure.z0.overlay.absolute.bg-cover.fades(:style="'background-image:url(' + thumb(partner.primary.background_image.url) + ')'")
+            img.hidden(:src="thumb(partner.primary.background_image.url)", :alt="partner.primary.background_image.alt || 'Accent Image'")
         radio-btn(fill="white")
 </template>
 
@@ -47,10 +51,6 @@ export default {
 <style lang="scss" scoped>
 @import '../style/variables';
 
-article {
-  padding-bottom:100%;
-}
-
 header{
   width:25%;
   img{
@@ -72,7 +72,6 @@ figure{
   header{ width:$width; }
   article{
     flex:0 0 $width;
-    padding-bottom: $width;
   }
 }
 @include grid12 {
@@ -80,7 +79,6 @@ figure{
   header{ width:$width; }
   article{
     flex:0 0 $width;
-    padding-bottom: $width;
   }
 }
 @include grid15 {
@@ -88,7 +86,6 @@ figure{
   header{ width:$width; }
   article{
     flex:0 0 $width;
-    padding-bottom: $width;
   }
 }
 </style>

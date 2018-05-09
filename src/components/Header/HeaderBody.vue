@@ -126,7 +126,7 @@ export default {
       return this.$store.state.loading
     },
     nav () {
-      return this.$store.state.site.nav
+      return this.$store.state.site ? this.$store.state.site.nav : []
     },
     cartCount () {
       return this.$store.getters.cartCount

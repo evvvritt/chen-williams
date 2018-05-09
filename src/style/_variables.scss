@@ -36,7 +36,7 @@ $radioBtnSize: rem(16px);
 
 @function cols($count, $total) {
   // @return calc((100vw - #{$gutter} * 2) / #{$total} * #{$count});
-  @return calc(100% / #{$total} * #{$count});
+  @return 100% / $total * $count;
 }
 
 @mixin grid9 {

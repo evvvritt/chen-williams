@@ -1,9 +1,9 @@
 <template lang="pug">
-  article.object.overlay.overflow-y-scroll
-    .object__body.overflow-hidden.p2.mbl-pb-25vh
+  article.object.fixed.overlay.overflow-y-scroll.overflow-x-hidden.bg-white
+    .object__body.relative.min-h-100vh.overflow-hidden.p2.mbl-pb-25vh
       background
-      overlay-header.object__header(@close="close")
-      .object__main.mb-pt-1row(v-if="object.data")
+      overlay-header.fixed.top-0.left-0.w-100.bg-transp(@close="close")
+      .object__main.flex.mbl-flex-wrap(v-if="object.data")
         carousel.object__slideshow(:slides="object.data.slideshow")
         .object__details
           section
@@ -75,7 +75,8 @@ export default {
     object () {
       this.updateMeta()
     },
-    skus () {
+    skus (val) {
+      console.log(val)
       this.setDefaultSKUid()
     }
   },
@@ -119,29 +120,7 @@ export default {
 @import '../style/variables';
 
 .object{
-  position: fixed;
-  width:100%;
-  height:100%;
-  overflow-x:hidden;
   z-index: $z-overlay;
-  background:$white;
-  .app-header{
-    position: absolute;
-    background:transparent;
-  }
-}
-.object__body{
-  position: relative;
-  // padding:$gutter;
-  min-height:100vh;
-}
-
-.object__main{
-  display: flex;
-  flex-wrap: wrap;
-  @media (min-width:769px) {
-    flex-wrap: no-wrap;
-  }
 }
 
 .object__slideshow{
@@ -197,29 +176,6 @@ export default {
     }
     aside{
       flex:0 0 cols(1,4);
-    }
-  }
-}
-
-.object__header{
-  position: fixed;
-  top:0; left:0;
-  width:100%;
-}
-
-.object__slideshow{
-  overflow:auto;
-  overflow-y:hidden;
-  scroll-snap-type: proximity;
-  > div{
-    width:auto;
-    white-space:nowrap;
-  }
-  figure{
-    scroll-snap-align: start;
-    display: inline-block;
-    img{
-      width:100%;
     }
   }
 }

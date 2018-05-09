@@ -15,11 +15,14 @@
     "build:ga": "autotrack -o static/autotrack.custom.js -p cleanUrlTracker,urlChangeTracker,outboundLinkTracker,pageVisibilityTracker,maxScrollTracker"
   },
   "dependencies": {
+    "es6-object-assign": "^1.1.0",
+    "es6-promise": "^4.2.4",
     "flickity-imagesloaded": "^2.0.0",
     "lodash": "^4.17.4",
     "prismic-dom": "^2.0.6",
     "prismic-javascript": "^1.5.0-beta.1",
     "shopify-buy": "^1.4.0",
+    "string.prototype.endswith": "^0.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
@@ -93,6 +96,6 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not ie <= 11"
   ]
 }

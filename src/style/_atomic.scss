@@ -1,4 +1,6 @@
-.hidden{ display: none;}
+// .hidden{ display: none;}
+// accessibility hidden
+.hidden{ position: absolute!important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); }
 .block{ display:block}
 .inline-block{ display:inline-block}
 .opacity-0{ opacity:0;}
@@ -25,8 +27,9 @@
 .h-100vh{ height:100vh;}
 .min-h-100vh{ min-height: 100vh;}
 
-.bg-white{ background:$white;}
-.bg-gray{ background:rgba($ltgray, .5);}
+.bg-white{ background-color:$white;}
+.bg-gray{ background-color:rgba($ltgray, .5);}
+.bg-transp{background-color: transparent;}
 .bg-cover{ background-size:cover;}
 .bg-center{background-position: center center;}
 
@@ -46,6 +49,7 @@
 
 .overflow-hidden{overflow:hidden;}
 .overflow-y-hidden{overflow-y:hidden}
+.overflow-x-hidden{overflow-x:hidden}
 .overflow-y-scroll{overflow-y:scroll; -webkit-overflow-scrolling: touch;}
 
 .mt075{margin-top: 0.75em;}
@@ -152,6 +156,7 @@
   .mbl-bg-white{ background-color:$white }
   .mbl-mt3{ margin-top: rem(36px) }
   .mbl-pb-25vh{padding-bottom: 25vh;}
+  .mbl-flex-wrap{flex-wrap:wrap;}
 }
 @include grid9{
   .tblt-hidden{display:none !important }

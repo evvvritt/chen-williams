@@ -99,27 +99,27 @@ img{
 
 @include grid9 {
   article{
-    flex: 0 0 calc(100%/3);
+    flex: 0 0 (100%/3);
   }
   header{
     h2{
-      flex:0 0 calc(100% * 2/3);
+      flex:0 0 (100% * 2/3);
     }
     small{
-      flex:0 0 calc(100% * 1/3);
+      flex:0 0 (100% * 1/3);
     }
   }
 }
 
 @include grid12 {
   article{
-    flex: 0 0 calc(100%/4);
+    flex: 0 0 (100%/4);
   }
 }
 
 @include grid15 {
   article{
-    flex: 0 0 calc(100%/5);
+    flex: 0 0 (100%/5);
   }
 }
 </style>

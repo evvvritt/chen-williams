@@ -110,7 +110,7 @@ export default {
   @mixin grid-change ($min, $cols) {
     @media (min-width: $min) {
       & > .cw-grid__item{
-        $width: calc(100% / #{$cols});
+        // $width: calc(100% / #{$cols});
         $width: (100% / #{$cols});
         flex:0 0 $width;
         max-width: $width; // ie
