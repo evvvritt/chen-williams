@@ -63,11 +63,12 @@
                   nav-link Info
                   radio-btn
             //- archive
-            //- transition(name="fade")
-              li.cw-grid__item(v-show="!loading")
-                a(target="_blank", rel="noopener")
-                  nav-link Archive
-                  radio-btn
+            transition(name="fade")
+              li.cw-grid__item(v-if="showArchiveLink", v-show="!loading")
+                .cw-grid__item__sizer
+                  a(href="http://archive.cckw.us")
+                    nav-link Archive
+                    radio-btn
             //- cart
             transition(name="fade")
               router-link(tag="li", :to="{hash: 'cart'}", v-show="!loading").cw-grid__item
@@ -105,6 +106,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapState } from 'vuex'
 import DotGrid from '@/components/DotGrid'
 import RadioBtn from '@/components/RadioBtn'
 import Logo from './NavLogo'
@@ -122,11 +124,9 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$store.state.loading
-    },
+    ...mapState(['loading', 'site']),
     nav () {
-      return this.$store.state.site ? this.$store.state.site.nav : []
+      return this.site ? this.site.nav : []
     },
     cartCount () {
       return this.$store.getters.cartCount
@@ -135,6 +135,9 @@ export default {
       const filters = this.$route.query.filter
       if (filters) return filters.split(',')
       return []
+    },
+    showArchiveLink () {
+      return this.site ? this.site.show_archive_link === 'true' : false
     }
   },
   methods: {
