@@ -157,6 +157,12 @@
   .mbl-mt3{ margin-top: rem(36px) }
   .mbl-pb-25vh{padding-bottom: 25vh;}
   .mbl-flex-wrap{flex-wrap:wrap;}
+  .mbl-relative{position:relative}
+  .mbl-absolute{position: absolute;}
+  .mbl-top-0{top:0;}
+  .mbl-left-0{left:0}
+  .mbl-w-auto{width:auto}
+  .mbl-h-100{height:100%}
 }
 @include grid9{
   .tblt-hidden{display:none !important }

@@ -1,8 +1,8 @@
 <template lang="pug">
   .carousel(:class="{'carousel--invisible': !flkty, 'carousel--cursor-prev': cursorIsPrev}", @mousemove="onMousemove")
-    figure(v-for="(slide, index) in slides", :class="{'figure--invisible': index > 0 && !firstSlideLoaded}")
+    figure.mbl-relative(v-for="(slide, index) in slides", :class="{'figure--invisible': index > 0 && !firstSlideLoaded}")
       template(v-if="slide.slice_type === 'image'")
-        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", @load="index === 0 ? firstSlideLoaded = true : null")
+        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", @load="index === 0 ? firstSlideLoaded = true : null", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
         img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)")
       template(v-if="slide.slice_type === 'video'")
         carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
@@ -81,6 +81,9 @@ export default {
       const useHeight = window.innerWidth > 768
       return Vue.thumbSrc(src, this.imgLength, useHeight)
     },
+    imgIsPortrait (dims) {
+      return dims && dims.width && dims.height && dims.width < dims.height
+    },
     setImgLength () {
       const winW = window.innerWidth
       let length = this.imgLength
@@ -134,7 +137,10 @@ export default {
 // mobile
 figure{
   width:calc(100%/6 * 5);
+  height:0;
+  padding-bottom:calc(100%/6 * 5);
   transition: opacity 500ms;
+
   &.figure--invisible{
     opacity:0;
   }
@@ -160,14 +166,27 @@ figure{
     z-index:1; 
   }
 }
+
+.img--portrait{
+  position: absolute;
+  left:0; top:0;
+  width:auto;
+  height:100%;
+}
+
 // after mobile
 @include grid9 {
   figure{
     width:auto;
+    height:auto;
+    padding-bottom: 0;
     img{
       width:auto;
       height:calc((100vw - #{$gutter} * 2)/9 * 4);
     }
+  }
+  .img--portrait{
+    position: static;
   }
 }
 @include grid12{
