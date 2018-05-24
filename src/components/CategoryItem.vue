@@ -5,7 +5,10 @@
         header.absolute.top-0.left-0.w-100.flex.z2
           h2.p-text {{object.data.title | text}}
           small.p-text(v-if="price && !available") Sold Out
-          small.p-text(v-else-if="price") {{price | price}}
+          small.p-text(v-else-if="price")
+            span.strikethrough(v-if="sku.compareAtPrice && parseFloat(sku.compareAtPrice) > 0") {{sku.compareAtPrice | price}}&nbsp;
+            | 
+            span {{price | price}}
         figure.absolute.top-0.left-0.w-100.overflow-hidden
           transition(name="fade")
             img.block.w-100(:src="thumb(object.data.thumbnail.url)", @load="imgLoaded = true", v-show="imgLoaded")

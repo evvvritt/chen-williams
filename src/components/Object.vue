@@ -16,7 +16,10 @@
                 select(ref="select", v-model="selectedSKUid")
                   option(v-for="(sku, index) in skus", :value="sku.id", :disabled="!sku.available") {{sku.title}}
               .mt1(v-html="$options.filters.richtext(object.data.description)")
-              h6.mt1(v-if="price") {{price | price}}
+              h6.mt1(v-if="price")
+                span.strikethrough(v-if="selectedSKU && parseFloat(selectedSKU.compareAtPrice) > 0") {{selectedSKU.compareAtPrice | price}}&nbsp;
+                | 
+                span {{price | price}}
           aside(v-if="skus", v-show="selectedSKU !== ''", @click="addToCart")
             .relative
               .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
