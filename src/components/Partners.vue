@@ -5,7 +5,7 @@
         //- sizer
         .pb-100
         //- content
-        a.radio-btn-label.overlay.absolute(:href="partner.primary.link.url", target="_blank", rel="noopener")
+        a.overlay.absolute(:href="partner.primary.link.url", target="_blank", rel="noopener")
           header.z2.absolute.top-0.left-0
             h1.hidden {{partner.primary.name | text}}
             template(v-if="partner.primary.logo.url")
@@ -14,7 +14,7 @@
             .p1(v-html="$options.filters.richtext(partner.primary.description)")
           figure.z0.overlay.absolute.bg-cover.fades(:style="'background-image:url(' + thumb(partner.primary.background_image.url) + ')'")
             img.hidden(:src="thumb(partner.primary.background_image.url)", :alt="partner.primary.background_image.alt || 'Accent Image'")
-        radio-btn(fill="white")
+        radio-btn.partner__radio-btn(fill="white", :checked="true")
 </template>
 
 <script>
@@ -65,6 +65,13 @@ figure{
   mix-blend-mode:multiply;
   .no-touchevents & { opacity:0 }
   .no-touchevents article:hover & { opacity: 1 }
+}
+
+.partner__radio-btn{
+  display:none;
+  .no-touchevents article:hover &{
+    display: block;
+  }
 }
 
 @include grid9 {

@@ -1,8 +1,9 @@
 <template lang="pug">
-  article.relative.item-fill.overflow-hidden(v-show="visible", :class="{'article--transparent': !available}")
+  article.relative.item-fill(v-show="visible", :class="{'article--transparent': !available}")
+    radio-btn.cat-item__radio-btn.absolute.top-0.left-0.z2(:checked="true", fill="white")
     router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
       section.pb-100
-        header.absolute.top-0.left-0.w-100.flex.z2
+        header.absolute.top-0.left-0.w-100.flex.z1
           h2.p-text {{object.data.title | text}}
           small.p-text(v-if="price && !available") Sold Out
           small.p-text(v-else-if="price")
@@ -17,12 +18,13 @@
 
 <script>
 import Vue from 'vue'
+import RadioBtn from '@/components/RadioBtn'
 import DotGrid from '@/components/CategoryItem__DotGrid'
 import _find from 'lodash/find'
 export default {
   name: 'CategoryItem',
   props: ['object'],
-  components: { DotGrid },
+  components: { DotGrid, RadioBtn },
   data () {
     return {
       imgLoaded: false
@@ -71,18 +73,12 @@ article{
   &.article--transparent{
     opacity:.2;
   }
-  
-  // hover effects
-  .no-touchevents &:hover{
-    background:white;
-    img{
-      transition:all .2s;
-      opacity:.7;
-    }
-  }
-  // blur, if enabled
-  .no-touchevents .app--blur-enabled &:hover img{
-    filter:blur(5px);
+}
+
+.cat-item__radio-btn{
+  display:none;
+  .no-touchevents article:hover &{
+    display:block;
   }
 }
 
@@ -93,11 +89,6 @@ header{
   small{
     flex:0 0 25%;
   }
-}
-
-img{
-  transform: scale(1.05, 1.05);
-  transform-origin:center center;
 }
 
 @include grid9 {
