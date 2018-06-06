@@ -113,6 +113,7 @@ export default {
 <style src="../node_modules/flickity/dist/flickity.css"></style>
 <style lang="scss">
 @import './style/variables';
+@import './style/fonts';
 @import './style/atomic';
 
 *{
@@ -138,7 +139,7 @@ h1,h2,h3,h4,h5,h6,small{
 
 .app{
   font-size:$basefont;
-  font-family: 'Plain', Arial, sans-serif;
+  font-family: 'PlainRegular', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
