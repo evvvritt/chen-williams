@@ -86,6 +86,9 @@ export default {
         if (bodyH) this.gridHeight = bodyH
       })
     }
+  },
+  updated () {
+    this.setGridHeight()
   }
 }
 </script>
