@@ -2,13 +2,6 @@
   #app.app(:class="classes")
     .app__body(:class="{'app__body--blurred': blurBody}")
       app-header
-      //- #app-header.fixed.top-0.left-0.w-100.z-nav
-      //- background
-      //- #nav__bg.fixed.overlay.top-0.backdrop-blur
-        #nav__bg__fill.absolute.overlay
-        .absolute.left-0.bottom-0.w-100.px2.mbl-hidden
-          .relative
-            //- dot-grid(:rows="1", :overlay="false", :padless="true", :keepFirstDot="true")
       .app__body__main.min-h-100vh
         router-view
     //- info
