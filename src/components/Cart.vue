@@ -34,8 +34,9 @@
         .pt-1row.left-align
           .p-text Your cart is empty.
       //- grid frame
-      .absolute.z_-1.top-0.left-0.w-100.overflow-hidden(:style="'height:' + gridHeight + 'px'")
-        background.absolute.overlay(color="gray")
+      transition(name="none", v-on:after-enter="setGridHeight")
+        .absolute.z_-1.top-0.left-0.w-100.overflow-hidden(v-show="visible", :style="'height:' + gridHeight + 'px'")
+          background.absolute.overlay(color="gray")
 </template>
 
 <script>
@@ -46,6 +47,7 @@ import RadioBtn from '@/components/RadioBtn'
 import _get from 'lodash/get'
 export default {
   name: 'Cart',
+  props: ['visible'],
   components: { Background, OverlayHeader, RadioBtn },
   data () {
     return {
@@ -84,12 +86,6 @@ export default {
         if (bodyH) this.gridHeight = bodyH
       })
     }
-  },
-  mounted () {
-    this.setGridHeight()
-  },
-  updated () {
-    this.setGridHeight()
   }
 }
 </script>

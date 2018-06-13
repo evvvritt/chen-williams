@@ -16,7 +16,7 @@
       info(v-if="showInfo")
     //- cart
     transition(name="slideup")
-      cart(v-show="showCart")
+      cart(v-show="showCart", :visible="showCart")
     //- mobile logo
     logo.tblt-hidden
     //- coupon button
@@ -37,7 +37,8 @@ export default {
   components: { AppHeader, Info, Cart, CouponBtn, Logo },
   data () {
     return {
-      blurEnabled: window.navigator.userAgent.indexOf('Firefox') === -1
+      blurEnabled: window.navigator.userAgent.indexOf('Firefox') === -1,
+      cartIsVisible: false
     }
   },
   computed: {
