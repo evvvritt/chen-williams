@@ -34,6 +34,7 @@ import Carousel from '@/components/Carousel'
 import RadioBtn from '@/components/RadioBtn'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
+let prevRoute
 export default {
   name: 'Object',
   props: ['slug'],
@@ -84,8 +85,9 @@ export default {
   },
   methods: {
     close () {
+      if (prevRoute && prevRoute.name) return this.$router.go(-1)
       const route = this.catSlug ? { name: 'Category', params: { catSlug: this.catSlug } } : '/'
-      this.$router.push(route)
+      return this.$router.push(route)
     },
     getObject () {
       if (this.slug) this.$store.dispatch('getObject', this.slug)
@@ -110,6 +112,10 @@ export default {
     setDefaultSKUid () {
       if (this.skus && this.skus[0] && this.skus[0].available) this.selectedSKUid = this.skus[0].id
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    prevRoute = from
+    next()
   },
   created () {
     this.getObject()
