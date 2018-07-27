@@ -137,7 +137,7 @@ export default {
       return []
     },
     showArchiveLink () {
-      return this.site ? this.site.show_archive_link === 'true' : false
+      return this.site && this.site.show_archive_link === 'true'
     }
   },
   methods: {
