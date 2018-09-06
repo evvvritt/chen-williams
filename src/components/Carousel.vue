@@ -1,9 +1,14 @@
 <template lang="pug">
   .carousel(:class="{'carousel--invisible': !flkty, 'carousel--cursor-prev': cursorIsPrev}", @mousemove="onMousemove")
-    figure.mbl-relative(v-for="(slide, index) in slides", :class="{'figure--invisible': index > 0 && !firstSlideLoaded}")
+    //- slide
+    figure.carousel-cell.mbl-relative(v-for="(slide, index) in slides", :class="{'figure--invisible': index > 0 && !firstSlideLoaded}")
+      //- image
       template(v-if="slide.slice_type === 'image'")
+        //- first two images, load src
         img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", @load="index === 0 ? firstSlideLoaded = true : null", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
-        img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)")
+        //- lazyload later images
+        img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
+      //- video
       template(v-if="slide.slice_type === 'video'")
         carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")
 </template>
@@ -43,7 +48,6 @@ export default {
         setTimeout(() => {
           // init
           this.flkty = new Flickity(this.$el, {
-            cellSelector: 'figure',
             lazyLoad: 2,
             cellAlign: 'left',
             imagesLoaded: true,
@@ -52,7 +56,7 @@ export default {
             selectedAttraction: 0.02,
             friction: 0.28
           })
-          // static click: next / prev
+          // static click: next / prev, toggle video play
           this.flkty.on('staticClick', (event, pointer, cellElement, cellIndex) => {
             const el = event.target
             // ignore video btns
@@ -64,14 +68,12 @@ export default {
                 if (el.paused) return el.play()
                 return el.pause()
               }
-            // desktop
-            } else {
-              // next / prev
-              if (event.x < this.flkty.slider.offsetWidth * this.nextPrevThreshold) {
-                return this.flkty.previous()
-              }
-              return this.flkty.next()
             }
+            // next / prev
+            if (event.x < this.flkty.slider.offsetWidth * this.nextPrevThreshold) {
+              return this.flkty.previous()
+            }
+            return this.flkty.next()
           })
         }, delay)
       }
@@ -174,19 +176,17 @@ figure{
   height:100%;
 }
 
-// after mobile
+// above mobile
 @include grid9 {
   figure{
     width:auto;
     height:auto;
     padding-bottom: 0;
-    img{
+    img, img.img--portrait{
+      position: static;
       width:auto;
       height:calc((100vw - #{$gutter} * 2)/9 * 4);
     }
-  }
-  .img--portrait{
-    position: static;
   }
 }
 @include grid12{
