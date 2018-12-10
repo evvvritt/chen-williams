@@ -92,10 +92,17 @@ export default new Vuex.Store({
       const savedId = localStorage.getItem('checkoutId')
       if (savedId) {
         return shop.checkout.fetch(savedId).then((checkout) => {
+          // Checkout alread completed:
+          if (checkout.completedAt) {
+            console.log('Last cart was completed: ', checkout.completedAt)
+            localStorage.removeItem('checkoutId')
+            return dispatch('createCheckout', true)
+          }
+          // use saved Checkout
           commit('setCheckout', checkout)
         }, err => {
           console.error(err)
-          console.log('Fetch checkout by ID failed. Creating new...')
+          console.log('Fetch cart by ID failed. Creating new...')
           localStorage.removeItem('checkoutId')
           dispatch('createCheckout', true)
         })
@@ -105,8 +112,8 @@ export default new Vuex.Store({
         // save id for future retrieving
         localStorage.setItem('checkoutId', checkout.id)
         commit('setCheckout', checkout)
-        if (logSuccess) console.log('Success')
-      }, err => console.error('Create new checkout failed.', err))
+        if (logSuccess) console.log('New cart Success')
+      }, err => console.error('Create new cart failed.', err))
     },
     getProducts ({ commit, state }) {
       // Stupidly, this .fetchAll() Shopify function only returns 20 by default
