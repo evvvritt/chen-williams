@@ -141,9 +141,9 @@ export default new Vuex.Store({
           const id = _get(item, 'primary.object.id')
           if (id) return id
         })
-        if (objectIDs.length < 1) return false
+        if (objectIDs.length < 1) return console.warn('getObjectsByCategoryID: No objects with category ', id)
         Prismic.getApi(state.prismicUrl)
-        .then(function (api) { return api.getByIDs(objectIDs) })
+        .then(function (api) { return api.getByIDs(objectIDs, { pageSize: 100 }) })
         .then(resp => commit('setObjects', { catID: id, items: resp.results }))
         .catch(err => console.error('Error: Get Category Items failed', err))
       }
