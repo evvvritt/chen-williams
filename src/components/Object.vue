@@ -106,7 +106,7 @@ export default {
       this.$store.dispatch('addToCart', this.selectedSKUid)
       .then(() => {
         this.addingToCart = false
-        this.$router.push({hash: '#cart'})
+        this.$router.replace({hash: '#cart'})
       })
       .catch(err => console.error(err))
     },
