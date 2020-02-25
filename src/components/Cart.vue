@@ -2,7 +2,7 @@
 <template lang="pug">
   aside.cart.fixed.overlay.z-overlay.bg-gray.backdrop-blur.overflow-y-scroll
     .relative.p2.min-h-100vh(ref="body")
-      overlay-header.absolute.z1.top-0.left-0.w-100(@close="$router.push({hash: null})")
+      overlay-header.absolute.z1.top-0.left-0.w-100(@close="$router.replace({hash: null})")
       template(v-if="cart && cart.lineItems.length > 0")
         section.left-align
           header.flex.items-end

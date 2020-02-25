@@ -37,7 +37,7 @@ import Carousel from '@/components/Carousel'
 import RadioBtn from '@/components/RadioBtn'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
-let prevRoute
+let prevRoute = {}
 export default {
   name: 'Object',
   props: ['slug'],
@@ -93,8 +93,8 @@ export default {
   },
   methods: {
     close () {
-      if (prevRoute && prevRoute.name) return this.$router.go(-1)
-      const route = this.catSlug ? { name: 'Category', params: { catSlug: this.catSlug } } : '/'
+      if (prevRoute.name) return this.$router.go(-1)
+      const route = this.catSlug ? {name: 'Category', params: {catSlug: this.catSlug}} : '/'
       return this.$router.push(route)
     },
     getObject () {
