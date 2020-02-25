@@ -1,5 +1,5 @@
 <template lang="pug">
-  .header-bg.overflow-hidden.backdrop-blur
+  .header-bg.overflow-hidden.backdrop-blur-ff
     //- height sizer: two grid rows
     .relative
       .cw-grid.cw-grid--no-dots(v-for="n in 2")

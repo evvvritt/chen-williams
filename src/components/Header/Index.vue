@@ -1,7 +1,7 @@
 <template lang="pug">
   header#app-header
     header-body#app-header__body.fixed.top-0.left-0.w-100.z-nav(:condensed="condensed")
-    header-bg#app-header__bg.fixed.top-0.left-0.w-100.z-nav.z-nav-bg(:class="{'app-header__bg--condensed': condensed}")
+    header-bg#app-header__bg.fixed.top-0.left-0.w-100.z-nav.z-nav-bg(:class="{'app-header__bg--condensed backdrop-blur': condensed}")
 </template>
 
 <script>
@@ -50,8 +50,10 @@ export default {
 #app-header__bg{
   transition:opacity $navCondenseDuration, transform $navCondenseDuration;
   opacity:0;
+  will-change: backdrop-filter;
   &.app-header__bg--condensed {
     opacity:1;
+    transition:opacity $navCondenseDuration, transform $navCondenseDuration, backdrop-filter $navCondenseDuration $navCondenseDuration*1.05;
     
     // condense 25%
     @media (min-width:$bkpt-navCondense-25) {
