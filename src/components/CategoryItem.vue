@@ -1,15 +1,15 @@
 <template lang="pug">
-  article.relative.item-fill(v-show="visible", :class="{'article--transparent': !available}")
+  article.relative.item-fill(v-show="visible", :class="{'article--transparent': soldOut}")
     radio-btn.cat-item__radio-btn.absolute.top-0.left-0.z2(:checked="true", fill="white")
     router-link(:to="{name: 'CategoryObject', params: {slug: object.uid}}")
       section.pb-100
         header.absolute.top-0.left-0.w-100.flex.z1
           h2.p-text {{object.data.title | text}}
-          small.p-text(v-if="price && !available") Sold Out
-          small.p-text(v-else-if="price")
+          small.p-text(v-if="soldOut") Sold Out
+          small.p-text(v-else-if="sku")
             span.strikethrough(v-if="sku.compareAtPrice && parseFloat(sku.compareAtPrice) > 0") {{sku.compareAtPrice | price}}&nbsp;
             | 
-            span {{price | price}}
+            span {{sku.price | price}}
         figure.absolute.top-0.left-0.w-100.overflow-hidden
           transition(name="fade")
             img.block.w-100(:src="thumb(object.data.thumbnail.url)", @load="imgLoaded = true", v-show="imgLoaded")
@@ -42,18 +42,16 @@ export default {
         return filters.indexOf(tag) >= 0
       })
     },
-    sku () {
+    product () {
       if (!this.object) return false
       const id = this.object.data.shopify_product_id
-      const product = _find(this.$store.state.products, ['_id', id])
-      const hasVariants = product && product.variants && product.variants.length > 0
-      return hasVariants ? product.variants[0] : false
+      return _find(this.$store.state.products, ['_id', id])
     },
-    price () {
-      return this.sku ? this.sku.price : false
+    sku () {
+      return this.product && (this.product.variants.find(sku => sku.available) || this.product.variants[0])
     },
-    available () {
-      return this.sku ? this.sku.available : true
+    soldOut () {
+      return !this.sku || !this.sku.available
     }
   },
   methods: {
@@ -70,7 +68,7 @@ export default {
 @import '../style/variables';
 
 article{
-  &.article--transparent{
+  &.article--transparent section{
     opacity:.2;
   }
 }
