@@ -11,7 +11,7 @@
               h1 {{object.data.title | text}}
               h6 {{object.data.year}}
               h6 {{object.data.dimensions | text}}
-              .mt1(v-if="skus && skus.length > 0", v-show="skus.length > 1")
+              .mt1(v-if="!soldOut && skus && skus.length > 0", v-show="skus.length > 1")
                 label {{selectLbl}}: 
                 select(ref="select", v-model="selectedSKUid")
                   option(v-for="(sku, index) in skus", :value="sku.id", :disabled="!sku.available") {{sku.title}}
@@ -20,10 +20,13 @@
                 span.strikethrough(v-if="selectedSKU && parseFloat(selectedSKU.compareAtPrice) > 0") {{selectedSKU.compareAtPrice | price}}&nbsp;
                 | 
                 span {{price | price}}
-          aside(v-if="skus", v-show="selectedSKU !== ''", @click="addToCart")
-            .relative
-              .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
-              radio-btn(fill="white", :dotted="true")
+          aside
+            template(v-if="!soldOut")
+              .relative(@click="addToCart", aria-label="Add to Cart")
+                .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
+                radio-btn(fill="white", :dotted="true")
+            template(v-else)
+              .radio-btn-label.p-text(style="cursor:default") Sold Out
 </template>
 
 <script>
@@ -49,11 +52,16 @@ export default {
     object () {
       return this.$store.state.object
     },
-    skus () {
+    product () {
       if (!this.object) return false
       const id = _get(this.object, 'data.shopify_product_id')
-      const product = _find(this.$store.state.products, ['_id', id])
-      return product && product.variants ? product.variants : false
+      return _find(this.$store.state.products, ['_id', id])
+    },
+    skus () {
+      return this.product && this.product.variants // ? this.product.variants : false
+    },
+    soldOut () {
+      return !this.skus || !this.skus.find(sku => sku.available)
     },
     selectedSKU () {
       if (!this.skus) return false
