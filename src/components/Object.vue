@@ -11,7 +11,7 @@
               h1 {{object.data.title | text}}
               h6 {{object.data.year}}
               h6 {{object.data.dimensions | text}}
-              .mt1(v-if="!soldOut && skus && skus.length > 0", v-show="skus.length > 1")
+              .mt1(v-if="product", v-show="!soldOut && skus.length > 1")
                 label {{selectLbl}}: 
                 select(ref="select", v-model="selectedSKUid")
                   option(v-for="(sku, index) in skus", :value="sku.id", :disabled="!sku.available") {{sku.title}}
@@ -20,7 +20,7 @@
                 span.strikethrough(v-if="selectedSKU && parseFloat(selectedSKU.compareAtPrice) > 0") {{selectedSKU.compareAtPrice | price}}&nbsp;
                 | 
                 span {{price | price}}
-          aside
+          aside(v-if="product")
             template(v-if="!soldOut")
               .relative(@click="addToCart", aria-label="Add to Cart")
                 .radio-btn-label.p-text(v-html="addingToCart ? 'Adding...' : 'Add to Cart'")
@@ -61,7 +61,7 @@ export default {
       return this.product && this.product.variants // ? this.product.variants : false
     },
     soldOut () {
-      return !this.skus || !this.skus.find(sku => sku.available)
+      return this.product && (!this.skus || !this.skus.find(sku => sku.available))
     },
     selectedSKU () {
       if (!this.skus) return false

@@ -51,7 +51,7 @@ export default {
       return this.product && (this.product.variants.find(sku => sku.available) || this.product.variants[0])
     },
     soldOut () {
-      return !this.sku || !this.sku.available
+      return this.product && (!this.sku || !this.sku.available)
     }
   },
   methods: {
