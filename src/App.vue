@@ -73,7 +73,8 @@ export default {
       'createCheckout'
     ]),
     redirect () {
-      if (this.site.nav && this.$route.name === 'Home') {
+      // Redirect home to first nav item (eg "/shop")
+      if (this.site && this.site.nav && this.$route.name === 'Home') {
         const slug = this.site.nav[0].primary.category_link.uid
         this.$router.replace({name: 'Category', params: {catSlug: slug}})
       }
