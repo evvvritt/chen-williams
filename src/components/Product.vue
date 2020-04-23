@@ -23,10 +23,13 @@ export default {
           Prismic.Predicates.at('my.object.shopify_product_id', product._id)
         )
         .then(({results}) => {
-          const obj = results[0]
           // redirect to object view or home
-          const rt = obj ? {name: 'CategoryObject', params: {slug: obj.uid}} : '/'
-          return this.$router.replace(rt)
+          const obj = results[0]
+          if (obj) {
+            console.log('Redirecting to Object...')
+            return this.$router.replace({name: 'CategoryObject', params: {slug: obj.uid}})
+          }
+          return this.$router.replace('/')
         })
         .catch(err => console.error(err))
       })

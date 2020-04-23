@@ -14,6 +14,10 @@ export default new Router({
       name: 'Home'
     },
     {
+      path: '/products',
+      redirect: '/'
+    },
+    {
       path: '/products/:handle',
       name: 'Product',
       component: Product,
