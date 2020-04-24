@@ -226,4 +226,20 @@ h1,h2,h3,h4,h5,h6,small{
     opacity:0;
   }
 }
+
+body {
+  // background: white;
+  // background-image: radial-gradient(red 1px, transparent 0);
+  // background-size: calc((100vw - 4rem) / 9) calc((100vw - 4rem) / 9);
+  // background-position: calc((100vw - 2rem) / 9 / -2 + 2rem + 1px) calc((100vw - 2rem) / 9 / -2 + 2rem + 1px);
+
+  // background-image: repeating-linear-gradient(0deg, red)
+  // background-image: url("data:image/svg+xml,%3Csvg width='2' height='2' viewBox='0 0 2 2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='red'/%3E%3C/svg%3E%0A");
+  background: repeating-linear-gradient(90deg, transparent, transparent 2px, white 2px, white),
+            repeating-linear-gradient(red, red 2px, transparent 2px, transparent);
+  background-size: calc((100vw - 4rem) / 9) calc((100vw - 4rem) / 9);
+  background-position: calc(2rem - 1px) calc(2rem - 1px); // calc((100vw - 2rem) / 9 / -2 + 2rem + 1px) calc((100vw - 2rem) / 9 / -2 + 2rem + 1px);
+  image-rendering: pixelated;
+  // background-repeat: no-repeat;
+}
 </style>
