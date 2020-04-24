@@ -92,11 +92,11 @@ export default new Vuex.Store({
       const savedId = localStorage.getItem('checkoutId')
       if (savedId) {
         return shop.checkout.fetch(savedId).then((checkout) => {
-          // Checkout alread completed:
+          // Missing checkout or alread completed:
           if (!checkout || checkout.completedAt) {
-            console.log('Cart missing or already completed:', checkout.completedAt, '. Creating new...')
+            console.log('Cart missing or already completed. Creating new...')
             localStorage.removeItem('checkoutId')
-            return dispatch('createCheckout', true)
+            return dispatch('createCheckout')
           }
           // use saved Checkout
           console.log('Fetched saved cart.')
@@ -105,7 +105,7 @@ export default new Vuex.Store({
           console.error(err)
           console.log('Fetch cart by ID failed. Creating new...')
           localStorage.removeItem('checkoutId')
-          dispatch('createCheckout', true)
+          dispatch('createCheckout')
         })
       }
       // else, create new
