@@ -12,7 +12,7 @@
           transition-group(name="results", v-on:after-enter="setGridRows")
             section.category__items(:key="objects.catID")
               item(v-for="object in objects.items", :key="object.id", :object="object")
-    dot-grid(:rows="gridRows")
+    //- dot-grid(:rows="gridRows")
 </template>
 
 <script>

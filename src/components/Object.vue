@@ -1,7 +1,7 @@
 <template lang="pug">
   article.object.fixed.overlay.overflow-y-scroll.overflow-x-hidden.bg-white
-    .object__body.relative.min-h-100vh.overflow-hidden.p2.mbl-pb-25vh
-      background
+    .object__body.relative.min-h-100vh.overflow-hidden.p2.mbl-pb-25vh.dot-grid--body
+      //- .dot-grid--body.absolute.top-0.left-0.w-100.h-100(style="pointer-events:none; z-index:3; mix-blend-mode:multiply")
       overlay-header.fixed.top-0.left-0.w-100.bg-transp(@close="close")
       .object__main.flex.mbl-flex-wrap(v-if="object.data")
         carousel.object__slideshow(:slides="object.data.slideshow")
@@ -31,7 +31,7 @@
 
 <script>
 import Vue from 'vue'
-import Background from '@/components/DotGrid'
+import DotGrid from '@/components/DotGrid'
 import OverlayHeader from '@/components/OverlayHeader'
 import Carousel from '@/components/Carousel'
 import RadioBtn from '@/components/RadioBtn'
@@ -41,7 +41,7 @@ let prevRoute = {}
 export default {
   name: 'Object',
   props: ['slug'],
-  components: { Background, OverlayHeader, Carousel, RadioBtn },
+  components: { DotGrid, OverlayHeader, Carousel, RadioBtn },
   data () {
     return {
       addingToCart: false,
