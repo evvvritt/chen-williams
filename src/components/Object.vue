@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     close () {
-      if (prevRoute.name) return this.$router.go(-1)
+      if (prevRoute.name && prevRoute.name !== 'Product') return this.$router.go(-1)
       const route = this.catSlug ? {name: 'Category', params: {catSlug: this.catSlug}} : '/'
       return this.$router.push(route)
     },
