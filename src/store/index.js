@@ -88,17 +88,18 @@ export default new Vuex.Store({
         console.error('Error: Get Site failed', err)
       })
     },
-    createCheckout ({ dispatch, commit, state }, logSuccess = false) {
+    createCheckout ({ dispatch, commit, state }) {
       const savedId = localStorage.getItem('checkoutId')
       if (savedId) {
         return shop.checkout.fetch(savedId).then((checkout) => {
           // Checkout alread completed:
-          if (checkout.completedAt) {
-            console.log('Last cart was completed: ', checkout.completedAt)
+          if (!checkout || checkout.completedAt) {
+            console.log('Cart missing or already completed:', checkout.completedAt, '. Creating new...')
             localStorage.removeItem('checkoutId')
             return dispatch('createCheckout', true)
           }
           // use saved Checkout
+          console.log('Fetched saved cart.')
           commit('setCheckout', checkout)
         }, err => {
           console.error(err)
@@ -112,7 +113,7 @@ export default new Vuex.Store({
         // save id for future retrieving
         localStorage.setItem('checkoutId', checkout.id)
         commit('setCheckout', checkout)
-        if (logSuccess) console.log('New cart Success')
+        console.log('New cart success')
       }, err => console.error('Create new cart failed.', err))
     },
     getProducts ({ commit, state }) {
