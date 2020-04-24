@@ -1,5 +1,5 @@
 <template lang="pug">
-  .cw-grid.cw-grid--bg(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
+  //- .cw-grid.cw-grid--bg(:class="classes", :data-grid-scheme="scheme", :data-dot-color="color")
     //- column
     .cw-grid__item(v-for="n in ((rows) * columns)", :key="n")
       //- row height (requires separate element in Firefox :/)
