@@ -5,9 +5,9 @@
       //- image
       template(v-if="slide.slice_type === 'image'")
         //- first two images, load src
-        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", @load="index === 0 ? firstSlideLoaded = true : null", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
+        img.block(v-if="index < 2", :src="thumb(slide.primary.image.url)", :alt="slide.primary.image.alt", @load="index === 0 ? firstSlideLoaded = true : null", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
         //- lazyload later images
-        img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
+        img.block(v-else, :data-flickity-lazyload="thumb(slide.primary.image.url)", :alt="slide.primary.image.alt", :class="{'img--portrait': imgIsPortrait(slide.primary.image.dimensions)}")
       //- video
       template(v-if="slide.slice_type === 'video'")
         carousel-video(:src="slide.primary['video_' + videoSize].url", :poster="slide.primary.poster.url", :autoplay="index === 0", :isActive="flkty && flkty.selectedIndex ? index === flkty.selectedIndex : false")

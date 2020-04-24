@@ -12,7 +12,7 @@
             span {{sku.price | price}}
         figure.absolute.top-0.left-0.w-100.overflow-hidden
           transition(name="fade")
-            img.block.w-100(:src="thumb(object.data.thumbnail.url)", @load="imgLoaded = true", v-show="imgLoaded")
+            img.block.w-100(:src="thumb(object.data.thumbnail.url)", :alt="object.data.thumbnail.alt", @load="imgLoaded = true", v-show="imgLoaded")
     dot-grid.overlay.absolute
 </template>
 
